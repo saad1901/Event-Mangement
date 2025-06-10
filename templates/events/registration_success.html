@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Registration Successful - Tournament Central{% endblock %}
+
+{% block content %}
+    <section class="registration-success-page">
+        <div class="container">
+            <div class="success-card">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h1>Registration Successful!</h1>
+                <p>Thank you for registering for <strong>{{ event.title }}</strong>.</p>
+                <p>A confirmation has been sent to your email and mobile number.</p>
+                <p class="ticket-info">Your ticket information:</p>
+                <div class="ticket-details">
+                    <div class="ticket-row">
+                        <span>Name:</span>
+                        <span>{{ registration.name }}</span>
+                    </div>
+                    <div class="ticket-row">
+                        <span>Event:</span>
+                        <span>{{ event.title }}</span>
+                    </div>
+                    <div class="ticket-row">
+                        <span>Date:</span>
+                        <span>{{ event.date }}</span>
+                    </div>
+                    <div class="ticket-row">
+                        <span>Tickets:</span>
+                        <span>{{ registration.tickets }}</span>
+                    </div>
+                    <div class="ticket-row">
+                        <span>Order ID:</span>
+                        <span>TC-{{ registration.id }}</span>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <a href="{% url 'event_detail' event.id %}" class="btn btn-outline">Register Another</a>
+                    <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %} 

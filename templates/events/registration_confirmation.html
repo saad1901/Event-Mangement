@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Registration Confirmation - Tournament Central{% endblock %}
+
+{% block content %}
+<section class="event-detail">
+    <div class="container">
+        <div class="event-header">
+            <h2>Registration Successful</h2>
+            <p>Thank you for registering for {{ registration.event.name }}!</p>
+        </div>
+
+        <div class="event-content">
+            <div class="event-description">
+                <h3>Registration Details</h3>
+                <div class="confirmation-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Event:</div>
+                        <div class="detail-value">{{ registration.event.name }}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Registration ID:</div>
+                        <div class="detail-value">{{ registration.reference_number }}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Name:</div>
+                        <div class="detail-value">{{ registration.name }}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Email:</div>
+                        <div class="detail-value">{{ registration.email }}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Phone:</div>
+                        <div class="detail-value">{{ registration.phone }}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Number of Tickets:</div>
+                        <div class="detail-value">{{ registration.quantity }}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Registration Date:</div>
+                        <div class="detail-value">{{ registration.registration_date|date:"F j, Y, g:i a" }}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Status:</div>
+                        <div class="detail-value">{{ registration.get_status_display }}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Total Amount:</div>
+                        <div class="detail-value">${{ total_amount|floatformat:2 }}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Payment Method:</div>
+                        <div class="detail-value">{{ payment.get_payment_method_display }}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Payment Status:</div>
+                        <div class="detail-value">{{ payment.get_status_display }}</div>
+                    </div>
+                </div>
+
+                {% if payment.payment_method == 'qr_code' and payment.qr_code %}
+                <div class="qr-code-section">
+                    <h3>Payment QR Code</h3>
+                    <p>Scan this QR code to complete your payment:</p>
+                    <div class="qr-code-image">
+                        <img src="{{ payment.qr_code.url }}" alt="Payment QR Code">
+                    </div>
+                    <p class="qr-instruction">After scanning and making payment, your registration will be automatically confirmed.</p>
+                </div>
+                {% elif payment.payment_method == 'cash' %}
+                <div class="cod-section">
+                    <h3>Cash on Delivery Information</h3>
+                    <p>You have selected Cash on Delivery as your payment method. Please have the exact amount ready at the time of ticket collection.</p>
+                    <p>You can collect your tickets at:</p>
+                    <div class="collection-details">
+                        <p><strong>Venue:</strong> Tournament Central Office</p>
+                        <p><strong>Address:</strong> 123 Tournament Avenue, Sportsville, SP 54321</p>
+                        <p><strong>Collection Hours:</strong> Monday to Friday, 9:00 AM to 5:00 PM</p>
+                        <p><strong>Please bring:</strong> Your ID and registration number</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if registration.tickets.all %}
+                <div class="tickets-section">
+                    <h3>Your Tickets</h3>
+                    <p>These tickets will be valid after payment confirmation.</p>
+                    <div class="tickets-list">
+                        {% for ticket in registration.tickets.all %}
+                        <div class="ticket-item">
+                            <div class="ticket-number">Ticket #{{ ticket.ticket_number }}</div>
+                            {% if ticket.qr_code %}
+                            <div class="ticket-qr">
+                                <img src="{{ ticket.qr_code.url }}" alt="Ticket QR Code">
+                            </div>
+                            {% endif %}
+                            <div class="ticket-status">Status: {% if ticket.is_used %}Used{% else %}Valid{% endif %}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="next-steps">
+                    <h3>Next Steps</h3>
+                    {% if payment.payment_method == 'qr_code' %}
+                    <p>1. Scan the QR code above using your payment app</p>
+                    <p>2. Complete the payment of ${{ total_amount|floatformat:2 }}</p>
+                    <p>3. Once payment is confirmed, we'll email your tickets</p>
+                    <p>4. Bring your tickets (printed or digital) to the event</p>
+                    {% elif payment.payment_method == 'cash' %}
+                    <p>1. Visit our office for payment and ticket collection</p>
+                    <p>2. Pay ${{ total_amount|floatformat:2 }} in cash</p>
+                    <p>3. Receive your physical tickets</p>
+                    <p>4. Bring your tickets to the event</p>
+                    {% endif %}
+                </div>
+
+                <div class="actions">
+                    <a href="{% url 'home' %}" class="btn">Return to Home</a>
+                    <a href="{% url 'event_detail' registration.event.id %}" class="btn">View Event</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

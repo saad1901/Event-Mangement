@@ -1,0 +1,460 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard - Tournament Central{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="container">
+        <div class="admin-header">
+            <h1>Admin Dashboard</h1>
+            <div class="admin-actions">
+                <div class="admin-welcome">Welcome, Admin</div>
+                <a href="/" class="btn btn-outline">View Site</a>
+            </div>
+        </div>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>15</h3>
+                    <p>Total Events</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>253</h3>
+                    <p>Total Users</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>154</h3>
+                    <p>Registrations</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>$12,450</h3>
+                    <p>Revenue</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-content">
+            <div class="admin-sidebar">
+                <div class="admin-nav">
+                    <button class="nav-item active" data-target="events">
+                        <i class="fas fa-calendar-alt"></i> Events
+                    </button>
+                    <button class="nav-item" data-target="users">
+                        <i class="fas fa-users"></i> Users
+                    </button>
+                    <button class="nav-item" data-target="registrations">
+                        <i class="fas fa-ticket-alt"></i> Registrations
+                    </button>
+                    <button class="nav-item" data-target="reports">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </button>
+                    <button class="nav-item" data-target="settings">
+                        <i class="fas fa-cog"></i> Settings
+                    </button>
+                </div>
+            </div>
+            
+            <div class="admin-main">
+                <!-- Events Tab -->
+                <div class="admin-tab active" id="events-tab">
+                    <div class="tab-header">
+                        <h2>Manage Events</h2>
+                        <button class="btn btn-primary" id="add-event-btn">
+                            <i class="fas fa-plus"></i> Add New Event
+                        </button>
+                    </div>
+                    
+                    <div class="events-filter">
+                        <div class="search-box">
+                            <input type="text" placeholder="Search events...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="filter-options">
+                            <select>
+                                <option>All Categories</option>
+                                <option>Technology</option>
+                                <option>Sports</option>
+                                <option>Music</option>
+                                <option>Business</option>
+                                <option>Food & Drink</option>
+                                <option>Art</option>
+                            </select>
+                            <select>
+                                <option>All Status</option>
+                                <option>Upcoming</option>
+                                <option>Ongoing</option>
+                                <option>Completed</option>
+                                <option>Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Event Name</th>
+                                    <th>Date</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Registrations</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Tech Conference 2023</td>
+                                    <td>Nov 24, 2023</td>
+                                    <td>Technology</td>
+                                    <td><span class="status-badge upcoming">Upcoming</span></td>
+                                    <td>45</td>
+                                    <td class="action-buttons">
+                                        <button class="action-btn view-btn"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Summer Sports Festival</td>
+                                    <td>Nov 26, 2023</td>
+                                    <td>Sports</td>
+                                    <td><span class="status-badge upcoming">Upcoming</span></td>
+                                    <td>32</td>
+                                    <td class="action-buttons">
+                                        <button class="action-btn view-btn"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Music Festival 2023</td>
+                                    <td>Dec 4, 2023</td>
+                                    <td>Music</td>
+                                    <td><span class="status-badge upcoming">Upcoming</span></td>
+                                    <td>78</td>
+                                    <td class="action-buttons">
+                                        <button class="action-btn view-btn"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>Business Summit</td>
+                                    <td>Dec 10, 2023</td>
+                                    <td>Business</td>
+                                    <td><span class="status-badge upcoming">Upcoming</span></td>
+                                    <td>21</td>
+                                    <td class="action-buttons">
+                                        <button class="action-btn view-btn"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>Food & Wine Expo</td>
+                                    <td>Dec 15, 2023</td>
+                                    <td>Food & Drink</td>
+                                    <td><span class="status-badge upcoming">Upcoming</span></td>
+                                    <td>53</td>
+                                    <td class="action-buttons">
+                                        <button class="action-btn view-btn"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pagination">
+                        <button class="page-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn next-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                
+                <!-- Users Tab (Placeholder) -->
+                <div class="admin-tab" id="users-tab">
+                    <div class="tab-header">
+                        <h2>Manage Users</h2>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add New User
+                        </button>
+                    </div>
+                    <div class="placeholder-content">
+                        <p>User management content will go here</p>
+                    </div>
+                </div>
+                
+                <!-- Registrations Tab (Placeholder) -->
+                <div class="admin-tab" id="registrations-tab">
+                    <div class="tab-header">
+                        <h2>Event Registrations</h2>
+                    </div>
+                    <div class="placeholder-content">
+                        <p>Registration data will go here</p>
+                    </div>
+                </div>
+                
+                <!-- Reports Tab (Placeholder) -->
+                <div class="admin-tab" id="reports-tab">
+                    <div class="tab-header">
+                        <h2>Analytics & Reports</h2>
+                    </div>
+                    <div class="placeholder-content">
+                        <p>Charts and analytics will go here</p>
+                    </div>
+                </div>
+                
+                <!-- Settings Tab (Placeholder) -->
+                <div class="admin-tab" id="settings-tab">
+                    <div class="tab-header">
+                        <h2>System Settings</h2>
+                    </div>
+                    <div class="placeholder-content">
+                        <p>System settings will go here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Event Form Modal -->
+<div class="modal" id="event-modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Add New Event</h2>
+        <form id="event-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="event-title">Event Title</label>
+                    <input type="text" id="event-title" name="title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="event-category">Category</label>
+                    <select id="event-category" name="category" class="form-control" required>
+                        <option value="">Select Category</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Music">Music</option>
+                        <option value="Business">Business</option>
+                        <option value="Food & Drink">Food & Drink</option>
+                        <option value="Art">Art</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="event-date">Date</label>
+                    <input type="date" id="event-date" name="date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="event-time">Time</label>
+                    <input type="time" id="event-time" name="time" class="form-control" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="event-location">Location</label>
+                <input type="text" id="event-location" name="location" class="form-control" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="event-price">Price</label>
+                    <input type="text" id="event-price" name="price" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="event-tickets">Available Tickets</label>
+                    <input type="number" id="event-tickets" name="tickets_available" class="form-control" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="event-description">Description</label>
+                <textarea id="event-description" name="description" class="form-control" rows="5" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="event-image">Event Image</label>
+                <input type="file" id="event-image" name="image" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="event-organizer">Organizer</label>
+                <input type="text" id="event-organizer" name="organizer" class="form-control" required>
+            </div>
+            
+            <div class="form-buttons">
+                <button type="button" class="btn btn-outline" id="cancel-event">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Event</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Tab Navigation
+        const navItems = document.querySelectorAll('.nav-item');
+        const adminTabs = document.querySelectorAll('.admin-tab');
+        
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all nav items
+                navItems.forEach(nav => nav.classList.remove('active'));
+                // Add active class to clicked nav item
+                this.classList.add('active');
+                
+                // Hide all tabs
+                adminTabs.forEach(tab => tab.classList.remove('active'));
+                
+                // Show the selected tab
+                const targetTab = document.getElementById(`${this.dataset.target}-tab`);
+                if (targetTab) {
+                    targetTab.classList.add('active');
+                }
+            });
+        });
+        
+        // Modal Functions
+        const modal = document.getElementById('event-modal');
+        const addEventBtn = document.getElementById('add-event-btn');
+        const closeModal = document.querySelector('.close-modal');
+        const cancelEventBtn = document.getElementById('cancel-event');
+        
+        function openModal() {
+            if (modal) modal.style.display = 'flex';
+        }
+        
+        function closeModalFunc() {
+            if (modal) modal.style.display = 'none';
+        }
+        
+        if (addEventBtn) {
+            addEventBtn.addEventListener('click', openModal);
+        }
+        
+        if (closeModal) {
+            closeModal.addEventListener('click', closeModalFunc);
+        }
+        
+        if (cancelEventBtn) {
+            cancelEventBtn.addEventListener('click', closeModalFunc);
+        }
+        
+        // Close modal when clicking outside of it
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeModalFunc();
+            }
+        });
+        
+        // Event Form Submission
+        const eventForm = document.getElementById('event-form');
+        if (eventForm) {
+            eventForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Here you would typically send the form data to the server
+                // For demo purposes, we'll just close the modal and show an alert
+                alert('Event saved successfully!');
+                closeModalFunc();
+                
+                // In a real application, you would submit the form to the server
+                /*
+                const formData = new FormData(eventForm);
+                fetch('/admin/events/add/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Event saved successfully!');
+                        closeModalFunc();
+                        // Reload events list or add new event to the list
+                    } else {
+                        alert(data.error || 'Error saving event.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+                */
+            });
+        }
+        
+        // Action Buttons in Table
+        const viewButtons = document.querySelectorAll('.view-btn');
+        const editButtons = document.querySelectorAll('.edit-btn');
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        
+        viewButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const eventId = this.closest('tr').cells[0].textContent;
+                alert(`View event details for ID: ${eventId}`);
+                // In a real app, you would redirect to event details page
+                // window.location.href = `/admin/events/${eventId}`;
+            });
+        });
+        
+        editButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const eventId = this.closest('tr').cells[0].textContent;
+                alert(`Edit event ID: ${eventId}`);
+                // In a real app, you would load event data into the modal form
+                openModal();
+            });
+        });
+        
+        deleteButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const eventId = this.closest('tr').cells[0].textContent;
+                const eventName = this.closest('tr').cells[1].textContent;
+                
+                if (confirm(`Are you sure you want to delete event "${eventName}"?`)) {
+                    alert(`Deleted event ID: ${eventId}`);
+                    // In a real app, you would send a delete request to the server
+                    // this.closest('tr').remove();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %} 
