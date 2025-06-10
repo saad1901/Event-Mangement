@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}All Events - Tournament Central{% endblock %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="page-header" style="background: linear-gradient(135deg, #f8f9fa, #555555, #f8f9fa); padding: 80px 0; position: relative; overflow: hidden; box-shadow: inset 0 -10px 20px -10px rgba(0,0,0,0.1);">
+        <div class="container">
+            <h1 style="color: var(--text-color); font-weight: 800; font-size: clamp(2rem, 4vw, 3rem); text-align: center; margin-bottom: 20px;">
+                <span style="background: linear-gradient(45deg, #555555, #777777); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">All Events</span>
+            </h1>
+            <p style="text-align: center; max-width: 700px; margin: 0 auto; color: var(--text-color); font-size: clamp(1rem, 1.5vw, 1.2rem);">Browse all upcoming tournaments and events across various categories. Filter by date, category, or search for specific events.</p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section style="padding: 40px 0; background-color: #f5f5f5;">
+        <div class="container">
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    <select style="padding: 10px 15px; border-radius: 4px; border: 1px solid #ddd; background-color: white;">
+                        <option value="">All Categories</option>
+                        <option value="chess">Chess</option>
+                        <option value="sports">Sports</option>
+                        <option value="esports">E-Sports</option>
+                        <option value="academic">Academic</option>
+                    </select>
+                    <select style="padding: 10px 15px; border-radius: 4px; border: 1px solid #ddd; background-color: white;">
+                        <option value="">All Dates</option>
+                        <option value="today">Today</option>
+                        <option value="this-week">This Week</option>
+                        <option value="this-month">This Month</option>
+                        <option value="next-month">Next Month</option>
+                    </select>
+                    <select style="padding: 10px 15px; border-radius: 4px; border: 1px solid #ddd; background-color: white;">
+                        <option value="">Price Range</option>
+                        <option value="free">Free</option>
+                        <option value="paid">Paid</option>
+                        <option value="premium">Premium</option>
+                    </select>
+                </div>
+                <div style="position: relative;">
+                    <input type="text" placeholder="Search events..." style="padding: 10px 15px; border-radius: 4px; border: 1px solid #ddd; width: 250px;">
+                    <button style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #555;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Events Section -->
+    <section class="events-section">
+        <div class="container">
+            <div class="events-grid">
+                {% for event in events %}
+                <div class="event-card animate-on-scroll stagger-item">
+                    <div class="event-image" style="background-image: url('{% if event.image %}{{ event.image }}{% else %}{% static 'images/event-placeholder.jpg' %}{% endif %}');"></div>
+                    <div class="event-details">
+                        <span class="badge {{ event.category|lower }}">{{ event.category }}</span>
+                        <h3>{{ event.title }}</h3>
+                        <div class="event-meta">
+                            <span><i class="far fa-calendar-alt"></i> {{ event.date }}</span>
+                            <span><i class="far fa-clock"></i> {{ event.time }}</span>
+                        </div>
+                        <p>{{ event.description|truncatechars:120 }}</p>
+                        <div class="event-footer">
+                            <span class="price">{{ event.price }}</span>
+                            <a href="{% url 'event_detail' event.id %}" class="btn">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="no-events" style="grid-column: 1 / -1; text-align: center; padding: 50px 0;">
+                    <i class="far fa-calendar-times" style="font-size: 3rem; color: #ddd; margin-bottom: 20px;"></i>
+                    <h3>No Events Found</h3>
+                    <p>There are no events matching your criteria. Try adjusting your filters or check back later.</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            <div style="display: flex; justify-content: center; margin-top: 40px;">
+                <div class="pagination">
+                    {% if events.has_previous %}
+                    <a href="?page={{ events.previous_page_number }}" class="page-link">&laquo; Previous</a>
+                    {% endif %}
+                    
+                    {% for num in events.paginator.page_range %}
+                    {% if events.number == num %}
+                    <a href="?page={{ num }}" class="page-link active">{{ num }}</a>
+                    {% elif num > events.number|add:'-3' and num < events.number|add:'3' %}
+                    <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+                    {% endif %}
+                    {% endfor %}
+                    
+                    {% if events.has_next %}
+                    <a href="?page={{ events.next_page_number }}" class="page-link">Next &raquo;</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

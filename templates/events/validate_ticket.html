@@ -1,0 +1,308 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Validate Ticket - Tournament Central{% endblock %}
+
+{% block content %}
+<section class="event-detail">
+    <div class="container">
+        <div class="event-header">
+            <h2>Ticket Validation</h2>
+            <p>Validate tickets for event entry</p>
+        </div>
+
+        <div class="event-content">
+            <div class="validation-container">
+                <div class="validation-form">
+                    <h3>Enter Ticket Number</h3>
+                    <p>Enter the ticket number or scan the QR code to validate:</p>
+                    
+                    <form id="validate-form" method="post" action="{% url 'validate_ticket' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="ticket_number">Ticket Number</label>
+                            <input type="text" id="ticket_number" name="ticket_number" class="form-control" required autofocus>
+                        </div>
+                        <button type="submit" class="btn">Validate Ticket</button>
+                    </form>
+                    
+                    <div class="scan-section">
+                        <h3>Or Scan QR Code</h3>
+                        <div id="qr-reader"></div>
+                        <button id="start-scanner" class="btn secondary-btn">Start Scanner</button>
+                    </div>
+                </div>
+                
+                <div class="validation-result" id="validation-result" style="display: none;">
+                    <div class="result-header">
+                        <h3>Validation Result</h3>
+                    </div>
+                    <div class="result-content">
+                        <div id="result-status" class="result-status"></div>
+                        <div id="result-message" class="result-message"></div>
+                        
+                        <div id="ticket-details" class="ticket-details" style="display: none;">
+                            <h4>Ticket Details</h4>
+                            <div class="detail-row">
+                                <div class="detail-label">Ticket Number:</div>
+                                <div id="ticket-number" class="detail-value"></div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Event:</div>
+                                <div id="ticket-event" class="detail-value"></div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Name:</div>
+                                <div id="ticket-name" class="detail-value"></div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Status:</div>
+                                <div id="ticket-status" class="detail-value"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="result-actions">
+                        <button id="validate-new" class="btn">Validate Another Ticket</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .validation-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .validation-form {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .scan-section {
+        margin-top: 30px;
+        border-top: 1px solid #e0e0e0;
+        padding-top: 20px;
+    }
+    
+    #qr-reader {
+        width: 100%;
+        max-width: 500px;
+        margin: 20px auto;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    
+    .secondary-btn {
+        background-color: #6c757d;
+    }
+    
+    .validation-result {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 30px;
+    }
+    
+    .result-header {
+        margin-bottom: 20px;
+        border-bottom: 1px solid #e0e0e0;
+        padding-bottom: 10px;
+    }
+    
+    .result-status {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+    }
+    
+    .status-valid {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    
+    .status-invalid {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    
+    .result-message {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+    
+    .ticket-details {
+        background-color: white;
+        border-radius: 4px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .detail-row {
+        display: flex;
+        margin-bottom: 8px;
+    }
+    
+    .detail-label {
+        flex: 0 0 150px;
+        font-weight: 500;
+    }
+    
+    .detail-value {
+        flex: 1;
+    }
+    
+    .result-actions {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #e0e0e0;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/html5-qrcode@2.3.4/html5-qrcode.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const validateForm = document.getElementById('validate-form');
+        const validationResult = document.getElementById('validation-result');
+        const validationForm = document.querySelector('.validation-form');
+        const resultStatus = document.getElementById('result-status');
+        const resultMessage = document.getElementById('result-message');
+        const ticketDetails = document.getElementById('ticket-details');
+        const validateNewBtn = document.getElementById('validate-new');
+        const startScannerBtn = document.getElementById('start-scanner');
+        
+        let html5QrCode;
+        
+        // Handle form submission
+        if (validateForm) {
+            validateForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const ticketNumber = document.getElementById('ticket_number').value;
+                validateTicket(ticketNumber);
+            });
+        }
+        
+        // Handle "Validate Another Ticket" button
+        if (validateNewBtn) {
+            validateNewBtn.addEventListener('click', function() {
+                validationResult.style.display = 'none';
+                validationForm.style.display = 'block';
+                document.getElementById('ticket_number').value = '';
+                document.getElementById('ticket_number').focus();
+                
+                // Stop scanner if it's running
+                if (html5QrCode && html5QrCode.isScanning) {
+                    html5QrCode.stop();
+                }
+            });
+        }
+        
+        // Handle start scanner button
+        if (startScannerBtn) {
+            startScannerBtn.addEventListener('click', function() {
+                startQRScanner();
+            });
+        }
+        
+        function validateTicket(ticketNumber) {
+            // Send validation request to server
+            fetch('{% url "validate_ticket" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ ticket_number: ticketNumber })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display validation result
+                validationForm.style.display = 'none';
+                validationResult.style.display = 'block';
+                
+                if (data.error) {
+                    // Invalid ticket
+                    resultStatus.className = 'result-status status-invalid';
+                    resultStatus.textContent = 'Invalid Ticket';
+                    resultMessage.textContent = data.error;
+                    ticketDetails.style.display = 'none';
+                } else {
+                    // Valid ticket
+                    const ticket = data.ticket;
+                    const isUsed = ticket.is_used;
+                    
+                    if (isUsed) {
+                        resultStatus.className = 'result-status status-invalid';
+                        resultStatus.textContent = 'Ticket Already Used';
+                        resultMessage.textContent = 'This ticket has already been validated and cannot be used again.';
+                    } else {
+                        resultStatus.className = 'result-status status-valid';
+                        resultStatus.textContent = 'Valid Ticket';
+                        resultMessage.textContent = 'Ticket has been successfully validated.';
+                    }
+                    
+                    // Display ticket details
+                    document.getElementById('ticket-number').textContent = ticket.ticket_number;
+                    document.getElementById('ticket-event').textContent = data.event_name || 'Unknown Event';
+                    document.getElementById('ticket-name').textContent = data.attendee_name || 'Unknown';
+                    document.getElementById('ticket-status').textContent = isUsed ? 'Used' : 'Valid';
+                    
+                    ticketDetails.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                
+                validationForm.style.display = 'none';
+                validationResult.style.display = 'block';
+                
+                resultStatus.className = 'result-status status-invalid';
+                resultStatus.textContent = 'Error';
+                resultMessage.textContent = 'An error occurred while validating the ticket. Please try again.';
+                ticketDetails.style.display = 'none';
+            });
+        }
+        
+        function startQRScanner() {
+            const qrContainer = document.getElementById('qr-reader');
+            
+            if (qrContainer) {
+                html5QrCode = new Html5Qrcode("qr-reader");
+                const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+                
+                html5QrCode.start(
+                    { facingMode: "environment" },
+                    config,
+                    (decodedText) => {
+                        // QR code scanned successfully
+                        html5QrCode.stop();
+                        validateTicket(decodedText);
+                    },
+                    (errorMessage) => {
+                        // Handle scan error if needed
+                    }
+                ).catch((err) => {
+                    // Handle start scanner error
+                    console.error(`Unable to start scanner: ${err}`);
+                });
+            }
+        }
+    });
+</script>
+{% endblock %} 
