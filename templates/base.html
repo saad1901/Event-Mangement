@@ -13,23 +13,24 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Header -->
-    <header>
+    <header class="header">
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <h1>Honest Chess Academy</h1>
+                    <h1><a href="{% url 'home' %}">Tournament Central</a></h1>
                 </div>
-                <div class="menu-toggle">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <nav>
-                    <ul>
-                        <li><a href="{% url 'home' %}" {% if request.path == '/' %}class="active"{% endif %}>Home</a></li>
-                        <li><a href="{% url 'home' %}#events">Events</a></li>
-                        <li><a href="{% url 'home' %}#about">About Us</a></li>
-                        <li><a href="{% url 'home' %}#contact">Contact</a></li>
+                <nav class="nav">
+                    <ul class="nav-links">
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="#">Events</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
                     </ul>
+                    <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
                 </nav>
             </div>
         </div>
