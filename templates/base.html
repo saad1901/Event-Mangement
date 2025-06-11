@@ -40,6 +40,23 @@
         {% block content %}{% endblock %}
     </main>
 
+    <!-- Floating Help Button -->
+    <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+        <button type="button" onclick="toggleHelpMenu()" style="background-color: #28a745; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); transition: transform 0.2s;">
+            <i class="fas fa-headset" style="font-size: 24px;"></i>
+        </button>
+        <div id="helpMenu" style="display: none; position: absolute; bottom: 70px; right: 0; background-color: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 15px rgba(0,0,0,0.1); z-index: 1000; min-width: 200px; margin-top: 5px;">
+            <a href="https://wa.me/919876543210" target="_blank" style="display: flex; align-items: center; gap: 10px; padding: 15px; color: #333; text-decoration: none; border-bottom: 1px solid #eee; transition: background-color 0.2s;">
+                <i class="fab fa-whatsapp" style="color: #25D366; font-size: 24px;"></i>
+                <span>Chat on WhatsApp</span>
+            </a>
+            <a href="tel:+919876543210" style="display: flex; align-items: center; gap: 10px; padding: 15px; color: #333; text-decoration: none; transition: background-color 0.2s;">
+                <i class="fas fa-phone" style="color: #28a745; font-size: 22px;"></i>
+                <span>Call Support</span>
+            </a>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -80,6 +97,44 @@
 
     <!-- Scripts -->
     <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        // Help menu functionality
+        function toggleHelpMenu() {
+            const menu = document.getElementById('helpMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Close help menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('helpMenu');
+            const helpButton = event.target.closest('button');
+            if (!helpButton && menu.style.display === 'block') {
+                menu.style.display = 'none';
+            }
+        });
+
+        // Add hover effect to help button
+        const helpButton = document.querySelector('button[onclick="toggleHelpMenu()"]');
+        if (helpButton) {
+            helpButton.addEventListener('mouseover', function() {
+                this.style.transform = 'scale(1.1)';
+            });
+            helpButton.addEventListener('mouseout', function() {
+                this.style.transform = 'scale(1)';
+            });
+        }
+
+        // Add hover effects to menu items
+        const menuItems = document.querySelectorAll('#helpMenu a');
+        menuItems.forEach(item => {
+            item.addEventListener('mouseover', function() {
+                this.style.backgroundColor = '#f8f9fa';
+            });
+            item.addEventListener('mouseout', function() {
+                this.style.backgroundColor = 'white';
+            });
+        });
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

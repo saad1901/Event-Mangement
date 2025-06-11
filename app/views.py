@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-
+from .models import *
 # Create your views here.
 def home(request):
     # Dummy events data
@@ -112,8 +112,9 @@ def home(request):
         'email': 'info@tournamentcentral.com',
         'hours': 'Monday-Friday: 9am to 5pm'
     }
-    
+    all_events = Tournament.objects.all()
     context = {
+        'all_events': all_events,
         'events': events,
         'featured_events': featured_events,
         'about_info': about_info,
@@ -127,94 +128,7 @@ def event_detail(request, event_id):
     # Dummy events data (same as in home view)
     current_date = datetime.now()
     
-    events = [
-        {
-            'id': 1,
-            'title': 'Tech Conference 2023',
-            'description': 'Join industry leaders for a day of innovation and networking in the tech world. This conference brings together the brightest minds in technology to discuss the latest trends, share insights, and explore cutting-edge innovations. Attendees will have the opportunity to participate in hands-on workshops, listen to keynote speeches from industry pioneers, and network with professionals from leading tech companies. Whether you\'re a developer, designer, entrepreneur, or tech enthusiast, this event offers valuable knowledge and connections to help advance your career and keep you at the forefront of technological advancements.',
-            'date': (current_date + timedelta(days=5)).strftime('%B %d, %Y'),
-            'time': '9:00 AM - 5:00 PM',
-            'location': 'Convention Center, New York',
-            'image': 'static/images/tech-conference.jpg',
-            'price': '₹300',
-            'category': 'Technology',
-            'tickets_available': 500,
-            'organizer': 'Tech Events Inc.'
-        },
-        # {
-        #     'id': 2,
-        #     'title': 'Summer Sports Festival',
-        #     'description': 'Annual sports festival featuring various competitions and activities for all ages. Join us for a weekend of fun, competition, and community spirit. This festival includes tournaments in basketball, soccer, volleyball, and athletics, as well as recreational activities for participants of all skill levels. Families can enjoy a range of entertainment options, food stalls offering delicious refreshments, and a vibrant atmosphere that celebrates the joy of sports. Whether you\'re a serious competitor or looking for a fun day out, the Summer Sports Festival has something for everyone.',
-        #     'date': (current_date + timedelta(days=7)).strftime('%B %d, %Y'),
-        #     'time': '8:00 AM - 6:00 PM',
-        #     'location': 'Central Park Stadium',
-        #     'image': 'static/images/sports-festival.jpg',
-        #     'price': '$45.00',
-        #     'category': 'Sports',
-        #     'tickets_available': 1000,
-        #     'organizer': 'Sports Association'
-        # },
-        # {
-        #     'id': 3,
-        #     'title': 'Music Festival 2023',
-        #     'description': 'Three days of amazing music performances from top artists around the world. Set in a beautiful outdoor venue, this festival features multiple stages showcasing a diverse range of musical genres including rock, pop, electronic, jazz, and world music. Experience unforgettable performances from chart-topping headliners and discover emerging talents who are reshaping the music landscape. Beyond the music, enjoy art installations, gourmet food vendors, craft beverages, and a festival village with unique merchandise. Camp under the stars or opt for premium accommodation options to make the most of this immersive musical experience.',
-        #     'date': (current_date + timedelta(days=15)).strftime('%B %d, %Y'),
-        #     'time': '2:00 PM - 11:00 PM',
-        #     'location': 'Riverside Park',
-        #     'image': 'static/images/music-festival.jpg',
-        #     'price': '$299.00',
-        #     'category': 'Music',
-        #     'tickets_available': 2000,
-        #     'organizer': 'Music Events Co.'
-        # },
-        # {
-        #     'id': 4,
-        #     'title': 'Business Summit',
-        #     'description': 'Network with industry leaders and learn about the latest business trends. This premier business summit brings together executives, entrepreneurs, and experts for a day of insightful discussions, strategic networking, and professional development. Engage with thought leaders through panel discussions, breakout sessions, and keynote presentations covering topics such as digital transformation, sustainable business practices, leadership in uncertain times, and emerging market opportunities. Gain practical knowledge that can be immediately implemented in your business, forge valuable connections with potential partners and clients, and stay ahead of industry developments in this rapidly evolving business landscape.',
-        #     'date': (current_date + timedelta(days=20)).strftime('%B %d, %Y'),
-        #     'time': '10:00 AM - 4:00 PM',
-        #     'location': 'Grand Hotel, Chicago',
-        #     'image': 'static/images/business-summit.jpg',
-        #     'price': '$349.00',
-        #     'category': 'Business',
-        #     'tickets_available': 300,
-        #     'organizer': 'Business Network'
-        # },
-        # {
-        #     'id': 5,
-        #     'title': 'Food & Wine Expo',
-        #     'description': 'Experience the finest culinary delights and premium wines from around the world. This gastronomic celebration showcases exquisite dishes from renowned chefs, artisanal food producers, and leading restaurants. Sample an impressive selection of wines from prestigious vineyards and boutique wineries, guided by expert sommeliers who will enhance your appreciation of fine wines. Participate in cooking demonstrations, food pairing workshops, and exclusive masterclasses that reveal the secrets behind exceptional cuisine. Discover new flavors, meet the passionate people behind the products, and indulge in an unforgettable sensory journey through the world\'s most delectable food and wine offerings.',
-        #     'date': (current_date + timedelta(days=25)).strftime('%B %d, %Y'),
-        #     'time': '11:00 AM - 7:00 PM',
-        #     'location': 'Exhibition Center',
-        #     'image': 'static/images/food-expo.jpg',
-        #     'price': '$89.00',
-        #     'category': 'Food & Drink',
-        #     'tickets_available': 800,
-        #     'organizer': 'Gourmet Events'
-        # },
-        # {
-        #     'id': 6,
-        #     'title': 'Art & Design Expo',
-        #     'description': 'Explore creative expressions from talented artists and designers showcasing their innovative work. This exhibition brings together diverse artistic mediums including painting, sculpture, photography, digital art, fashion, graphic design, and architectural concepts. Engage with creators through guided tours, artist talks, and interactive installations that invite visitor participation. The expo highlights both established masters and emerging talents, providing a platform for cutting-edge creative exploration while honoring traditional techniques. Special sections focus on sustainable design, technology in art, and cross-cultural influences in contemporary creative expression. Art enthusiasts, collectors, and curious minds will find inspiration and insight in this comprehensive celebration of human creativity.',
-        #     'date': (current_date + timedelta(days=10)).strftime('%B %d, %Y'),
-        #     'time': '11:00 AM - 8:00 PM',
-        #     'location': 'Metropolitan Gallery, Los Angeles',
-        #     'image': 'static/images/art-expo.jpg',
-        #     'price': '$35.00',
-        #     'category': 'Art',
-        #     'tickets_available': 400,
-        #     'organizer': 'Creative Arts Foundation'
-        # }
-    ]
-    
-    # Find the event by id
-    event = None
-    for e in events:
-        if e['id'] == event_id:
-            event = e
-            break
-    
+    event = Tournament.objects.get(id=event_id)
     if not event:
         # Handle case where event is not found
         return redirect('home')
@@ -889,3 +803,8 @@ def register(request):
         return redirect('login')
     
     return render(request, 'accounts/register.html') 
+
+
+def all_events(request):
+    """View to list all events"""
+    return render(request, 'events/allevents.html')

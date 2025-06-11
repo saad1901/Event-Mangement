@@ -27,6 +27,7 @@ urlpatterns = [
     
     # Main site URLs
     path('', views.home, name='home'),
+    path('allevents/', views.all_events, name='all_events'),
     path('event/<int:event_id>/', views.event_detail, name='event_detail'),
     path('event/<int:event_id>/success/', views.event_detail_success, name='event_detail_success'),
     path('about/', views.about, name='about'),
