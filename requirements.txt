@@ -1,0 +1,43 @@
+# Tournament Central - Event Management Platform Dependencies
+
+# Core
+Django==4.2.7
+Pillow==10.1.0  # For image processing
+python-dotenv==1.0.0  # For environment variables
+
+# Database
+dj-database-url==2.1.0  # For database configuration
+
+# Authentication
+django-allauth==0.58.2  # For social authentication
+
+# Forms
+django-crispy-forms==2.0  # For better form rendering
+crispy-bootstrap5==0.7  # Bootstrap 5 template pack for crispy forms
+
+# API
+djangorestframework==3.14.0  # For API development
+markdown==3.5.1  # For API documentation
+django-filter==23.3  # For filtering API results
+
+# Security
+django-cors-headers==4.3.0  # For handling CORS
+django-csp==3.7  # For Content Security Policy
+
+# Utilities
+django-extensions==3.2.3  # Useful utilities and extensions
+django-debug-toolbar==4.2.0  # For debugging (development only)
+
+# Production
+gunicorn==21.2.0  # WSGI HTTP Server
+whitenoise==6.5.0  # For serving static files
+
+# Testing
+coverage==7.3.2  # For test coverage
+pytest==7.4.3  # For testing
+pytest-django==4.7.0  # For Django-specific testing
+
+# Development
+black==23.11.0  # For code formatting
+isort==5.12.0  # For import sorting
+flake8==6.1.0  # For linting
