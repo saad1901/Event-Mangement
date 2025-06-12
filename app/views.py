@@ -134,62 +134,62 @@ def event_detail(request, event_id):
         return redirect('home')
     
     # Handle form submission
-    if request.method == 'POST':
-        # In a real application, you would save the form data to a database
-        # For this example, we'll just simulate a successful submission
+    # if request.method == 'POST':
+    #     # In a real application, you would save the form data to a database
+    #     # For this example, we'll just simulate a successful submission
         
-        # Get form data
-        print(1)
-        name = request.POST.get('name', '')
-        email = request.POST.get('email', '')
-        phone = request.POST.get('phone', '')
-        tickets = request.POST.get('tickets', 1)
+    #     # Get form data
+    #     print(1)
+    #     name = request.POST.get('name', '')
+    #     email = request.POST.get('email', '')
+    #     phone = request.POST.get('phone', '')
+    #     tickets = request.POST.get('tickets', 1)
         
-        print(name, email, phone, tickets)
-        # Process the uploaded file (in a real app, save it to media storage)
-        if 'payment_screenshot' in request.FILES:
-            # Here you would typically save the file
-            screenshot = request.FILES['payment_screenshot']
-            # Example of saving file
-            # file_path = f'payments/{name}_{event_id}_{datetime.now().strftime("%Y%m%d%H%M%S")}.jpg'
-            # with open(f'{settings.MEDIA_ROOT}/{file_path}', 'wb+') as destination:
-            #     for chunk in screenshot.chunks():
-            #         destination.write(chunk)
+    #     print(name, email, phone, tickets)
+    #     # Process the uploaded file (in a real app, save it to media storage)
+    #     if 'payment_screenshot' in request.FILES:
+    #         # Here you would typically save the file
+    #         screenshot = request.FILES['payment_screenshot']
+    #         # Example of saving file
+    #         # file_path = f'payments/{name}_{event_id}_{datetime.now().strftime("%Y%m%d%H%M%S")}.jpg'
+    #         # with open(f'{settings.MEDIA_ROOT}/{file_path}', 'wb+') as destination:
+    #         #     for chunk in screenshot.chunks():
+    #         #         destination.write(chunk)
             
-        # Generate a mock registration ID
-        registration_id = datetime.now().strftime("%Y%m%d%H%M%S")
+    #     # Generate a mock registration ID
+    #     registration_id = datetime.now().strftime("%Y%m%d%H%M%S")
         
-        # Create registration data (in a real app, this would be saved to the database)
-        registration_data = {
-            'id': registration_id,
-            'name': name,
-            'email': email,
-            'phone': phone,
-            'tickets': tickets,
-            'event_id': event_id,
-            'registration_date': datetime.now().strftime("%B %d, %Y %H:%M:%S")
-        }
+    #     # Create registration data (in a real app, this would be saved to the database)
+    #     registration_data = {
+    #         'id': registration_id,
+    #         'name': name,
+    #         'email': email,
+    #         'phone': phone,
+    #         'tickets': tickets,
+    #         'event_id': event_id,
+    #         'registration_date': datetime.now().strftime("%B %d, %Y %H:%M:%S")
+    #     }
         
-        # Set submitted flag to show success message
-        submitted = True
+    #     # Set submitted flag to show success message
+    #     submitted = True
         
-        # In a real application, you would send confirmation emails/SMS here
+    #     # In a real application, you would send confirmation emails/SMS here
 
-        # Check if this is an AJAX request
-        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
-        if is_ajax:
-            # Return JSON response for AJAX requests
-            return JsonResponse({
-                'success': True,
-                'message': 'Registration successful',
-                'registration': registration_data
-            })
+    #     # Check if this is an AJAX request
+    #     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    #     if is_ajax:
+    #         # Return JSON response for AJAX requests
+    #         return JsonResponse({
+    #             'success': True,
+    #             'message': 'Registration successful',
+    #             'registration': registration_data
+    #         })
             
-        # Redirect to avoid form resubmission on refresh
-        # Store registration data in session for retrieval after redirect
-        request.session['registration_success'] = True
-        request.session['registration_data'] = registration_data
-        return redirect('event_detail_success', event_id=event_id)
+    #     # Redirect to avoid form resubmission on refresh
+    #     # Store registration data in session for retrieval after redirect
+    #     request.session['registration_success'] = True
+    #     request.session['registration_data'] = registration_data
+    #     return redirect('event_detail_success', event_id=event_id)
     
     # Check if redirected after successful registration
     submitted = False
@@ -387,20 +387,20 @@ def admin_reports(request):
     }
     return render(request, 'admin/reports.html', context)
 
-def admin_verification(request):
-    # Get all events
-    events = Tournament.objects.all()
+# def admin_verification(request):
+#     # Get all events
+#     events = Tournament.objects.all()
     
-    # Get participants with payment screenshots
-    verification_requests = Participant.objects.filter(payment_screenshot__isnull=False)
+#     # Get participants with payment screenshots
+#     verification_requests = Participant.objects.filter(payment_screenshot__isnull=False)
     
-    context = {
-        'verification_requests': verification_requests,
-        'events': events,
-        'active_tab': 'verification'
-    }
+#     context = {
+#         'verification_requests': verification_requests,
+#         'events': events,
+#         'active_tab': 'verification'
+#     }
     
-    return render(request, 'admin/verification.html', context)
+#     return render(request, 'admin/verification.html', context)
 
 # @login_required
 def admin_users(request):

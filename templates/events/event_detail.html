@@ -49,7 +49,7 @@
                 <div class="registration-container">
                     <div class="registration-form" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 2px solid #e0e0e0;">
                         <h3 style="color: #1a5f1a; font-weight: 700; margin-bottom: 25px; font-size: clamp(1.5rem, 4vw, 2rem);">Register for this Event</h3>
-                        <form method="post" enctype="multipart/form-data" id="registration-form" style="display: grid; gap: 20px;">
+                        <form method="post" enctype="multipart/form-data" id="registration-form" style="display: grid; gap: 20px;" action='{% url 'addparticipant' %}'>
                             {% csrf_token %}
                             
                             <!-- Full Name -->
@@ -76,6 +76,149 @@
                                     Phone Number <span style="color: #dc3545; font-size: 14px;">*</span>
                                 </label>
                                 <input type="tel" id="phone" name="phone" required
+                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                            </div>
+
+                            <!-- Age -->
+                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                                <label for="age" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    Age <span style="color: #dc3545; font-size: 14px;">*</span>
+                                </label>
+                                <input type="number" id="age" name="age" min="1" max="120" required
+                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                            </div>
+
+                            <!-- Gender -->
+                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                                <label for="gender" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    Gender <span style="color: #dc3545; font-size: 14px;">*</span>
+                                </label>
+                                <select id="gender" name="gender" required
+                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <!-- FIDE ID -->
+                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                                <label for="fide_id" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    FIDE ID
+                                </label>
+                                <input type="text" id="fide_id" name="fide_id"
+                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                            </div>
+
+                            <!-- FIDE Rating -->
+                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                                <label for="fide_rating" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    FIDE Rating
+                                </label>
+                                <input type="number" id="fide_rating" name="fide_rating" min="0" max="3000"
+                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                            </div>
+
+                            <!-- National Rating -->
+                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                                <label for="national_rating" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    National Rating
+                                </label>
+                                <input type="number" id="national_rating" name="national_rating" min="0" max="3000"
+                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                            </div>
+
+                            <!-- Title -->
+                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                                <label for="title" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    Title
+                                </label>
+                                <select id="title" name="title"
+                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                                    <option value="">Select Title</option>
+                                    <option value="GM">Grandmaster (GM)</option>
+                                    <option value="IM">International Master (IM)</option>
+                                    <option value="FM">FIDE Master (FM)</option>
+                                    <option value="CM">Candidate Master (CM)</option>
+                                    <option value="WGM">Woman Grandmaster (WGM)</option>
+                                    <option value="WIM">Woman International Master (WIM)</option>
+                                    <option value="WFM">Woman FIDE Master (WFM)</option>
+                                    <option value="WCM">Woman Candidate Master (WCM)</option>
+                                    <option value="none">None</option>
+                                </select>
+                            </div>
+
+                            <!-- Federation/State -->
+                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                                <label for="federation" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    Federation/State <span style="color: #dc3545; font-size: 14px;">*</span>
+                                </label>
+                                <select id="federation" name="federation" required
+                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                                    <option value="">Select State/Union Territory</option>
+                                    <option value="andhra_pradesh">Andhra Pradesh</option>
+                                    <option value="arunachal_pradesh">Arunachal Pradesh</option>
+                                    <option value="assam">Assam</option>
+                                    <option value="bihar">Bihar</option>
+                                    <option value="chhattisgarh">Chhattisgarh</option>
+                                    <option value="goa">Goa</option>
+                                    <option value="gujarat">Gujarat</option>
+                                    <option value="haryana">Haryana</option>
+                                    <option value="himachal_pradesh">Himachal Pradesh</option>
+                                    <option value="jharkhand">Jharkhand</option>
+                                    <option value="karnataka">Karnataka</option>
+                                    <option value="kerala">Kerala</option>
+                                    <option value="madhya_pradesh">Madhya Pradesh</option>
+                                    <option value="maharashtra">Maharashtra</option>
+                                    <option value="manipur">Manipur</option>
+                                    <option value="meghalaya">Meghalaya</option>
+                                    <option value="mizoram">Mizoram</option>
+                                    <option value="nagaland">Nagaland</option>
+                                    <option value="odisha">Odisha</option>
+                                    <option value="punjab">Punjab</option>
+                                    <option value="rajasthan">Rajasthan</option>
+                                    <option value="sikkim">Sikkim</option>
+                                    <option value="tamil_nadu">Tamil Nadu</option>
+                                    <option value="telangana">Telangana</option>
+                                    <option value="tripura">Tripura</option>
+                                    <option value="uttar_pradesh">Uttar Pradesh</option>
+                                    <option value="uttarakhand">Uttarakhand</option>
+                                    <option value="west_bengal">West Bengal</option>
+                                    <option value="andaman_nicobar">Andaman and Nicobar Islands</option>
+                                    <option value="chandigarh">Chandigarh</option>
+                                    <option value="dadra_nagar_haveli">Dadra and Nagar Haveli</option>
+                                    <option value="daman_diu">Daman and Diu</option>
+                                    <option value="delhi">Delhi</option>
+                                    <option value="jammu_kashmir">Jammu and Kashmir</option>
+                                    <option value="ladakh">Ladakh</option>
+                                    <option value="lakshadweep">Lakshadweep</option>
+                                    <option value="puducherry">Puducherry</option>
+                                </select>
+                            </div>
+
+                            <!-- Tournament Section -->
+                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                                <label for="section" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    Tournament Section <span style="color: #dc3545; font-size: 14px;">*</span>
+                                </label>
+                                <select id="section" name="section" required
+                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                                    <option value="">Select Section</option>
+                                    <option value="open">Open</option>
+                                    <option value="u1600">Under 1600</option>
+                                    <option value="u1400">Under 1400</option>
+                                    <option value="u1200">Under 1200</option>
+                                    <option value="u1000">Under 1000</option>
+                                </select>
+                            </div>
+
+                            <!-- Club/Academy -->
+                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                                <label for="club" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    Club/Academy
+                                </label>
+                                <input type="text" id="club" name="club"
                                     style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
                             </div>
 
