@@ -51,7 +51,7 @@
                         <h3 style="color: #1a5f1a; font-weight: 700; margin-bottom: 25px; font-size: clamp(1.5rem, 4vw, 2rem);">Register for this Event</h3>
                         <form method="post" enctype="multipart/form-data" id="registration-form" style="display: grid; gap: 20px;" action='{% url 'addparticipant' %}'>
                             {% csrf_token %}
-                            
+                            <input type="hidden" id="event_id" name="event_id" value="{{ event.id }}">
                             <!-- Full Name -->
                             <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
                                 <label for="full_name" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
@@ -107,8 +107,7 @@
                                 <label for="fide_id" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
                                     FIDE ID
                                 </label>
-                                <input type="text" id="fide_id" name="fide_id"
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                                <input type="text" id="fide_id" name="fide_id" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
                             </div>
 
                             <!-- FIDE Rating -->
@@ -116,8 +115,7 @@
                                 <label for="fide_rating" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
                                     FIDE Rating
                                 </label>
-                                <input type="number" id="fide_rating" name="fide_rating" min="0" max="3000"
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                                <input type="number" id="fide_rating" name="fide_rating" min="0" max="3000" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
                             </div>
 
                             <!-- National Rating -->
@@ -240,7 +238,7 @@
                                     <p style="margin: 0; color: #666; font-size: clamp(0.9rem, 2vw, 1rem);">Total Amount:</p>
                                     <p id="total-amount" style="margin: 5px 0 0; font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; color: #1a5f1a;">₹{{ event.entry_fee }}</p>
                                 </div>
-
+                                <input type="hidden" id="amount" name="amount" value="{{ event.entry_fee }}">
                                 <!-- QR Code Section -->
                                 <div style="text-align: center; background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e0e0e0;">
                                     <p style="margin-bottom: 15px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">

@@ -46,8 +46,7 @@
                     <th>ID</th>
                     <th>Event</th>
                     <th>User</th>
-                    <th>Registration Date</th>
-                    <th>Ticket Type</th>
+                    <th>Reg Date</th>
                     <th>Quantity</th>
                     <th>Payment Status</th>
                     <th>Status</th>
@@ -58,13 +57,12 @@
                 {% for registration in registrations %}
                 <tr>
                     <td>{{ registration.id }}</td>
-                    <td>{{ registration.event_name }}</td>
-                    <td>{{ registration.user_name }}</td>
-                    <td>{{ registration.registration_date }}</td>
-                    <td>{{ registration.ticket_type }}</td>
-                    <td>{{ registration.quantity }}</td>
+                    <td>{{ registration.tournament.title }}</td>
+                    <td>{{ registration.full_name }}</td>
+                    <td>{{ registration.registration_date|date:'d/m/y' }}</td>
+                    <td>{{registration.transaction.ticket_count}}</td>
                     <td>
-                        {{ registration.payment_status }}
+                        {{ registration.transaction.payment_status }}
                     </td>
                     <td>
                         {{ registration.status }}

@@ -76,8 +76,8 @@ class TournamentAdmin(admin.ModelAdmin):
 
 @admin.register(Participant)
 class ParticipantAdmin(admin.ModelAdmin):
-    list_display = ('full_name', 'tournament', 'registration_id', 'status', 'payment_status', 'registration_date')
-    list_filter = ('status', 'payment_status', 'registration_date', 'tournament')
+    list_display = ('full_name', 'tournament', 'registration_id', 'status', 'registration_date')
+    list_filter = ('status', 'registration_date', 'tournament')
     search_fields = ('full_name', 'email', 'phone', 'registration_id')
     readonly_fields = ('registration_id', 'registration_date')
     fieldsets = (
@@ -89,9 +89,6 @@ class ParticipantAdmin(admin.ModelAdmin):
         }),
         ('Tournament Specific', {
             'fields': ('team_name', 'player_id', 'rank', 'seed')
-        }),
-        ('Registration Details', {
-            'fields': ('payment_status', 'payment_id', 'payment_screenshot')
         }),
         ('Status', {
             'fields': ('status', 'check_in_time')

@@ -7,45 +7,72 @@ from app.models import *
 
 def addparticipant(request):
     print(111)
+    submitted = False
+    tournament = None  # default in case of non-POST
+
     if request.method == 'POST':
+        try:
+            event_id = request.POST.get('event_id')
+            tournament = get_object_or_404(Tournament, id=event_id)
 
-        name = request.POST.get('name', '')
-        email = request.POST.get('email', '')
-        phone = request.POST.get('phone', '')
-        tickets = request.POST.get('tickets', 1)
-        event_id = request.POST.get('event_id')
-        if 'payment_screenshot' in request.FILES:
-            screenshot = request.FILES['payment_screenshot']
-        registration_id = datetime.now().strftime("%Y%m%d%H%M%S")
-        
-        # Create registration data (in a real app, this would be saved to the database)
-        registration_data = {
-            'id': registration_id,
-            'name': name,
-            'email': email,
-            'phone': phone,
-            'tickets': tickets,
-            'event_id': event_id,
-            'registration_date': datetime.now().strftime("%B %d, %Y %H:%M:%S")
-        }
-        
-        # Set submitted flag to show success message
-        submitted = True
-        
-        # In a real application, you would send confirmation emails/SMS here
+            # Create Participant instance but don't save yet
+            participant = Participant(
+                tournament=tournament,
+                full_name=request.POST.get('full_name'),
+                email=request.POST.get('email'),
+                phone=request.POST.get('phone'),
+                age=request.POST.get('age'),
+                gender=request.POST.get('gender'),
+                notes=request.POST.get('notes', ''),
+                registration_date=datetime.now()
+            )
 
-        # Check if this is an AJAX request
-        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
-        if is_ajax:
-            # Return JSON response for AJAX requests
-            return JsonResponse({
-                'success': True,
-                'message': 'Registration successful',
-                'registration': registration_data
-            })
-            
-        # Redirect to avoid form resubmission on refresh
-        # Store registration data in session for retrieval after redirect
-        request.session['registration_success'] = True
-        request.session['registration_data'] = registration_data
-        return redirect('event_detail_success', event_id=event_id)
+            # Save Transaction first
+            transactionData = Transaction(
+                amount=request.POST.get('amount'),
+                payment_screenshot=request.FILES.get('payment_screenshot'),
+                ticket_count=request.POST.get('tickets'),
+            )
+            transactionData.save()
+
+            # Assign transaction to participant
+            participant.transaction = transactionData
+            participant.save()
+
+            # Save ChessPlayer data if the category is chess
+            if tournament.category == 1:
+                chessData = ChessPlayer(
+                    participant=participant,
+                    fide_id=request.POST.get('fide_id', ''),
+                    fide_rating=request.POST.get('fide_rating') or None,
+                    national_rating=request.POST.get('national_rating') or None,
+                    title=request.POST.get('title', ''),
+                    federation=request.POST.get('federation'),
+                    section=request.POST.get('section'),
+                    club=request.POST.get('club', ''),
+                )
+                chessData.save()
+
+            submitted = True
+            return redirect('event_detail', event_id=event_id)
+
+        except Exception as e:
+            print(f"Error occurred: {e}")
+            # Redirect or handle error as needed
+            return redirect('home')
+
+    if not tournament:
+        # If GET or tournament not found
+        event_id = request.GET.get('event_id')
+        if event_id:
+            tournament = get_object_or_404(Tournament, id=event_id)
+        else:
+            return redirect('home')
+
+    context = {
+        'event': tournament,
+        'submitted': submitted,
+        'current_year': datetime.now().year
+    }
+
+    return render(request, 'events/event_detail.html', context)
