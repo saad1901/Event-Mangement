@@ -9,33 +9,26 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Tab Navigation
+// Function to initialize tabs
 function initializeTabs() {
-    // Get all nav items and tabs
     const navItems = document.querySelectorAll('.nav-item');
-    const tabs = document.querySelectorAll('.admin-tab');
     
-    // Set first tab as active by default if no active tab
-    if (!document.querySelector('.nav-item.active')) {
-        navItems[0]?.classList.add('active');
-        tabs[0]?.classList.add('active');
-    }
-    
-    // Add click event listeners to nav items
     navItems.forEach(item => {
         item.addEventListener('click', function() {
-            // Get the target tab id
-            const targetId = this.getAttribute('data-target');
-            
-            // Remove active class from all nav items and tabs
+            // Remove active class from all items
             navItems.forEach(nav => nav.classList.remove('active'));
-            tabs.forEach(tab => tab.classList.remove('active'));
             
-            // Add active class to clicked nav item and corresponding tab
+            // Add active class to clicked item
             this.classList.add('active');
-            document.getElementById(targetId)?.classList.add('active');
         });
     });
 }
+
+// Call initialization functions when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeTabs();
+    // Other initialization functions can be called here
+});
 
 // Modal Management
 function initializeModals() {
@@ -520,4 +513,4 @@ window.addEventListener('resize', function() {
             instance.resize();
         });
     }
-}); 
+});

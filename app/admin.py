@@ -82,7 +82,7 @@ class ParticipantAdmin(admin.ModelAdmin):
     readonly_fields = ('registration_id', 'registration_date')
     fieldsets = (
         ('Tournament Information', {
-            'fields': ('tournament', 'user', 'registration_id', 'registration_date')
+            'fields': ('tournament', 'registration_id', 'registration_date')
         }),
         ('Personal Information', {
             'fields': ('full_name', 'email', 'phone', 'date_of_birth', 'gender')

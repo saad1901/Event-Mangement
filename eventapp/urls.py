@@ -48,7 +48,15 @@ urlpatterns = [
     path('dashboard/events/', views.admin_events, name='admin_events'),
     path('dashboard/users/', views.admin_users, name='admin_users'),
     path('dashboard/registrations/', views.admin_registrations, name='admin_registrations'),
+    path('dashboard/verification/', views.admin_verification, name='admin_verification'),
+    path('dashboard/settings/', views.admin_settings, name='admin_settings'),
+    path('dashboard/reports/', views.admin_reports, name='admin_reports'),
     
+
+
+
+
+
     # Admin API endpoints for AJAX requests
     path('api/events/', views.api_events, name='api_events'),
     path('api/events/<int:event_id>/', views.api_event_detail, name='api_event_detail'),
