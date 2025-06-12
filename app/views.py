@@ -127,7 +127,7 @@ def home(request):
 def event_detail(request, event_id):
     # Dummy events data (same as in home view)
     current_date = datetime.now()
-    
+    submitted = request.session.pop('submitted', False)
     event = Tournament.objects.get(id=event_id)
     if not event:
         # Handle case where event is not found
@@ -192,13 +192,16 @@ def event_detail(request, event_id):
     #     return redirect('event_detail_success', event_id=event_id)
     
     # Check if redirected after successful registration
-    submitted = False
-    registration_data = None
-    
+    full_name = request.session.pop('full_name', '')
+    tournament_name = request.session.pop('tournament_name', '')
+    tournament_date = request.session.pop('tournament_date', '')
     context = {
         'event': event,
         'submitted': submitted,
-        'current_year': datetime.now().year
+        'current_year': datetime.now().year,
+        'full_name': full_name,
+        'tournament_name':tournament_name,
+        'tournament_date':tournament_date
     }
     
     return render(request, 'events/event_detail.html', context)

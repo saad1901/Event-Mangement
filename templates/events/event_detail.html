@@ -4,382 +4,504 @@
 {% block title %}{{ event.title }} - Tournament Central{% endblock %}
 
 {% block content %}
-    <!-- Floating Help Button -->
+<!-- Floating Help Button -->
 
-    <!-- Event Header -->
-    <section class="event-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ event.image }}');">
-        <div class="container">
-            <h1>{{ event.title }}</h1>
-            <div class="event-meta" style="color: #ffffff;">
-                <span><i class="far fa-calendar-alt"></i> {{ event.start_date }}</span>
-                <span><i class="far fa-clock"></i> {{ event.time }}</span>
-                <span><i class="fas fa-map-marker-alt"></i> {{ event.venue }} {{ event.address }} {{ event.city }}, {{ event.state }}</span>
-            </div>
+<!-- Event Header -->
+<section class="event-header"
+    style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ event.image }}');">
+    <div class="container">
+        <h1>{{ event.title }}</h1>
+        <div class="event-meta" style="color: #ffffff;">
+            <span><i class="far fa-calendar-alt"></i> {{ event.start_date }}</span>
+            <span><i class="far fa-clock"></i> {{ event.time }}</span>
+            <span><i class="fas fa-map-marker-alt"></i> {{ event.venue }} {{ event.address }} {{ event.city }}, {{
+                event.state }}</span>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Event Details -->
-    <section class="event-detail-section">
-        <div class="container">
-            <div class="event-detail-content">
-                <div class="event-description">
-                    <h2>About This Event</h2>
-                    <p>{{ event.description }}</p>
-                    
-                    <div class="event-info-grid">
-                        <div class="event-info-item">
-                            <h3>Category</h3>
-                            <p>{{ event.category }}</p>
-                        </div>
-                        <div class="event-info-item">
-                            <h3>Price</h3>
-                            <p>₹{{ event.entry_fee }}</p>
-                        </div>
-                        <div class="event-info-item">
-                            <h3>Organizer</h3>
-                            <p>{{ event.organizer }}</p>
-                        </div>
-                        <div class="event-info-item">
-                            <h3>Available Tickets</h3>
-                            <p>{{ event.max_participants }}</p>
-                        </div>
+<!-- Event Details -->
+<section class="event-detail-section">
+    <div class="container">
+        <div class="event-detail-content">
+            <div class="event-description">
+                <h2>About This Event</h2>
+                <p>{{ event.description }}</p>
+
+                <div class="event-info-grid">
+                    <div class="event-info-item">
+                        <h3>Category</h3>
+                        <p>{{ event.category }}</p>
+                    </div>
+                    <div class="event-info-item">
+                        <h3>Price</h3>
+                        <p>₹{{ event.entry_fee }}</p>
+                    </div>
+                    <div class="event-info-item">
+                        <h3>Organizer</h3>
+                        <p>{{ event.organizer }}</p>
+                    </div>
+                    <div class="event-info-item">
+                        <h3>Available Tickets</h3>
+                        <p>{{ event.max_participants }}</p>
                     </div>
                 </div>
-                
-                <div class="registration-container">
-                    <div class="registration-form" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 2px solid #e0e0e0;">
-                        <h3 style="color: #1a5f1a; font-weight: 700; margin-bottom: 25px; font-size: clamp(1.5rem, 4vw, 2rem);">Register for this Event</h3>
-                        <form method="post" enctype="multipart/form-data" id="registration-form" style="display: grid; gap: 20px;" action='{% url 'addparticipant' %}'>
-                            {% csrf_token %}
-                            <input type="hidden" id="event_id" name="event_id" value="{{ event.id }}">
-                            <!-- Full Name -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="full_name" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    Full Name <span style="color: #dc3545; font-size: 14px;">*</span>
-                                </label>
-                                <input type="text" id="full_name" name="full_name" required
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                            </div>
+            </div>
+            {% if not submitted%}
+            <div class="registration-container">
+                <div class="registration-form"
+                    style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 2px solid #e0e0e0;">
+                    <h3
+                        style="color: #1a5f1a; font-weight: 700; margin-bottom: 25px; font-size: clamp(1.5rem, 4vw, 2rem);">
+                        Register for this Event</h3>
+                    <form method="post" enctype="multipart/form-data" id="registration-form"
+                        style="display: grid; gap: 20px;" action='{% url 'addparticipant' %}'>
+                        {% csrf_token %}
+                        <input type="hidden" id="event_id" name="event_id" value="{{ event.id }}">
+                        <!-- Full Name -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="full_name"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                Full Name <span style="color: #dc3545; font-size: 14px;">*</span>
+                            </label>
+                            <input type="text" id="full_name" name="full_name" required
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                        </div>
 
-                            <!-- Email -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="email" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    Email <span style="color: #dc3545; font-size: 14px;">*</span>
-                                </label>
-                                <input type="email" id="email" name="email" required
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                            </div>
+                        <!-- Email -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="email"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                Email <span style="color: #dc3545; font-size: 14px;">*</span>
+                            </label>
+                            <input type="email" id="email" name="email" required
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                        </div>
 
-                            <!-- Phone Number -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="phone" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    Phone Number <span style="color: #dc3545; font-size: 14px;">*</span>
-                                </label>
-                                <input type="tel" id="phone" name="phone" required
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                            </div>
+                        <!-- Phone Number -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="phone"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                Phone Number <span style="color: #dc3545; font-size: 14px;">*</span>
+                            </label>
+                            <input type="tel" id="phone" name="phone" required
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                        </div>
 
-                            <!-- Age -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="age" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    Age <span style="color: #dc3545; font-size: 14px;">*</span>
-                                </label>
-                                <input type="number" id="age" name="age" min="1" max="120" required
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                            </div>
+                        <!-- Age -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="age"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                Age <span style="color: #dc3545; font-size: 14px;">*</span>
+                            </label>
+                            <input type="number" id="age" name="age" min="1" max="120" required
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                        </div>
 
-                            <!-- Gender -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="gender" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    Gender <span style="color: #dc3545; font-size: 14px;">*</span>
-                                </label>
-                                <select id="gender" name="gender" required
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                                    <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
+                        <!-- Gender -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="gender"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                Gender <span style="color: #dc3545; font-size: 14px;">*</span>
+                            </label>
+                            <select id="gender" name="gender" required
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
 
-                            <!-- FIDE ID -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="fide_id" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    FIDE ID
-                                </label>
-                                <input type="text" id="fide_id" name="fide_id" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                            </div>
+                        <!-- FIDE ID -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="fide_id"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                FIDE ID
+                            </label>
+                            <input type="text" id="fide_id" name="fide_id"
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                        </div>
 
-                            <!-- FIDE Rating -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="fide_rating" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    FIDE Rating
-                                </label>
-                                <input type="number" id="fide_rating" name="fide_rating" min="0" max="3000" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                            </div>
+                        <!-- FIDE Rating -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="fide_rating"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                FIDE Rating
+                            </label>
+                            <input type="number" id="fide_rating" name="fide_rating" min="0" max="3000"
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                        </div>
 
-                            <!-- National Rating -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="national_rating" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    National Rating
-                                </label>
-                                <input type="number" id="national_rating" name="national_rating" min="0" max="3000"
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                            </div>
+                        <!-- National Rating -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="national_rating"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                National Rating
+                            </label>
+                            <input type="number" id="national_rating" name="national_rating" min="0" max="3000"
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                        </div>
 
-                            <!-- Title -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="title" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    Title
-                                </label>
-                                <select id="title" name="title"
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                                    <option value="">Select Title</option>
-                                    <option value="GM">Grandmaster (GM)</option>
-                                    <option value="IM">International Master (IM)</option>
-                                    <option value="FM">FIDE Master (FM)</option>
-                                    <option value="CM">Candidate Master (CM)</option>
-                                    <option value="WGM">Woman Grandmaster (WGM)</option>
-                                    <option value="WIM">Woman International Master (WIM)</option>
-                                    <option value="WFM">Woman FIDE Master (WFM)</option>
-                                    <option value="WCM">Woman Candidate Master (WCM)</option>
-                                    <option value="none">None</option>
-                                </select>
-                            </div>
+                        <!-- Title -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="title"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                Title
+                            </label>
+                            <select id="title" name="title"
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                                <option value="">Select Title</option>
+                                <option value="GM">Grandmaster (GM)</option>
+                                <option value="IM">International Master (IM)</option>
+                                <option value="FM">FIDE Master (FM)</option>
+                                <option value="CM">Candidate Master (CM)</option>
+                                <option value="WGM">Woman Grandmaster (WGM)</option>
+                                <option value="WIM">Woman International Master (WIM)</option>
+                                <option value="WFM">Woman FIDE Master (WFM)</option>
+                                <option value="WCM">Woman Candidate Master (WCM)</option>
+                                <option value="none">None</option>
+                            </select>
+                        </div>
 
-                            <!-- Federation/State -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="federation" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    Federation/State <span style="color: #dc3545; font-size: 14px;">*</span>
-                                </label>
-                                <select id="federation" name="federation" required
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                                    <option value="">Select State/Union Territory</option>
-                                    <option value="andhra_pradesh">Andhra Pradesh</option>
-                                    <option value="arunachal_pradesh">Arunachal Pradesh</option>
-                                    <option value="assam">Assam</option>
-                                    <option value="bihar">Bihar</option>
-                                    <option value="chhattisgarh">Chhattisgarh</option>
-                                    <option value="goa">Goa</option>
-                                    <option value="gujarat">Gujarat</option>
-                                    <option value="haryana">Haryana</option>
-                                    <option value="himachal_pradesh">Himachal Pradesh</option>
-                                    <option value="jharkhand">Jharkhand</option>
-                                    <option value="karnataka">Karnataka</option>
-                                    <option value="kerala">Kerala</option>
-                                    <option value="madhya_pradesh">Madhya Pradesh</option>
-                                    <option value="maharashtra">Maharashtra</option>
-                                    <option value="manipur">Manipur</option>
-                                    <option value="meghalaya">Meghalaya</option>
-                                    <option value="mizoram">Mizoram</option>
-                                    <option value="nagaland">Nagaland</option>
-                                    <option value="odisha">Odisha</option>
-                                    <option value="punjab">Punjab</option>
-                                    <option value="rajasthan">Rajasthan</option>
-                                    <option value="sikkim">Sikkim</option>
-                                    <option value="tamil_nadu">Tamil Nadu</option>
-                                    <option value="telangana">Telangana</option>
-                                    <option value="tripura">Tripura</option>
-                                    <option value="uttar_pradesh">Uttar Pradesh</option>
-                                    <option value="uttarakhand">Uttarakhand</option>
-                                    <option value="west_bengal">West Bengal</option>
-                                    <option value="andaman_nicobar">Andaman and Nicobar Islands</option>
-                                    <option value="chandigarh">Chandigarh</option>
-                                    <option value="dadra_nagar_haveli">Dadra and Nagar Haveli</option>
-                                    <option value="daman_diu">Daman and Diu</option>
-                                    <option value="delhi">Delhi</option>
-                                    <option value="jammu_kashmir">Jammu and Kashmir</option>
-                                    <option value="ladakh">Ladakh</option>
-                                    <option value="lakshadweep">Lakshadweep</option>
-                                    <option value="puducherry">Puducherry</option>
-                                </select>
-                            </div>
+                        <!-- Federation/State -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="federation"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                Federation/State <span style="color: #dc3545; font-size: 14px;">*</span>
+                            </label>
+                            <select id="federation" name="federation" required
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                                <option value="">Select State/Union Territory</option>
+                                <option value="andhra_pradesh">Andhra Pradesh</option>
+                                <option value="arunachal_pradesh">Arunachal Pradesh</option>
+                                <option value="assam">Assam</option>
+                                <option value="bihar">Bihar</option>
+                                <option value="chhattisgarh">Chhattisgarh</option>
+                                <option value="goa">Goa</option>
+                                <option value="gujarat">Gujarat</option>
+                                <option value="haryana">Haryana</option>
+                                <option value="himachal_pradesh">Himachal Pradesh</option>
+                                <option value="jharkhand">Jharkhand</option>
+                                <option value="karnataka">Karnataka</option>
+                                <option value="kerala">Kerala</option>
+                                <option value="madhya_pradesh">Madhya Pradesh</option>
+                                <option value="maharashtra">Maharashtra</option>
+                                <option value="manipur">Manipur</option>
+                                <option value="meghalaya">Meghalaya</option>
+                                <option value="mizoram">Mizoram</option>
+                                <option value="nagaland">Nagaland</option>
+                                <option value="odisha">Odisha</option>
+                                <option value="punjab">Punjab</option>
+                                <option value="rajasthan">Rajasthan</option>
+                                <option value="sikkim">Sikkim</option>
+                                <option value="tamil_nadu">Tamil Nadu</option>
+                                <option value="telangana">Telangana</option>
+                                <option value="tripura">Tripura</option>
+                                <option value="uttar_pradesh">Uttar Pradesh</option>
+                                <option value="uttarakhand">Uttarakhand</option>
+                                <option value="west_bengal">West Bengal</option>
+                                <option value="andaman_nicobar">Andaman and Nicobar Islands</option>
+                                <option value="chandigarh">Chandigarh</option>
+                                <option value="dadra_nagar_haveli">Dadra and Nagar Haveli</option>
+                                <option value="daman_diu">Daman and Diu</option>
+                                <option value="delhi">Delhi</option>
+                                <option value="jammu_kashmir">Jammu and Kashmir</option>
+                                <option value="ladakh">Ladakh</option>
+                                <option value="lakshadweep">Lakshadweep</option>
+                                <option value="puducherry">Puducherry</option>
+                            </select>
+                        </div>
 
-                            <!-- Tournament Section -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="section" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    Tournament Section <span style="color: #dc3545; font-size: 14px;">*</span>
-                                </label>
-                                <select id="section" name="section" required
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                                    <option value="">Select Section</option>
-                                    <option value="open">Open</option>
-                                    <option value="u1600">Under 1600</option>
-                                    <option value="u1400">Under 1400</option>
-                                    <option value="u1200">Under 1200</option>
-                                    <option value="u1000">Under 1000</option>
-                                </select>
-                            </div>
+                        <!-- Tournament Section -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="section"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                Tournament Section <span style="color: #dc3545; font-size: 14px;">*</span>
+                            </label>
+                            <select id="section" name="section" required
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                                <option value="">Select Section</option>
+                                <option value="open">Open</option>
+                                <option value="u1600">Under 1600</option>
+                                <option value="u1400">Under 1400</option>
+                                <option value="u1200">Under 1200</option>
+                                <option value="u1000">Under 1000</option>
+                            </select>
+                        </div>
 
-                            <!-- Club/Academy -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="club" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    Club/Academy
-                                </label>
-                                <input type="text" id="club" name="club"
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                            </div>
+                        <!-- Club/Academy -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="club"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                Club/Academy
+                            </label>
+                            <input type="text" id="club" name="club"
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                        </div>
 
-                            <!-- Number of Tickets -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="tickets" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    Number of Tickets <span style="color: #dc3545; font-size: 14px;">*</span>
-                                </label>
-                                <input type="number" id="tickets" name="tickets" min="1" value="1" required
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                            </div>
+                        <!-- Number of Tickets -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="tickets"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                Number of Tickets <span style="color: #dc3545; font-size: 14px;">*</span>
+                            </label>
+                            <input type="number" id="tickets" name="tickets" min="1" value="1" required
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                        </div>
 
-                            <!-- Payment Section -->
-                            <div class="payment-section" style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; border: 2px solid #e0e0e0;">
-                                <h4 style="color: #333; font-weight: 600; margin-bottom: 15px; font-size: clamp(1.1rem, 2.5vw, 1.3rem);">Payment Details</h4>
-                                
-                                <!-- Total Amount -->
-                                <div style="text-align: center; margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e0e0e0;">
-                                    <p style="margin: 0; color: #666; font-size: clamp(0.9rem, 2vw, 1rem);">Total Amount:</p>
-                                    <p id="total-amount" style="margin: 5px 0 0; font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; color: #1a5f1a;">₹{{ event.entry_fee }}</p>
+                        <!-- Payment Section -->
+                        <div class="payment-section"
+                            style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; border: 2px solid #e0e0e0;">
+                            <h4
+                                style="color: #333; font-weight: 600; margin-bottom: 15px; font-size: clamp(1.1rem, 2.5vw, 1.3rem);">
+                                Payment Details</h4>
+
+                            <!-- Total Amount -->
+                            <div
+                                style="text-align: center; margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e0e0e0;">
+                                <p style="margin: 0; color: #666; font-size: clamp(0.9rem, 2vw, 1rem);">Total Amount:
+                                </p>
+                                <p id="total-amount"
+                                    style="margin: 5px 0 0; font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; color: #1a5f1a;">
+                                    ₹{{ event.entry_fee }}</p>
+                            </div>
+                            <input type="hidden" id="amount" name="amount" value="{{ event.entry_fee }}">
+                            <!-- QR Code Section -->
+                            <div
+                                style="text-align: center; background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e0e0e0;">
+                                <p
+                                    style="margin-bottom: 15px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    <i class="fas fa-qrcode" style="color: #1a5f1a; margin-right: 5px;"></i> Scan QR to
+                                    Pay
+                                </p>
+                                <div id="qrcode"
+                                    style="display: inline-block; background: white; padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #e0e0e0;">
                                 </div>
-                                <input type="hidden" id="amount" name="amount" value="{{ event.entry_fee }}">
-                                <!-- QR Code Section -->
-                                <div style="text-align: center; background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e0e0e0;">
-                                    <p style="margin-bottom: 15px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                        <i class="fas fa-qrcode" style="color: #1a5f1a; margin-right: 5px;"></i> Scan QR to Pay
-                                    </p>
-                                    <div id="qrcode" style="display: inline-block; background: white; padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #e0e0e0;"></div>
-                                    <p style="margin: 10px 0; color: #666; font-size: clamp(0.8rem, 1.8vw, 0.9rem);">
-                                        NAME: <span style="color: #333; font-weight: 600;">SYED TEST</span>
-                                    </p>
-                                    <div style="display: flex; justify-content: center; gap: 15px; margin: 10px 0;">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/512px-Google_Pay_Logo.svg.png" alt="Google Pay" style="width: 25px; height: 25px; object-fit: contain;">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/PhonePe_Logo.svg/1024px-PhonePe_Logo.svg.png" alt="PhonePe" style="width: 25px; height: 25px; object-fit: contain;">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/1280px-Paytm_Logo_%28standalone%29.svg.png" alt="Paytm" style="width: 25px; height: 25px; object-fit: contain;">
-                                    </div>
-                                    <button type="button" onclick="downloadQR()" style="background: #1a5f1a; color: white; border: none; padding: 8px 15px; border-radius: 4px; font-size: clamp(0.8rem, 1.8vw, 0.9rem); cursor: pointer; margin-top: 10px;">
-                                        <i class="fas fa-download"></i> Download QR
+                                <p style="margin: 10px 0; color: #666; font-size: clamp(0.8rem, 1.8vw, 0.9rem);">
+                                    NAME: <span style="color: #333; font-weight: 600;">SYED TEST</span>
+                                </p>
+                                <div style="display: flex; justify-content: center; gap: 15px; margin: 10px 0;">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/512px-Google_Pay_Logo.svg.png"
+                                        alt="Google Pay" style="width: 25px; height: 25px; object-fit: contain;">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/PhonePe_Logo.svg/1024px-PhonePe_Logo.svg.png"
+                                        alt="PhonePe" style="width: 25px; height: 25px; object-fit: contain;">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/1280px-Paytm_Logo_%28standalone%29.svg.png"
+                                        alt="Paytm" style="width: 25px; height: 25px; object-fit: contain;">
+                                </div>
+                                <button type="button" onclick="downloadQR()"
+                                    style="background: #1a5f1a; color: white; border: none; padding: 8px 15px; border-radius: 4px; font-size: clamp(0.8rem, 1.8vw, 0.9rem); cursor: pointer; margin-top: 10px;">
+                                    <i class="fas fa-download"></i> Download QR
+                                </button>
+                            </div>
+
+                            <!-- UPI ID Section -->
+                            <div
+                                style="text-align: center; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e0e0e0;">
+                                <p
+                                    style="margin-bottom: 15px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    <i class="fas fa-money-bill-wave" style="color: #1a5f1a; margin-right: 5px;"></i>
+                                    Pay via UPI ID
+                                </p>
+                                <div
+                                    style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+                                    <input id="upi-id" value="tournament@ybl" readonly
+                                        style="background: white; border: 1px solid #ddd; border-radius: 4px 0 0 4px; padding: 10px; text-align: center; width: 180px; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    <button onclick="copyUpiId(event)"
+                                        style="background: #f1f1f1; border: 1px solid #ddd; border-left: none; border-radius: 0 4px 4px 0; padding: 10px 12px; cursor: pointer;">
+                                        <i class="fas fa-copy"></i>
                                     </button>
                                 </div>
-
-                                <!-- UPI ID Section -->
-                                <div style="text-align: center; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e0e0e0;">
-                                    <p style="margin-bottom: 15px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                        <i class="fas fa-money-bill-wave" style="color: #1a5f1a; margin-right: 5px;"></i> Pay via UPI ID
-                                    </p>
-                                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
-                                        <input id="upi-id" value="tournament@ybl" readonly style="background: white; border: 1px solid #ddd; border-radius: 4px 0 0 4px; padding: 10px; text-align: center; width: 180px; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                        <button onclick="copyUpiId(event)" style="background: #f1f1f1; border: 1px solid #ddd; border-left: none; border-radius: 0 4px 4px 0; padding: 10px 12px; cursor: pointer;">
-                                            <i class="fas fa-copy"></i>
-                                        </button>
-                                    </div>
-                                    <p style="margin: 10px 0; color: #666; font-size: clamp(0.8rem, 1.8vw, 0.9rem);">
-                                        NAME: <span style="color: #333; font-weight: 600;">SYED TEST</span>
-                                    </p>
-                                </div>
+                                <p style="margin: 10px 0; color: #666; font-size: clamp(0.8rem, 1.8vw, 0.9rem);">
+                                    NAME: <span style="color: #333; font-weight: 600;">SYED TEST</span>
+                                </p>
                             </div>
+                        </div>
 
-                            <!-- Payment Screenshot -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="payment_screenshot" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    Payment Screenshot <span style="color: #dc3545; font-size: 14px;">*</span>
-                                </label>
-                                <input type="file" id="payment_screenshot" name="payment_screenshot" accept="image/*" required
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                            </div>
+                        <!-- Payment Screenshot -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="payment_screenshot"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                Payment Screenshot <span style="color: #dc3545; font-size: 14px;">*</span>
+                            </label>
+                            <input type="file" id="payment_screenshot" name="payment_screenshot" accept="image/*"
+                                required
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                        </div>
 
-                            <!-- Additional Notes -->
-                            <div class="form-group" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
-                                <label for="notes" style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    Additional Notes
-                                </label>
-                                <textarea id="notes" name="notes" rows="3"
-                                    style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); resize: vertical; background: white;"></textarea>
-                            </div>
+                        <!-- Additional Notes -->
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="notes"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                Additional Notes
+                            </label>
+                            <textarea id="notes" name="notes" rows="3"
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); resize: vertical; background: white;"></textarea>
+                        </div>
 
-                            <button type="submit" style="background: #1a5f1a; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-weight: 600; font-size: clamp(1rem, 2.2vw, 1.1rem); cursor: pointer; transition: background-color 0.3s; width: 100%;">
-                                Register Now
-                            </button>
-                        </form>
-                    </div>
+                        <button type="submit"
+                            style="background: #1a5f1a; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-weight: 600; font-size: clamp(1rem, 2.2vw, 1.1rem); cursor: pointer; transition: background-color 0.3s; width: 100%;">
+                            Register Now
+                        </button>
+                    </form>
                 </div>
             </div>
+            {% else %}
+            <div style="
+            background-color: #e6f4ea;
+            border-left: 6px solid #28a745;
+            padding: 24px 30px;
+            border-radius: 10px;
+            font-family: 'Segoe UI', sans-serif;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin: 40px auto;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        ">
+        
+            <!-- Icon + Message -->
+            <div style="display: flex; align-items: flex-start; gap: 16px;">
+                <div style="flex-shrink: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="height: 36px; width: 36px;" fill="none"
+                        viewBox="0 0 24 24" stroke="#28a745">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <div>
+                    <h2 style="margin: 0 0 10px 0; font-size: 20px; font-weight: 600; color: #1e4620;">
+                        Registration Successful!
+                    </h2>
+                    <p style="margin: 0; font-size: 16px; color: #2c3e50;">
+                        Thank you, <strong>{{ full_name }}</strong>. You have successfully registered for the <strong>{{ tournament_name }}</strong> tournament.
+                    </p>
+                </div>
+            </div>
+        
+            <!-- Action Button -->
+            <form method="post" action="{% url 'clear_registration_session'%}">
+                {% csrf_token %}
+                <input type="hidden" id="event_id" name="event_id" value="{{ event.id }}">
+                <button type="submit" style="
+                    padding: 12px 24px;
+                    background-color: #28a745;
+                    border: none;
+                    border-radius: 6px;
+                    color: white;
+                    font-size: 15px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+                    align-self: flex-start;
+                " onmouseover="this.style.backgroundColor='#218838'; this.style.boxShadow='0 2px 6px rgba(0, 0, 0, 0.15)'"
+                   onmouseout="this.style.backgroundColor='#28a745'; this.style.boxShadow='none'">
+                    + Fill Another Form
+                </button>
+            </form>
         </div>
-    </section>
+            {% endif %}
+        </div>
+    </div>
+</section>
 
-    <!-- Success Modal -->
-    <div class="modal" id="success-modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="success-message">
-                <i class="fas fa-check-circle"></i>
-                <h3>Registration Submitted Successfully!</h3>
-                <p>Thank you for registering for this tournament!</p>
-                <div style="background-color: #f7f7f7; border-radius: 8px; padding: 15px; margin: 20px 0; text-align: left;">
-                    <p style="margin-bottom: 10px; color: #333; font-weight: 600;">What happens next?</p>
-                    <ul style="padding-left: 20px; margin-bottom: 0;">
-                        <li style="margin-bottom: 8px;">You'll receive a confirmation <strong>SMS</strong> and <strong>email</strong> once approved</li>
-                    </ul>
-                </div>
-                <div class="modal-actions">
-                    <button id="register-another" class="btn btn-outline">Register Another</button>
-                    <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
-                </div>
+<!-- Success Modal -->
+<div class="modal" id="success-modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div class="success-message">
+            <i class="fas fa-check-circle"></i>
+            <h3>Registration Submitted Successfully!</h3>
+            <p>Thank you for registering for this tournament!</p>
+            <div
+                style="background-color: #f7f7f7; border-radius: 8px; padding: 15px; margin: 20px 0; text-align: left;">
+                <p style="margin-bottom: 10px; color: #333; font-weight: 600;">What happens next?</p>
+                <ul style="padding-left: 20px; margin-bottom: 0;">
+                    <li style="margin-bottom: 8px;">You'll receive a confirmation <strong>SMS</strong> and
+                        <strong>email</strong> once approved</li>
+                </ul>
+            </div>
+            <div class="modal-actions">
+                <button id="register-another" class="btn btn-outline">Register Another</button>
+                <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
             </div>
         </div>
     </div>
+</div>
 
-    <style>
-        @media (max-width: 768px) {
-            .registration-form {
-                padding: 20px;
-                margin: 0 -15px;
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-            }
-            
-            .form-group {
-                margin-bottom: 15px;
-            }
-            
-            input, textarea, select {
-                font-size: 16px !important; /* Prevents zoom on iOS */
-            }
-            
-            button[type="submit"] {
-                padding: 15px;
-                font-size: 1.1rem !important;
-            }
-
-            .payment-section {
-                padding: 15px;
-                margin: 15px -15px;
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-            }
-
-            #qrcode {
-                transform: scale(0.9);
-            }
-
-            #upi-id {
-                width: 150px !important;
-            }
+<style>
+    @media (max-width: 768px) {
+        .registration-form {
+            padding: 20px;
+            margin: 0 -15px;
+            border-radius: 0;
+            border-left: none;
+            border-right: none;
         }
-    </style>
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        input,
+        textarea,
+        select {
+            font-size: 16px !important;
+            /* Prevents zoom on iOS */
+        }
+
+        button[type="submit"] {
+            padding: 15px;
+            font-size: 1.1rem !important;
+        }
+
+        .payment-section {
+            padding: 15px;
+            margin: 15px -15px;
+            border-radius: 0;
+            border-left: none;
+            border-right: none;
+        }
+
+        #qrcode {
+            transform: scale(0.9);
+        }
+
+        #upi-id {
+            width: 150px !important;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block extra_js %}
 <!-- Use CDN version of qrcodejs library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Help menu toggle function
-        window.toggleHelpMenu = function() {
+        window.toggleHelpMenu = function () {
             const menu = document.getElementById('helpMenu');
             menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
         };
 
         // Close help menu when clicking outside
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             const menu = document.getElementById('helpMenu');
             const helpButton = event.target.closest('button');
             if (!helpButton && menu.style.display === 'block') {
@@ -390,10 +512,10 @@
         // Add hover effect to help button
         const helpButton = document.querySelector('button[onclick="toggleHelpMenu()"]');
         if (helpButton) {
-            helpButton.addEventListener('mouseover', function() {
+            helpButton.addEventListener('mouseover', function () {
                 this.style.transform = 'scale(1.1)';
             });
-            helpButton.addEventListener('mouseout', function() {
+            helpButton.addEventListener('mouseout', function () {
                 this.style.transform = 'scale(1)';
             });
         }
@@ -401,10 +523,10 @@
         // Add hover effects to menu items
         const menuItems = document.querySelectorAll('#helpMenu a');
         menuItems.forEach(item => {
-            item.addEventListener('mouseover', function() {
+            item.addEventListener('mouseover', function () {
                 this.style.backgroundColor = '#f8f9fa';
             });
-            item.addEventListener('mouseout', function() {
+            item.addEventListener('mouseout', function () {
                 this.style.backgroundColor = 'white';
             });
         });
@@ -415,27 +537,27 @@
         const priceText = '{{ event.entry_fee }}';
         // Extract just the number value, removing currency symbols or commas
         const price = parseFloat(priceText);
-        
+
         // Format number with commas for thousands separator
         function formatNumberWithCommas(number) {
             return number.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
-        
+
         // Set initial price with INR symbol
         if (totalAmount) {
             totalAmount.textContent = '₹' + formatNumberWithCommas(price);
             // Generate initial QR code
             generateQR(price);
         }
-        
+
         // Initialize QR code for payment
         function generateQR(amount) {
             const qrContainer = document.getElementById('qrcode');
             qrContainer.innerHTML = ''; // Clear previous QR code
-            
+
             // Create QR code with UPI payment information
             const upiData = `upi://pay?pa=tournament@ybl&pn=SYED TEST&am=${amount.toFixed(2)}&cu=INR`;
-            
+
             // Generate the QR code using qrcodejs library
             try {
                 new QRCode(qrContainer, {
@@ -451,12 +573,12 @@
                 qrContainer.innerHTML = '<div style="height: 150px; display: flex; align-items: center; justify-content: center;"><p style="margin: 0; font-size: 14px;">UPI: tournament@ybl</p></div>';
             }
         }
-        
+
         // Add global functions for the onclick handlers
-        window.downloadQR = function() {
+        window.downloadQR = function () {
             const qrContainer = document.getElementById('qrcode');
             const canvas = qrContainer.querySelector('canvas');
-            
+
             if (canvas) {
                 try {
                     // Create a temporary link for download
@@ -477,35 +599,35 @@
                 alert("QR code not found. Please refresh the page and try again.");
             }
         };
-        
-        window.copyUpiId = function(e) {
+
+        window.copyUpiId = function (e) {
             // Prevent form validation
             if (e) {
                 e.preventDefault();
                 e.stopPropagation();
             }
-            
+
             const upiInput = document.getElementById('upi-id');
             upiInput.select();
             document.execCommand('copy');
-            
+
             // Show feedback
             const copyButton = upiInput.nextElementSibling;
             const originalText = copyButton.innerHTML;
             copyButton.innerHTML = '<i class="fas fa-check"></i>';
-            
+
             // Reset after 2 seconds
-            setTimeout(function() {
+            setTimeout(function () {
                 copyButton.innerHTML = originalText;
             }, 2000);
         };
-        
+
         if (ticketsInput && totalAmount) {
             // Update price on change
             ticketsInput.addEventListener('change', updatePrice);
             // Also update on input for immediate feedback
             ticketsInput.addEventListener('input', updatePrice);
-            
+
             function updatePrice() {
                 // Get ticket count with fallback to 1 if invalid
                 const tickets = parseInt(ticketsInput.value) || 1;
@@ -517,28 +639,28 @@
                 generateQR(total);
             }
         }
-        
+
         // Form submission and modal handling
         const form = document.getElementById('registration-form');
         const modal = document.getElementById('success-modal');
         const closeModal = document.querySelector('.close-modal');
         const registerAnother = document.getElementById('register-another');
-        
+
         if (form) {
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', function (e) {
                 // Only prevent default if we're handling the submission via AJAX
                 // e.preventDefault();
-                
+
                 // Validate form
                 if (!form.checkValidity()) {
                     e.preventDefault();
                     form.reportValidity();
                     return;
                 }
-                
+
                 // Get form data
                 const formData = new FormData(form);
-                
+
                 // Update modal with user's name
                 const nameInput = document.getElementById('full_name');
                 if (nameInput) {
@@ -547,58 +669,58 @@
                         welcomeMsg.innerHTML = `Thank you <strong>${nameInput.value}</strong> for registering for this tournament!`;
                     }
                 }
-                
+
                 // Show spinner or loading indicator
                 const submitBtn = form.querySelector('button[type="submit"]');
                 const originalBtnText = submitBtn.innerHTML;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
                 submitBtn.disabled = true;
-                
+
                 // For demo purposes we're letting the form submit normally
                 // This will allow the server-side Django view to handle the form data
-                
+
                 // Show the success modal after form submission
                 // This will only happen if the form fails validation and doesn't submit
                 {% if submitted %}
-                setTimeout(function() {
+                setTimeout(function () {
                     modal.style.display = 'flex';
                 }, 500);
                 {% endif %}
             });
         }
-        
+
         // Close modal when clicking the X
         if (closeModal) {
-            closeModal.addEventListener('click', function() {
+            closeModal.addEventListener('click', function () {
                 modal.style.display = 'none';
             });
         }
-        
+
         // Close modal when clicking outside of it
-        window.addEventListener('click', function(event) {
+        window.addEventListener('click', function (event) {
             if (event.target === modal) {
                 modal.style.display = 'none';
             }
         });
-        
+
         // Register another button - reset form and close modal
         if (registerAnother) {
-            registerAnother.addEventListener('click', function() {
+            registerAnother.addEventListener('click', function () {
                 form.reset();
                 modal.style.display = 'none';
-                
+
                 // Reset file input (it's not cleared by form.reset())
                 const fileInput = document.getElementById('payment_screenshot');
                 if (fileInput) {
                     fileInput.value = '';
                 }
-                
+
                 // Reset total amount display and QR code
                 if (totalAmount) {
                     totalAmount.textContent = '₹' + formatNumberWithCommas(price);
                     generateQR(price);
                 }
-                
+
                 // Scroll to registration form
                 const registrationForm = document.querySelector('.registration-form');
                 if (registrationForm) {
@@ -606,7 +728,7 @@
                 }
             });
         }
-        
+
         // Show modal on page load if submitted is true (for non-AJAX form submissions)
         {% if submitted %}
         if (modal) {
@@ -615,4 +737,4 @@
         {% endif %}
     });
 </script>
-{% endblock %} 
+{% endblock %}
