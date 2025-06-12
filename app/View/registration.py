@@ -14,4 +14,5 @@ def admin_registration(request):
         'events': events,
         'registrations': registrations,
     }
+
     return render(request, 'admin/registrations.html', context)

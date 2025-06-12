@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.text import slugify
 import uuid
+from django.utils import timezone
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -100,6 +101,67 @@ class Tournament(models.Model):
     def __str__(self):
         return self.title
 
+class Transaction(models.Model):
+    PAYMENT_STATUS = [
+        ('pending', 'Pending'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+        ('refunded', 'Refunded'),
+    ]
+
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_status = models.CharField(
+        max_length=20, 
+        choices=PAYMENT_STATUS, 
+        default='pending'
+    )
+    payment_date = models.DateTimeField(null=True, blank=True)
+    payment_reference = models.CharField(
+        max_length=100, 
+        blank=True,
+        help_text="Transaction ID or UPI reference number"
+    )
+    payment_screenshot = models.ImageField(
+        upload_to='payment_proofs/', 
+        blank=True,
+        help_text="Screenshot of payment confirmation"
+    )
+    
+    # Ticket Information
+    ticket_count = models.PositiveIntegerField(default=1)
+    ticket_numbers = models.CharField(
+        max_length=200, 
+        blank=True,
+        help_text="Comma-separated ticket numbers"
+    )
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    notes = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['payment_status']),
+        ]
+
+    def __str__(self):
+        return f"{self.id}"
+
+    def save(self, *args, **kwargs):
+        # Update payment date when status changes to completed
+        if self.payment_status == 'completed' and not self.payment_date:
+            self.payment_date = timezone.now()
+            self.participant.payment_status = True
+            self.participant.save()
+            
+        super().save(*args, **kwargs)
+
+    @property
+    def is_verified(self):
+        return self.payment_status == 'completed'
+
 class Participant(models.Model):
     STATUS_CHOICES = [
         ('registered', 'Registered'),
@@ -118,30 +180,19 @@ class Participant(models.Model):
     full_name = models.CharField(max_length=200)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
-    date_of_birth = models.DateField()
+    age = models.IntegerField()
     gender = models.CharField(max_length=10, choices=[('male', 'Male'), ('female', 'Female'), ('other', 'Other')])
-    
-    # Tournament Specific
-    team_name = models.CharField(max_length=100, blank=True)
-    player_id = models.CharField(max_length=50, blank=True)  # For gaming tournaments
-    rank = models.PositiveIntegerField(null=True, blank=True)
-    seed = models.PositiveIntegerField(null=True, blank=True)
     
     # Registration Details
     registration_date = models.DateTimeField(auto_now_add=True)
-    payment_status = models.BooleanField(default=False)
-    payment_id = models.CharField(max_length=100, blank=True)
-    payment_screenshot = models.ImageField(upload_to='tt/', blank=True)
-    
     # Status
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='registered')
     check_in_time = models.DateTimeField(null=True, blank=True)
     
     # Additional Information
-    emergency_contact = models.CharField(max_length=100)
-    emergency_phone = models.CharField(max_length=20)
     special_requirements = models.TextField(blank=True)
     notes = models.TextField(blank=True)
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name='transaction_record')
 
     class Meta:
         unique_together = ['tournament', 'email']
@@ -188,3 +239,64 @@ class TournamentAnnouncement(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.tournament.title}" 
+    
+
+class ChessPlayer(models.Model):
+    TITLE_CHOICES = [
+        ('', 'No Title'),
+        ('GM', 'Grandmaster (GM)'),
+        ('IM', 'International Master (IM)'),
+        ('FM', 'FIDE Master (FM)'),
+        ('CM', 'Candidate Master (CM)'),
+        ('WGM', 'Woman Grandmaster (WGM)'),
+        ('WIM', 'Woman International Master (WIM)'),
+        ('WFM', 'Woman FIDE Master (WFM)'),
+        ('WCM', 'Woman Candidate Master (WCM)'),
+    ]
+
+    SECTION_CHOICES = [
+        ('open', 'Open'),
+        ('u1600', 'Under 1600'),
+        ('u1400', 'Under 1400'),
+        ('u1200', 'Under 1200'),
+        ('u1000', 'Under 1000'),
+    ]
+
+    participant = models.OneToOneField(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name='chess_profile',
+        primary_key=True
+    )
+    
+    # Chess Identification
+    fide_id = models.CharField(max_length=20, blank=True)
+    national_id = models.CharField(max_length=20, blank=True)
+    title = models.CharField(max_length=5, choices=TITLE_CHOICES, blank=True)
+    
+    # Ratings
+    fide_rating = models.PositiveIntegerField(null=True, blank=True)
+    national_rating = models.PositiveIntegerField(null=True, blank=True)
+    rapid_rating = models.PositiveIntegerField(null=True, blank=True)
+    blitz_rating = models.PositiveIntegerField(null=True, blank=True)
+    
+    # Tournament Information
+    section = models.CharField(max_length=10, choices=SECTION_CHOICES)
+    federation = models.CharField(max_length=100)
+    club_academy = models.CharField(max_length=200, blank=True)
+    is_arbiter = models.BooleanField(default=False)
+    
+    # Historical Data
+    previous_tournaments = models.TextField(blank=True)
+    achievements = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = "Chess Player"
+        verbose_name_plural = "Chess Players"
+
+    def __str__(self):
+        return f"{self.participant.full_name} ({self.fide_id or 'No FIDE ID'}) - {self.get_section_display()}"
+    
+
+
+

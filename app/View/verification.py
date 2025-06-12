@@ -11,8 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 def admin_verification(request):
 
-    verification_requests = Participant.objects.filter(status='registered',payment_screenshot__isnull=False)
-
+    verification_requests = Participant.objects.filter(status='registered')
     context = {
         'verification_requests': verification_requests,
         # 'events': events,
@@ -30,20 +29,21 @@ def update_verification_status(request, request_id):
         reason = data.get('reason', '')
 
         verification = Participant.objects.get(id=request_id)
-
+        transaction = Transaction.objects.get(id=verification.transaction.id)
         if action == 'accept':
             verification.status = 'confirmed'
-            verification.payment_status = True
+            transaction.payment_status = True
         elif action == 'reject':
             verification.status = 'rejected'
-            verification.payment_status = False
+            transaction.payment_status = False
         elif action == 'review':
             verification.status = 'under_review'
-            verification.payment_status = False
+            transaction.payment_status = False
         else:
             return JsonResponse({'message': 'Invalid action'}, status=400)
 
         verification.save()
+        transaction.save()
         return JsonResponse({'message': f"Request marked as {verification.status}."})
 
     except Participant.DoesNotExist:

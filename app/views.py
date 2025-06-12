@@ -198,7 +198,6 @@ def event_detail(request, event_id):
     context = {
         'event': event,
         'submitted': submitted,
-        'registration': registration_data,
         'current_year': datetime.now().year
     }
     
@@ -216,87 +215,6 @@ def event_detail_success(request, event_id):
     
     # Get event details as in event_detail view
     current_date = datetime.now()
-    
-    events = [
-        {
-            'id': 1,
-            'title': 'Tech Conference 2023',
-            'description': 'Join industry leaders for a day of innovation and networking in the tech world. This conference brings together the brightest minds in technology to discuss the latest trends, share insights, and explore cutting-edge innovations.',
-            'date': (current_date + timedelta(days=5)).strftime('%B %d, %Y'),
-            'time': '9:00 AM - 5:00 PM',
-            'location': 'Convention Center, New York',
-            'image': 'static/images/tech-conference.jpg',
-            'price': '$199.00',
-            'category': 'Technology',
-            'tickets_available': 500,
-            'organizer': 'Tech Events Inc.'
-        },
-        {
-            'id': 2,
-            'title': 'Summer Sports Festival',
-            'description': 'Annual sports festival featuring various competitions and activities for all ages.',
-            'date': (current_date + timedelta(days=7)).strftime('%B %d, %Y'),
-            'time': '8:00 AM - 6:00 PM',
-            'location': 'Central Park Stadium',
-            'image': 'static/images/sports-festival.jpg',
-            'price': '$45.00',
-            'category': 'Sports',
-            'tickets_available': 1000,
-            'organizer': 'Sports Association'
-        },
-        {
-            'id': 3,
-            'title': 'Music Festival 2023',
-            'description': 'Three days of amazing music performances from top artists around the world.',
-            'date': (current_date + timedelta(days=15)).strftime('%B %d, %Y'),
-            'time': '2:00 PM - 11:00 PM',
-            'location': 'Riverside Park',
-            'image': 'static/images/music-festival.jpg',
-            'price': '$299.00',
-            'category': 'Music',
-            'tickets_available': 2000,
-            'organizer': 'Music Events Co.'
-        },
-        {
-            'id': 4,
-            'title': 'Business Summit',
-            'description': 'Network with industry leaders and learn about the latest business trends.',
-            'date': (current_date + timedelta(days=20)).strftime('%B %d, %Y'),
-            'time': '10:00 AM - 4:00 PM',
-            'location': 'Grand Hotel, Chicago',
-            'image': 'static/images/business-summit.jpg',
-            'price': '$349.00',
-            'category': 'Business',
-            'tickets_available': 300,
-            'organizer': 'Business Network'
-        },
-        {
-            'id': 5,
-            'title': 'Food & Wine Expo',
-            'description': 'Experience the finest culinary delights and premium wines from around the world.',
-            'date': (current_date + timedelta(days=25)).strftime('%B %d, %Y'),
-            'time': '11:00 AM - 7:00 PM',
-            'location': 'Exhibition Center',
-            'image': 'static/images/food-expo.jpg',
-            'price': '$89.00',
-            'category': 'Food & Drink',
-            'tickets_available': 800,
-            'organizer': 'Gourmet Events'
-        },
-        {
-            'id': 6,
-            'title': 'Art & Design Expo',
-            'description': 'Explore creative expressions from talented artists and designers showcasing their innovative work.',
-            'date': (current_date + timedelta(days=10)).strftime('%B %d, %Y'),
-            'time': '11:00 AM - 8:00 PM',
-            'location': 'Metropolitan Gallery, Los Angeles',
-            'image': 'static/images/art-expo.jpg',
-            'price': '$35.00',
-            'category': 'Art',
-            'tickets_available': 400,
-            'organizer': 'Creative Arts Foundation'
-        }
-    ]
     
     # Find the event by id
     event = None
