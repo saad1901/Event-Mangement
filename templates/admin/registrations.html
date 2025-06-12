@@ -1,0 +1,172 @@
+{% extends 'admin/base_admin.html' %}
+{% load static %}
+
+{% block title %}Manage Registrations - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="admin-tab active">
+    <div class="tab-header">
+        <h2>Manage Registrations</h2>
+        <button class="primary-btn" data-modal-target="add-registration-modal">
+            <i class="fas fa-plus"></i> Add New Registration
+        </button>
+    </div>
+    
+    <div class="dashboard-actions">
+        <div class="search-box">
+            <input type="text" placeholder="Search registrations...">
+            <button type="button"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="filter-options">
+            <select data-filter-type="event">
+                <option value="">All Events</option>
+                <option value="1">Music Festival</option>
+                <option value="2">Tech Conference</option>
+                <option value="3">Art Exhibition</option>
+            </select>
+            <select data-filter-type="status">
+                <option value="">All Status</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="pending">Pending</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+            <select data-filter-type="payment">
+                <option value="">All Payment Status</option>
+                <option value="paid">Paid</option>
+                <option value="unpaid">Unpaid</option>
+                <option value="refunded">Refunded</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="data-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Event</th>
+                    <th>User</th>
+                    <th>Registration Date</th>
+                    <th>Ticket Type</th>
+                    <th>Quantity</th>
+                    <th>Payment Status</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for registration in registrations %}
+                <tr>
+                    <td>{{ registration.id }}</td>
+                    <td>{{ registration.event_name }}</td>
+                    <td>{{ registration.user_name }}</td>
+                    <td>{{ registration.registration_date }}</td>
+                    <td>{{ registration.ticket_type }}</td>
+                    <td>{{ registration.quantity }}</td>
+                    <td>
+                        <span class="admin-dashboard badge-{{ registration.payment_status|lower }}">{{ registration.payment_status }}</span>
+                    </td>
+                    <td>
+                        <span class="admin-dashboard badge-{{ registration.status|lower }}">{{ registration.status }}</span>
+                    </td>
+                    <td class="action-buttons">
+                        <button class="view-btn" title="View" data-id="{{ registration.id }}"><i class="fas fa-eye"></i></button>
+                        <button class="edit-btn" title="Edit" data-id="{{ registration.id }}" data-modal-target="add-registration-modal"><i class="fas fa-edit"></i></button>
+                        <button class="delete-btn" title="Delete" data-id="{{ registration.id }}" data-type="registration"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="text-center">No registrations found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="pagination">
+        <button class="page-btn" {% if not registrations.has_previous %}disabled{% endif %}><i class="fas fa-chevron-left"></i></button>
+        {% for i in registrations.paginator.page_range %}
+            {% if registrations.number == i %}
+                <button class="page-btn active">{{ i }}</button>
+            {% else %}
+                <button class="page-btn">{{ i }}</button>
+            {% endif %}
+        {% endfor %}
+        <button class="page-btn" {% if not registrations.has_next %}disabled{% endif %}><i class="fas fa-chevron-right"></i></button>
+    </div>
+</div>
+
+<!-- Add/Edit Registration Modal -->
+<div id="add-registration-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Add New Registration</h2>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form class="admin-form" id="registration-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="registration_event">Event</label>
+                        <select id="registration_event" name="event_id" required>
+                            <option value="">Select event</option>
+                            <option value="1">Music Festival</option>
+                            <option value="2">Tech Conference</option>
+                            <option value="3">Art Exhibition</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="registration_user">User</label>
+                        <select id="registration_user" name="user_id" required>
+                            <option value="">Select user</option>
+                            <option value="1">John Doe</option>
+                            <option value="2">Jane Smith</option>
+                            <option value="3">Robert Johnson</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="registration_date">Registration Date</label>
+                        <input type="date" id="registration_date" name="registration_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registration_ticket_type">Ticket Type</label>
+                        <select id="registration_ticket_type" name="ticket_type" required>
+                            <option value="">Select ticket type</option>
+                            <option value="standard">Standard</option>
+                            <option value="vip">VIP</option>
+                            <option value="early_bird">Early Bird</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="registration_quantity">Quantity</label>
+                        <input type="number" id="registration_quantity" name="quantity" min="1" value="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registration_payment_status">Payment Status</label>
+                        <select id="registration_payment_status" name="payment_status" required>
+                            <option value="">Select payment status</option>
+                            <option value="paid">Paid</option>
+                            <option value="unpaid">Unpaid</option>
+                            <option value="refunded">Refunded</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="registration_status">Status</label>
+                        <select id="registration_status" name="status" required>
+                            <option value="">Select status</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="pending">Pending</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="secondary-btn close-modal">Cancel</button>
+                    <button type="submit" class="primary-btn">Save Registration</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

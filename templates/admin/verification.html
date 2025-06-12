@@ -1,0 +1,340 @@
+{% extends 'admin/base_admin.html' %}
+{% load static %}
+
+{% block title %}Verification Requests - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="admin-tab active">
+    <div class="tab-header">
+        <h2>Verification Requests</h2>
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="pending">Pending</button>
+            <button class="filter-btn" data-filter="approved">Approved</button>
+            <button class="filter-btn" data-filter="rejected">Rejected</button>
+            <button class="filter-btn" data-filter="review">Under Review</button>
+        </div>
+    </div>
+    
+    <div class="dashboard-actions">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search by name or event...">
+            <button type="button" id="searchBtn"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+    
+    <div class="data-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Event Title</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>View</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in verification_requests %}
+                <tr class="verification-row" data-status="{{ request.payment_status|lower }}" data-id="{{ request.id }}">
+                    <td>{{ request.id }}</td>
+                    <td>{{ request.full_name }}</td>
+                    <td>{{ request.tournament.title }}</td>
+                    <td>{{ request.tournament.start_date|date:"M d, Y" }}</td>
+                    <td>${{ request.tournament.entry_fee }}</td>
+                    <td>
+                        {{ request.payment_status}}
+                    </td>
+                    <td>
+                        <button class="view-btn" title="View Payment Screenshot" onclick="showPaymentScreenshot('{{ request.id }}', '{{ request.payment_screenshot.url }}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                    <td class="action-buttons">
+                        <button class="success-btn" onclick="confirmAction('{{ request.id }}', 'accept')">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="danger-btn" onclick="confirmAction('{{ request.id }}', 'reject')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <button class="review-btn" onclick="markForReview('{{ request.id }}')">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center">No verification requests found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="pagination">
+        <button class="page-btn" {% if not verification_requests.has_previous %}disabled{% endif %}><i class="fas fa-chevron-left"></i></button>
+        {% for i in verification_requests.paginator.page_range %}
+            {% if verification_requests.number == i %}
+                <button class="page-btn active">{{ i }}</button>
+            {% else %}
+                <button class="page-btn">{{ i }}</button>
+            {% endif %}
+        {% endfor %}
+        <button class="page-btn" {% if not verification_requests.has_next %}disabled{% endif %}><i class="fas fa-chevron-right"></i></button>
+    </div>
+</div>
+
+<!-- Payment Screenshot Modal -->
+<div id="paymentScreenshotModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Payment Screenshot</h2>
+            <button class="close-modal" onclick="closeAllModals()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="payment-screenshot-container">
+                <img id="paymentScreenshotImg" class="payment-screenshot-img" src="" alt="Payment Screenshot">
+            </div>
+            <div class="modal-actions" id="modalActions">
+                <!-- Action buttons will be added dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="confirmationTitle">Confirm Action</h2>
+            <button class="close-modal" onclick="closeAllModals()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p id="confirmationMessage">Are you sure you want to proceed with this action?</p>
+            <div class="modal-actions">
+                <button id="confirmButton" class="success-btn">Confirm</button>
+                <button class="secondary-btn" onclick="closeAllModals()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div id="rejectModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Reject Verification</h2>
+            <button class="close-modal" onclick="closeAllModals()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="rejectForm">
+                <input type="hidden" id="reject-request-id" name="request_id">
+                <div class="form-group">
+                    <label for="rejectReason">Reason for Rejection</label>
+                    <textarea id="rejectReason" name="rejectReason" rows="4" required></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="danger-btn">Submit Rejection</button>
+                    <button type="button" class="secondary-btn" onclick="closeAllModals()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Filter buttons
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                const rows = document.querySelectorAll('.verification-row');
+                
+                rows.forEach(row => {
+                    if (filter === 'all') {
+                        row.style.display = '';
+                    } else {
+                        const status = row.getAttribute('data-status');
+                        row.style.display = status === filter ? '' : 'none';
+                    }
+                });
+            });
+        });
+        
+        // Search functionality
+        document.getElementById('searchBtn').addEventListener('click', performSearch);
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        // Close modal when clicking outside of it
+        window.addEventListener('click', function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    });
+    
+    // Function to show payment screenshot in modal
+    function showPaymentScreenshot(requestId, screenshotUrl) {
+        const modal = document.getElementById('paymentScreenshotModal');
+        const img = document.getElementById('paymentScreenshotImg');
+        const actionsContainer = document.getElementById('modalActions');
+        
+        // Set the image source
+        img.src = screenshotUrl;
+        
+        // Clear previous actions
+        actionsContainer.innerHTML = '';
+        
+        // Get the status of the request
+        const row = document.querySelector(`.verification-row[data-id="${requestId}"]`);
+        const status = row ? row.getAttribute('data-status') : 'pending';
+        
+        // Add action buttons based on status
+        if (status === 'pending' || status === 'review') {
+            const acceptBtn = document.createElement('button');
+            acceptBtn.className = 'success-btn';
+            acceptBtn.innerHTML = '<i class="fas fa-check"></i> Accept';
+            acceptBtn.onclick = () => confirmAction(requestId, 'accept');
+            
+            const rejectBtn = document.createElement('button');
+            rejectBtn.className = 'danger-btn';
+            rejectBtn.innerHTML = '<i class="fas fa-times"></i> Reject';
+            rejectBtn.onclick = () => confirmAction(requestId, 'reject');
+            
+            actionsContainer.appendChild(acceptBtn);
+            actionsContainer.appendChild(rejectBtn);
+            
+            if (status === 'pending') {
+                const reviewBtn = document.createElement('button');
+                reviewBtn.className = 'info-btn';
+                reviewBtn.innerHTML = '<i class="fas fa-search"></i> Mark for Review';
+                reviewBtn.onclick = () => markForReview(requestId);
+                actionsContainer.appendChild(reviewBtn);
+            }
+        }
+        
+        // Show the modal
+        modal.style.display = 'block';
+    }
+    
+    // Function to confirm an action (accept/reject)
+    function confirmAction(requestId, action) {
+        const modal = document.getElementById('confirmationModal');
+        const title = document.getElementById('confirmationTitle');
+        const message = document.getElementById('confirmationMessage');
+        const confirmBtn = document.getElementById('confirmButton');
+        
+        // Close other modals
+        closeAllModals();
+        
+        // Set modal content based on action
+        if (action === 'accept') {
+            title.textContent = 'Confirm Acceptance';
+            message.textContent = 'Are you sure you want to accept this verification request?';
+            confirmBtn.className = 'success-btn';
+        } else if (action === 'reject') {
+            // For reject, we'll show the reject modal instead
+            showRejectModal(requestId);
+            return;
+        }
+        
+        // Set confirm button action
+        confirmBtn.onclick = function() {
+            // Here you would normally make an AJAX call to update the status
+            // For now, we'll just update the UI
+            updateVerificationStatus(requestId, action);
+            closeAllModals();
+        };
+        
+        // Show the modal
+        modal.style.display = 'block';
+    }
+    
+    // Function to show the reject modal
+    function showRejectModal(requestId) {
+        const modal = document.getElementById('rejectModal');
+        const form = document.getElementById('rejectForm');
+        document.getElementById('reject-request-id').value = requestId;
+        
+        // Set form submission handler
+        form.onsubmit = function(e) {
+            e.preventDefault();
+            const reason = document.getElementById('rejectReason').value;
+            
+            // Here you would normally make an AJAX call to update the status with the reason
+            // For now, we'll just update the UI
+            updateVerificationStatus(requestId, 'reject', reason);
+            closeAllModals();
+        };
+        
+        // Show the modal
+        modal.style.display = 'block';
+    }
+    
+    // Function to perform search
+    function performSearch() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const rows = document.querySelectorAll('.verification-row');
+        
+        rows.forEach(row => {
+            const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const event = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            
+            if (name.includes(searchTerm) || event.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+    
+    // Function to close all modals
+    function closeAllModals() {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            modal.style.display = 'none';
+        });
+    }
+    
+    // Function to show notification
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <span>${message}</span>
+            <button class="close-notification">&times;</button>
+        `;
+        document.body.appendChild(notification);
+        
+        // Add close button functionality
+        notification.querySelector('.close-notification').addEventListener('click', function() {
+            notification.remove();
+        });
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 5000);
+    }
+</script>
+{% endblock %}

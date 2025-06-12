@@ -320,75 +320,100 @@ def event_detail_success(request, event_id):
 # Admin Dashboard Views
 # @login_required
 def admin_dashboard(request):
-    """Admin Dashboard main view with statistics and overview"""
-    
     # Mock statistics data
     stats = {
-        'total_events': 15,
-        'total_users': 253,
-        'total_registrations': 154,
-        'revenue': 12450
+        'total_events': 12,
+        'active_events': 5,
+        'total_users': 150,
+        'new_registrations': 25
     }
     
     # Mock current user data
     current_user = {
         'name': 'Admin User',
-        'email': 'admin@example.com',
         'role': 'Administrator',
-        'id': 1
+        'avatar': 'img/avatar.jpg'
     }
     
     # Mock events data
     events = [
-        {'id': 1, 'name': 'Tech Conference 2023', 'category': 'Conference', 'date': 'Nov 24, 2023', 'location': 'Convention Center, NY', 'status': 'upcoming'},
-        {'id': 2, 'name': 'Summer Sports Festival', 'category': 'Sports', 'date': 'Nov 26, 2023', 'location': 'Central Park Stadium', 'status': 'upcoming'},
-        {'id': 3, 'name': 'Music Festival 2023', 'category': 'Music', 'date': 'Dec 4, 2023', 'location': 'Riverside Park', 'status': 'upcoming'},
-        {'id': 4, 'name': 'Business Summit', 'category': 'Business', 'date': 'Dec 10, 2023', 'location': 'Grand Hotel, Chicago', 'status': 'upcoming'},
-        {'id': 5, 'name': 'Food & Wine Expo', 'category': 'Food & Drink', 'date': 'Dec 15, 2023', 'location': 'Exhibition Center', 'status': 'upcoming'}
+        {'id': 1, 'title': 'Summer Tournament', 'date': '2023-07-15', 'status': 'active', 'registrations': 45},
+        {'id': 2, 'title': 'Winter Championship', 'date': '2023-12-10', 'status': 'upcoming', 'registrations': 30},
+        {'id': 3, 'title': 'Spring Cup', 'date': '2023-04-22', 'status': 'completed', 'registrations': 60},
     ]
     
-    # Mock users data
+    # Mock data for users
     users = [
-        {'id': 1, 'name': 'John Smith', 'email': 'john@example.com', 'role': 'admin', 'registration_date': 'Jan 15, 2023', 'status': 'active'},
-        {'id': 2, 'name': 'Jane Doe', 'email': 'jane@example.com', 'role': 'user', 'registration_date': 'Feb 3, 2023', 'status': 'active'},
-        {'id': 3, 'name': 'Robert Johnson', 'email': 'robert@example.com', 'role': 'organizer', 'registration_date': 'Mar 7, 2023', 'status': 'active'},
-        {'id': 4, 'name': 'Emily Wilson', 'email': 'emily@example.com', 'role': 'user', 'registration_date': 'Apr 19, 2023', 'status': 'inactive'},
-        {'id': 5, 'name': 'Michael Brown', 'email': 'michael@example.com', 'role': 'user', 'registration_date': 'May 22, 2023', 'status': 'active'}
+        {'id': 1, 'name': 'John Doe', 'email': 'john@example.com', 'joined': '2023-01-15', 'status': 'active'},
+        {'id': 2, 'name': 'Jane Smith', 'email': 'jane@example.com', 'joined': '2023-02-20', 'status': 'active'},
+        {'id': 3, 'name': 'Bob Johnson', 'email': 'bob@example.com', 'joined': '2023-03-05', 'status': 'inactive'},
     ]
     
-    # Mock registrations data
+    # Mock data for registrations
     registrations = [
-        {'id': 1, 'event_name': 'Tech Conference 2023', 'user_name': 'John Smith', 'ticket_type': 'Standard', 'registration_date': 'Nov 10, 2023', 'status': 'confirmed'},
-        {'id': 2, 'event_name': 'Summer Sports Festival', 'user_name': 'Jane Doe', 'ticket_type': 'VIP', 'registration_date': 'Nov 12, 2023', 'status': 'confirmed'},
-        {'id': 3, 'event_name': 'Music Festival 2023', 'user_name': 'Robert Johnson', 'ticket_type': 'Early Bird', 'registration_date': 'Nov 15, 2023', 'status': 'pending'},
-        {'id': 4, 'event_name': 'Business Summit', 'user_name': 'Emily Wilson', 'ticket_type': 'Standard', 'registration_date': 'Nov 18, 2023', 'status': 'confirmed'},
-        {'id': 5, 'event_name': 'Food & Wine Expo', 'user_name': 'Michael Brown', 'ticket_type': 'Group', 'registration_date': 'Nov 20, 2023', 'status': 'confirmed'}
+        {'id': 1, 'user': 'John Doe', 'event': 'Summer Tournament', 'date': '2023-06-10', 'status': 'confirmed'},
+        {'id': 2, 'user': 'Jane Smith', 'event': 'Winter Championship', 'date': '2023-11-05', 'status': 'pending'},
+        {'id': 3, 'user': 'Bob Johnson', 'event': 'Spring Cup', 'date': '2023-03-15', 'status': 'confirmed'},
     ]
-    
+        
+    events = Tournament.objects.all()
     context = {
         'stats': stats,
         'current_user': current_user,
         'events': events,
         'users': users,
         'registrations': registrations,
-        'current_year': datetime.now().year
+        'active_tab': 'dashboard'
     }
     
     return render(request, 'admin/dashboard.html', context)
 
-@login_required
+# @login_required
 def admin_events(request):
     """Admin view for managing events"""
     # Similar to admin_dashboard but with more detailed events data
     # For now, we'll just redirect to the dashboard
     return redirect('admin_dashboard')
 
-@login_required
+def admin_settings(request):
+    context = {
+        'active_tab': 'settings'
+    }
+    return render(request, 'admin/settings.html', context)
+
+def admin_reports(request):
+    context = {
+        'active_tab': 'reports'
+    }
+    return render(request, 'admin/reports.html', context)
+
+def admin_verification(request):
+    # Get all events
+    events = Tournament.objects.all()
+    
+    # Get participants with payment screenshots
+    verification_requests = Participant.objects.filter(payment_screenshot__isnull=False)
+    
+    context = {
+        'verification_requests': verification_requests,
+        'events': events,
+        'active_tab': 'verification'
+    }
+    
+    return render(request, 'admin/verification.html', context)
+
+# @login_required
 def admin_users(request):
-    """Admin view for managing users"""
-    # Similar to admin_dashboard but with more detailed users data
-    # For now, we'll just redirect to the dashboard
-    return redirect('admin_dashboard')
+    # Get all users
+    users = Participant.objects.all()
+    events = Tournament.objects.all()
+    context = {
+        'users': users,
+        'events' : events,
+        'active_tab': 'users'
+    }
+    
+    return render(request, 'admin/users.html', context)
 
 @login_required
 def admin_registrations(request):

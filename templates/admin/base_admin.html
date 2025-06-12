@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Dashboard - Tournament Central{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Segoe+UI:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="admin-dashboard">
+        <!-- Top Header -->
+        <div class="dashboard-header">
+            <h1>Admin Dashboard</h1>
+            <div class="user-info">
+                <span>{{ request.user.username }}</span>
+                <a href="{% url 'home' %}" class="view-site-btn"><i class="fas fa-external-link-alt"></i> View Site</a>
+                <button class="logout-btn">Logout</button>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Layout -->
+        <div class="dashboard-main">
+            <!-- Sidebar Navigation -->
+            <div class="dashboard-nav">
+                <ul>
+                    <li>
+                        <a href="{% url 'admin_dashboard' %}" class="nav-item {% if active_tab == 'dashboard' %}active{% endif %}">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'admin_events' %}" class="nav-item {% if active_tab == 'events' %}active{% endif %}">
+                            <i class="fas fa-calendar-alt"></i> Events
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'admin_users' %}" class="nav-item {% if active_tab == 'users' %}active{% endif %}">
+                            <i class="fas fa-users"></i> Users
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'admin_registrations' %}" class="nav-item {% if active_tab == 'registrations' %}active{% endif %}">
+                            <i class="fas fa-ticket-alt"></i> Registrations
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'admin_verification' %}" class="nav-item {% if active_tab == 'verification' %}active{% endif %}">
+                            <i class="fas fa-check-circle"></i> Verification
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'admin_reports' %}" class="nav-item {% if active_tab == 'reports' %}active{% endif %}">
+                            <i class="fas fa-chart-bar"></i> Reports
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'admin_settings' %}" class="nav-item {% if active_tab == 'settings' %}active{% endif %}">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Content Area -->
+            <div class="dashboard-content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Common Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js/admin.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

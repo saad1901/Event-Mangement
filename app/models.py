@@ -111,7 +111,6 @@ class Participant(models.Model):
     ]
 
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='participants')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tournament_participations')
     registration_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     
     # Personal Information
@@ -131,7 +130,7 @@ class Participant(models.Model):
     registration_date = models.DateTimeField(auto_now_add=True)
     payment_status = models.BooleanField(default=False)
     payment_id = models.CharField(max_length=100, blank=True)
-    payment_screenshot = models.ImageField(upload_to='payment_screenshots/', blank=True)
+    payment_screenshot = models.ImageField(upload_to='tt/', blank=True)
     
     # Status
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='registered')
@@ -144,7 +143,7 @@ class Participant(models.Model):
     notes = models.TextField(blank=True)
 
     class Meta:
-        unique_together = ['tournament', 'user']
+        unique_together = ['tournament', 'email']
 
     def __str__(self):
         return f"{self.full_name} - {self.tournament.title}"
