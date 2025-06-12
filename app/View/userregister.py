@@ -6,8 +6,7 @@ from django.contrib.auth.decorators import login_required
 from app.models import *
 
 def addparticipant(request):
-    print(111)
-    submitted = False
+    submitted = request.session.pop('submitted', False)
     tournament = None  # default in case of non-POST
 
     if request.method == 'POST':
@@ -53,7 +52,11 @@ def addparticipant(request):
                 )
                 chessData.save()
 
-            submitted = True
+            request.session['submitted'] = True
+            request.session['full_name'] = request.POST.get('full_name')
+            request.session['tournament_name'] = tournament.title
+            request.session['tournament_date'] = tournament.start_date
+
             return redirect('event_detail', event_id=event_id)
 
         except Exception as e:
@@ -76,3 +79,10 @@ def addparticipant(request):
     }
 
     return render(request, 'events/event_detail.html', context)
+
+
+def clear_registration_session(request):
+    keys_to_clear = ['submitted', 'full_name', 'tournament_name', 'tournament_date']
+    for key in keys_to_clear:
+        request.session.pop(key, None)
+    return redirect('event_detail', event_id=request.POST.get('event_id'))  # Replace 'register' with your form URL name

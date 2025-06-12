@@ -52,6 +52,7 @@ urlpatterns = [
     path('dashboard/settings/', views.admin_settings, name='admin_settings'),
     path('dashboard/reports/', views.admin_reports, name='admin_reports'),
     path('addparticipant/', addparticipant, name='addparticipant'),
+    path('clear-registration/', clear_registration_session, name='clear_registration_session'),
 
 
 
