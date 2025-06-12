@@ -64,10 +64,10 @@
                     <td>{{ registration.ticket_type }}</td>
                     <td>{{ registration.quantity }}</td>
                     <td>
-                        <span class="admin-dashboard badge-{{ registration.payment_status|lower }}">{{ registration.payment_status }}</span>
+                        {{ registration.payment_status }}
                     </td>
                     <td>
-                        <span class="admin-dashboard badge-{{ registration.status|lower }}">{{ registration.status }}</span>
+                        {{ registration.status }}
                     </td>
                     <td class="action-buttons">
                         <button class="view-btn" title="View" data-id="{{ registration.id }}"><i class="fas fa-eye"></i></button>

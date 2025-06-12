@@ -20,7 +20,7 @@ from app import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-
+from app.View import *
 urlpatterns = [
     # Django admin
     path('admin/', admin.site.urls),
@@ -45,13 +45,13 @@ urlpatterns = [
     
     # Admin Dashboard URLs
     path('dashboard/', views.admin_dashboard, name='admin_dashboard'),
-    path('dashboard/events/', views.admin_events, name='admin_events'),
+    path('dashboard/events/', admin_events, name='admin_events'),
     path('dashboard/users/', views.admin_users, name='admin_users'),
-    path('dashboard/registrations/', views.admin_registrations, name='admin_registrations'),
-    path('dashboard/verification/', views.admin_verification, name='admin_verification'),
+    path('dashboard/registrations/', admin_registration, name='admin_registrations'),
+    path('dashboard/verification/', admin_verification, name='admin_verification'),
     path('dashboard/settings/', views.admin_settings, name='admin_settings'),
     path('dashboard/reports/', views.admin_reports, name='admin_reports'),
-    
+    path('addparticipant/', addparticipant, name='addparticipant'),
 
 
 
@@ -65,7 +65,8 @@ urlpatterns = [
     path('api/registrations/', views.api_registrations, name='api_registrations'),
     path('api/registrations/<int:registration_id>/', views.api_registration_detail, name='api_registration_detail'),
     path('api/stats/', views.api_stats, name='api_stats'),
-    
+    path('api/verification/update-status/<int:request_id>/', update_verification_status, name='update_verification_status'),
+
     # User profile and bookings
     path('profile/', views.user_profile, name='user_profile'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),

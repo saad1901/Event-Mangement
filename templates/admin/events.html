@@ -53,12 +53,12 @@
                 {% for event in events %}
                 <tr>
                     <td>{{ event.id }}</td>
-                    <td>{{ event.name }}</td>
+                    <td>{{ event.title }}</td>
                     <td>{{ event.category }}</td>
-                    <td>{{ event.date }}</td>
-                    <td>{{ event.location }}</td>
+                    <td>{{ event.start_date }}</td>
+                    <td>{{ event.venue }} {{event.city}}</td>
                     <td>
-                        <span class="admin-dashboard badge-{{ event.status|lower }}">{{ event.status }}</span>
+                        {{ event.status }}
                     </td>
                     <td class="action-buttons">
                         <button class="view-btn" title="View" data-id="{{ event.id }}"><i class="fas fa-eye"></i></button>

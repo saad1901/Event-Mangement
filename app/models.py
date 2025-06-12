@@ -108,6 +108,7 @@ class Participant(models.Model):
         ('eliminated', 'Eliminated'),
         ('winner', 'Winner'),
         ('disqualified', 'Disqualified'),
+        ('rejected', 'Rejected')
     ]
 
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='participants')
