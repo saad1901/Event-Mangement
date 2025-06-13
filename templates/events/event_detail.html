@@ -14,8 +14,7 @@
         <div class="event-meta" style="color: #ffffff;">
             <span><i class="far fa-calendar-alt"></i> {{ event.start_date }}</span>
             <span><i class="far fa-clock"></i> {{ event.time }}</span>
-            <span><i class="fas fa-map-marker-alt"></i> {{ event.venue }} {{ event.address }} {{ event.city }}, {{
-                event.state }}</span>
+            <span><i class="fas fa-map-marker-alt"></i> {{ event.venue }} {{ event.address }} {{ event.city }}, {{event.state}}</span>
         </div>
     </div>
 </section>
@@ -420,30 +419,6 @@
     </div>
 </section>
 
-<!-- Success Modal -->
-<div class="modal" id="success-modal">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <div class="success-message">
-            <i class="fas fa-check-circle"></i>
-            <h3>Registration Submitted Successfully!</h3>
-            <p>Thank you for registering for this tournament!</p>
-            <div
-                style="background-color: #f7f7f7; border-radius: 8px; padding: 15px; margin: 20px 0; text-align: left;">
-                <p style="margin-bottom: 10px; color: #333; font-weight: 600;">What happens next?</p>
-                <ul style="padding-left: 20px; margin-bottom: 0;">
-                    <li style="margin-bottom: 8px;">You'll receive a confirmation <strong>SMS</strong> and
-                        <strong>email</strong> once approved</li>
-                </ul>
-            </div>
-            <div class="modal-actions">
-                <button id="register-another" class="btn btn-outline">Register Another</button>
-                <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
-            </div>
-        </div>
-    </div>
-</div>
-
 <style>
     @media (max-width: 768px) {
         .registration-form {
@@ -642,9 +617,6 @@
 
         // Form submission and modal handling
         const form = document.getElementById('registration-form');
-        const modal = document.getElementById('success-modal');
-        const closeModal = document.querySelector('.close-modal');
-        const registerAnother = document.getElementById('register-another');
 
         if (form) {
             form.addEventListener('submit', function (e) {
@@ -681,60 +653,60 @@
 
                 // Show the success modal after form submission
                 // This will only happen if the form fails validation and doesn't submit
-                {% if submitted %}
-                setTimeout(function () {
-                    modal.style.display = 'flex';
-                }, 500);
-                {% endif %}
+                // {% if submitted %}
+                // setTimeout(function () {
+                //     modal.style.display = 'flex';
+                // }, 500);
+                // {% endif %}
             });
         }
 
         // Close modal when clicking the X
-        if (closeModal) {
-            closeModal.addEventListener('click', function () {
-                modal.style.display = 'none';
-            });
-        }
+        // if (closeModal) {
+        //     closeModal.addEventListener('click', function () {
+        //         modal.style.display = 'none';
+        //     });
+        // }
 
         // Close modal when clicking outside of it
-        window.addEventListener('click', function (event) {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
+        // window.addEventListener('click', function (event) {
+        //     if (event.target === modal) {
+        //         modal.style.display = 'none';
+        //     }
+        // });
 
         // Register another button - reset form and close modal
-        if (registerAnother) {
-            registerAnother.addEventListener('click', function () {
-                form.reset();
-                modal.style.display = 'none';
+        // if (registerAnother) {
+        //     registerAnother.addEventListener('click', function () {
+        //         form.reset();
+        //         modal.style.display = 'none';
 
-                // Reset file input (it's not cleared by form.reset())
-                const fileInput = document.getElementById('payment_screenshot');
-                if (fileInput) {
-                    fileInput.value = '';
-                }
+        //         // Reset file input (it's not cleared by form.reset())
+        //         const fileInput = document.getElementById('payment_screenshot');
+        //         if (fileInput) {
+        //             fileInput.value = '';
+        //         }
 
-                // Reset total amount display and QR code
-                if (totalAmount) {
-                    totalAmount.textContent = '₹' + formatNumberWithCommas(price);
-                    generateQR(price);
-                }
+        //         // Reset total amount display and QR code
+        //         if (totalAmount) {
+        //             totalAmount.textContent = '₹' + formatNumberWithCommas(price);
+        //             generateQR(price);
+        //         }
 
-                // Scroll to registration form
-                const registrationForm = document.querySelector('.registration-form');
-                if (registrationForm) {
-                    registrationForm.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        }
+        //         // Scroll to registration form
+        //         const registrationForm = document.querySelector('.registration-form');
+        //         if (registrationForm) {
+        //             registrationForm.scrollIntoView({ behavior: 'smooth' });
+        //         }
+        //     });
+        // }
 
         // Show modal on page load if submitted is true (for non-AJAX form submissions)
-        {% if submitted %}
-        if (modal) {
-            modal.style.display = 'flex';
-        }
-        {% endif %}
+        // {% if submitted %}
+        // if (modal) {
+        //     modal.style.display = 'flex';
+        // }
+        // {% endif %}
     });
 </script>
 {% endblock %}

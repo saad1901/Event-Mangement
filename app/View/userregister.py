@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from app.models import *
 
 def addparticipant(request):
-    submitted = request.session.pop('submitted', False)
+    submitted = request.session.get('submitted', False)
     tournament = None  # default in case of non-POST
 
     if request.method == 'POST':
@@ -55,7 +55,7 @@ def addparticipant(request):
             request.session['submitted'] = True
             request.session['full_name'] = request.POST.get('full_name')
             request.session['tournament_name'] = tournament.title
-            request.session['tournament_date'] = tournament.start_date
+            request.session['tournament_date'] = str(tournament.start_date)
 
             return redirect('event_detail', event_id=event_id)
 

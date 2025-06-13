@@ -17,8 +17,8 @@
         <div class="filter-section">
             <select id="tournamentFilter" class="tournament-select">
                 <option value="all">All Tournaments</option>
-                {% for request in verification_requests %}
-                    <option value="{{ request.tournament.id }}">{{ request.tournament.title }}</option>
+                {% for request in alltournaments %}
+                    <option value="{{ request.id }}">{{ request.title }}</option>
                 {% endfor %}
             </select>
         </div>

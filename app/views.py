@@ -127,7 +127,8 @@ def home(request):
 def event_detail(request, event_id):
     # Dummy events data (same as in home view)
     current_date = datetime.now()
-    submitted = request.session.pop('submitted', False)
+    submitted = request.session.get('submitted', False)
+    print(submitted)
     event = Tournament.objects.get(id=event_id)
     if not event:
         # Handle case where event is not found
@@ -192,9 +193,9 @@ def event_detail(request, event_id):
     #     return redirect('event_detail_success', event_id=event_id)
     
     # Check if redirected after successful registration
-    full_name = request.session.pop('full_name', '')
-    tournament_name = request.session.pop('tournament_name', '')
-    tournament_date = request.session.pop('tournament_date', '')
+    full_name = request.session.get('full_name', '')
+    tournament_name = request.session.get('tournament_name', '')
+    tournament_date = request.session.get('tournament_date', '')
     context = {
         'event': event,
         'submitted': submitted,
@@ -206,84 +207,47 @@ def event_detail(request, event_id):
     
     return render(request, 'events/event_detail.html', context)
 
-def event_detail_success(request, event_id):
-    """View shown after successful registration to prevent form resubmission"""
-    # Get the success flag and registration data from session
-    submitted = request.session.pop('registration_success', False)
-    registration_data = request.session.pop('registration_data', None)
+# def event_detail_success(request, event_id):
+#     """View shown after successful registration to prevent form resubmission"""
+#     # Get the success flag and registration data from session
+#     submitted = request.session.pop('registration_success', False)
+#     registration_data = request.session.pop('registration_data', None)
     
-    if not submitted:
-        # If not coming from a successful submission, redirect to the normal event detail page
-        return redirect('event_detail', event_id=event_id)
+#     if not submitted:
+#         # If not coming from a successful submission, redirect to the normal event detail page
+#         return redirect('event_detail', event_id=event_id)
     
-    # Get event details as in event_detail view
-    current_date = datetime.now()
+#     # Get event details as in event_detail view
+#     current_date = datetime.now()
     
-    # Find the event by id
-    event = None
-    for e in events:
-        if e['id'] == event_id:
-            event = e
-            break
+#     # Find the event by id
+#     event = None
+#     for e in events:
+#         if e['id'] == event_id:
+#             event = e
+#             break
     
-    if not event:
-        return redirect('home')
+#     if not event:
+#         return redirect('home')
     
-    context = {
-        'event': event,
-        'submitted': submitted,
-        'registration': registration_data,
-        'current_year': datetime.now().year
-    }
+#     context = {
+#         'event': event,
+#         'submitted': submitted,
+#         'registration': registration_data,
+#         'current_year': datetime.now().year
+#     }
     
-    return render(request, 'events/event_detail.html', context)
+#     return render(request, 'events/event_detail.html', context)
 
 # Admin Dashboard Views
 # @login_required
 def admin_dashboard(request):
-    # Mock statistics data
-    stats = {
-        'total_events': 12,
-        'active_events': 5,
-        'total_users': 150,
-        'new_registrations': 25
-    }
-    
-    # Mock current user data
-    current_user = {
-        'name': 'Admin User',
-        'role': 'Administrator',
-        'avatar': 'img/avatar.jpg'
-    }
-    
-    # Mock events data
-    events = [
-        {'id': 1, 'title': 'Summer Tournament', 'date': '2023-07-15', 'status': 'active', 'registrations': 45},
-        {'id': 2, 'title': 'Winter Championship', 'date': '2023-12-10', 'status': 'upcoming', 'registrations': 30},
-        {'id': 3, 'title': 'Spring Cup', 'date': '2023-04-22', 'status': 'completed', 'registrations': 60},
-    ]
-    
-    # Mock data for users
-    users = [
-        {'id': 1, 'name': 'John Doe', 'email': 'john@example.com', 'joined': '2023-01-15', 'status': 'active'},
-        {'id': 2, 'name': 'Jane Smith', 'email': 'jane@example.com', 'joined': '2023-02-20', 'status': 'active'},
-        {'id': 3, 'name': 'Bob Johnson', 'email': 'bob@example.com', 'joined': '2023-03-05', 'status': 'inactive'},
-    ]
-    
-    # Mock data for registrations
-    registrations = [
-        {'id': 1, 'user': 'John Doe', 'event': 'Summer Tournament', 'date': '2023-06-10', 'status': 'confirmed'},
-        {'id': 2, 'user': 'Jane Smith', 'event': 'Winter Championship', 'date': '2023-11-05', 'status': 'pending'},
-        {'id': 3, 'user': 'Bob Johnson', 'event': 'Spring Cup', 'date': '2023-03-15', 'status': 'confirmed'},
-    ]
-        
+
     events = Tournament.objects.all()
     context = {
-        'stats': stats,
-        'current_user': current_user,
         'events': events,
-        'users': users,
-        'registrations': registrations,
+        # 'users': users,
+        # 'registrations': registrations,
         'active_tab': 'dashboard'
     }
     
