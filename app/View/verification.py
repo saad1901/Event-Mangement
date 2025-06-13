@@ -10,12 +10,13 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 
 def admin_verification(request):
-
+    alltournaments = Tournament.objects.all()
     verification_requests = Participant.objects.filter(status='registered')
     context = {
         'verification_requests': verification_requests,
         # 'events': events,
-        'active_tab': 'verification'
+        'active_tab': 'verification',
+        'alltournaments': alltournaments,
     }
     
     return render(request, 'admin/verification.html', context)
