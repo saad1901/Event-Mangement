@@ -38,7 +38,7 @@
 .form-control:focus {
     outline: none;
     border-color: var(--secondary-color);
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2);
     background-color: #fff;
 }
 
@@ -261,4 +261,4 @@ select.form-control {
     .form-buttons button {
         width: 100%;
     }
-} 
+}

@@ -24,12 +24,6 @@ function initializeTabs() {
     });
 }
 
-// Call initialization functions when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    initializeTabs();
-    // Other initialization functions can be called here
-});
-
 // Modal Management
 function initializeModals() {
     // Get all modal triggers and close buttons
@@ -43,12 +37,6 @@ function initializeModals() {
             const modal = document.getElementById(modalId);
             
             if (modal) {
-                // If edit button with data-id attribute, populate form
-                if (this.hasAttribute('data-id')) {
-                    const itemId = this.getAttribute('data-id');
-                    populateModalForm(modalId, itemId);
-                }
-                
                 modal.style.display = 'block';
                 document.body.style.overflow = 'hidden'; // Prevent scrolling
             }
@@ -80,109 +68,6 @@ function closeModal(modal) {
         // Reset form if exists
         const form = modal.querySelector('form');
         if (form) form.reset();
-    }
-}
-
-// Populate form fields when editing items
-function populateModalForm(modalId, itemId) {
-    // This function will be implemented to fetch and fill data
-    // For demonstration, we'll use mock data
-    console.log(`Populating ${modalId} with data for item ${itemId}`);
-    
-    // Example for different forms
-    switch(modalId) {
-        case 'eventModal':
-            populateEventForm(itemId);
-            break;
-        case 'userModal':
-            populateUserForm(itemId);
-            break;
-        case 'registrationModal':
-            populateRegistrationForm(itemId);
-            break;
-    }
-}
-
-// Example functions to populate different forms
-function populateEventForm(eventId) {
-    // In a real app, you would fetch this data from the server
-    // This is just a mockup for demonstration
-    const mockEvent = {
-        id: eventId,
-        title: 'Example Event ' + eventId,
-        description: 'This is a sample event description for testing purposes.',
-        date: '2023-12-15',
-        time: '18:00',
-        location: 'Conference Center',
-        capacity: 100,
-        price: 25.99,
-        status: 'upcoming'
-    };
-    
-    // Fill the form fields
-    const form = document.querySelector('#eventModal form');
-    if (form) {
-        form.querySelector('#event-title').value = mockEvent.title;
-        form.querySelector('#event-description').value = mockEvent.description;
-        form.querySelector('#event-date').value = mockEvent.date;
-        form.querySelector('#event-time').value = mockEvent.time;
-        form.querySelector('#event-location').value = mockEvent.location;
-        form.querySelector('#event-capacity').value = mockEvent.capacity;
-        form.querySelector('#event-price').value = mockEvent.price;
-        form.querySelector('#event-status').value = mockEvent.status;
-        
-        // Update form action or set data attribute for submission
-        form.setAttribute('data-edit-id', eventId);
-    }
-}
-
-function populateUserForm(userId) {
-    // Mock user data
-    const mockUser = {
-        id: userId,
-        name: 'User ' + userId,
-        email: 'user' + userId + '@example.com',
-        phone: '555-123-456' + userId,
-        role: userId % 2 === 0 ? 'admin' : 'user',
-        status: 'active'
-    };
-    
-    // Fill the form fields
-    const form = document.querySelector('#userModal form');
-    if (form) {
-        form.querySelector('#user-name').value = mockUser.name;
-        form.querySelector('#user-email').value = mockUser.email;
-        form.querySelector('#user-phone').value = mockUser.phone;
-        form.querySelector('#user-role').value = mockUser.role;
-        form.querySelector('#user-status').value = mockUser.status;
-        
-        form.setAttribute('data-edit-id', userId);
-    }
-}
-
-function populateRegistrationForm(registrationId) {
-    // Mock registration data
-    const mockRegistration = {
-        id: registrationId,
-        eventId: '1',
-        userId: '2',
-        registrationDate: '2023-11-25',
-        status: 'confirmed',
-        paymentStatus: 'paid',
-        ticketQuantity: 2
-    };
-    
-    // Fill the form fields
-    const form = document.querySelector('#registrationModal form');
-    if (form) {
-        form.querySelector('#registration-event').value = mockRegistration.eventId;
-        form.querySelector('#registration-user').value = mockRegistration.userId;
-        form.querySelector('#registration-date').value = mockRegistration.registrationDate;
-        form.querySelector('#registration-status').value = mockRegistration.status;
-        form.querySelector('#registration-payment').value = mockRegistration.paymentStatus;
-        form.querySelector('#registration-quantity').value = mockRegistration.ticketQuantity;
-        
-        form.setAttribute('data-edit-id', registrationId);
     }
 }
 
@@ -290,33 +175,11 @@ function setupEventListeners() {
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {
         form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(this);
-            const formObject = {};
-            formData.forEach((value, key) => {
-                formObject[key] = value;
-            });
-            
-            // Check if this is an edit (has data-edit-id)
-            const editId = this.getAttribute('data-edit-id');
-            
-            // Log the data (would be sent to server in a real app)
-            console.log('Form submitted:', 
-                editId ? `Editing item ${editId}` : 'Creating new item', 
-                formObject
-            );
-            
-            // Close the modal
-            const modal = this.closest('.modal');
-            if (modal) closeModal(modal);
-            
-            // Show success message (would be based on server response)
-            showNotification('Success!', 
-                editId ? 'Item updated successfully.' : 'Item created successfully.', 
-                'success'
-            );
+            // Do NOT prevent default, so form submits to backend
+            // Optionally close modal after submission (will only work for AJAX, not normal submit)
+            // const modal = this.closest('.modal');
+            // if (modal) closeModal(modal);
+            // Optionally show notification after backend response, not here
         });
     });
     
@@ -508,7 +371,7 @@ function getCurrentDate() {
 // Responsive adjustments
 window.addEventListener('resize', function() {
     // Adjust charts if they exist
-    if (typeof Chart !== 'undefined') {
+    if (typeof Chart !== 'undefined' && Chart.instances) {
         Chart.instances.forEach(instance => {
             instance.resize();
         });
