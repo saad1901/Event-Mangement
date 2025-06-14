@@ -49,19 +49,19 @@ class Tournament(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='tournaments')
-    organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='organized_tournaments')
-    
+    organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='organized_tournaments', default=None, null=True)
     # Event Details
     start_date = models.DateField()
     end_date = models.DateField()
+    tournament_time = models.TimeField(default=timezone.datetime.strptime('10:00', '%H:%M').time())
     # time = models.TimeField() #default should be 10am
     registration_deadline = models.DateTimeField()
     venue = models.CharField(max_length=200)
-    address = models.TextField()
+    address = models.TextField(blank=True)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=20)
+    postal_code = models.CharField(max_length=20, null=True, blank=True)
     
     # Tournament Specifics
     max_participants = models.PositiveIntegerField()
