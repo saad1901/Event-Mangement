@@ -13,7 +13,17 @@ class Category(models.Model):
     icon = models.CharField(max_length=50, blank=True)  # For FontAwesome icons
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    type = models.CharField(
+        max_length=20, 
+        choices=[
+            ('sports', 'Sports'),
+            ('esports', 'Esports'),
+            ('cultural', 'Cultural'),
+            ('academic', 'Academic'),
+            ('technology', 'Technology'),
+            ('other', 'Other'),
+        ]
+    )
     class Meta:
         verbose_name_plural = "Categories"
         ordering = ['name']
@@ -57,7 +67,7 @@ class Tournament(models.Model):
     # time = models.TimeField() #default should be 10am
     registration_deadline = models.DateTimeField()
     venue = models.CharField(max_length=200)
-    address = models.TextField(blank=True)
+    address = models.TextField(blank=True, null=True)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
     country = models.CharField(max_length=100)

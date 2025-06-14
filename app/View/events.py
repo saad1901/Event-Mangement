@@ -5,14 +5,6 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from app.models import *
 
-def admin_events(request):
-    events = Tournament.objects.all()
-    context = {
-        'active_tab': 'events',
-        'events': events,
-    }
-    return render(request, 'admin/events.html', context)
-
 def event_detail(request, event_id):
     submitted = request.session.get('submitted', False)
     event = Tournament.objects.get(id=event_id)
@@ -47,4 +39,4 @@ def all_events(request):
         'events': events,
         'current_year': datetime.now().year
     }
-    return render(request, 'events/all_events.html', context)
+    return render(request, 'events/allevents.html', context)

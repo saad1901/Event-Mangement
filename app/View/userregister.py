@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from app.models import *
+from ..whatsapp import *
 
 def addparticipant(request):
     submitted = request.session.get('submitted', False)
@@ -57,12 +58,13 @@ def addparticipant(request):
             request.session['tournament_name'] = tournament.title
             request.session['tournament_date'] = str(tournament.start_date)
 
+            send_whatsapp_message(request.POST.get('phone'), 'Thank you for registering for the tournament! Your registration is confirmed.')
             return redirect('event_detail', event_id=event_id)
 
         except Exception as e:
             print(f"Error occurred: {e}")
             # Redirect or handle error as needed
-            return redirect('home')
+            return redirect('event_detail', event_id=event_id)
 
     if not tournament:
         # If GET or tournament not found
@@ -70,15 +72,15 @@ def addparticipant(request):
         if event_id:
             tournament = get_object_or_404(Tournament, id=event_id)
         else:
-            return redirect('home')
+            return redirect('event_detail', event_id=event_id)
 
-    context = {
-        'event': tournament,
-        'submitted': submitted,
-        'current_year': datetime.now().year
-    }
+    # context = {
+    #     'event': tournament,
+    #     'submitted': submitted,
+    #     'current_year': datetime.now().year
+    # }
 
-    return render(request, 'events/event_detail.html', context)
+    # return render(request, 'events/event_detail.html', context)
 
 
 def clear_registration_session(request):

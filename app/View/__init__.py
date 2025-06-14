@@ -2,13 +2,14 @@ from .events import *
 from .verification import *
 from .registration import *
 from .userregister import *
-
+from .admin_events import *
+from .admin_dashboard import *
 # Import views from their respective modules
 from .home import home, about, contact
 from .events import event_detail, event_list, all_events
 from .admin_views import (
-    admin_dashboard, admin_events, admin_settings,
-    admin_reports, admin_users, admin_registrations
+    admin_settings,
+    admin_reports, admin_users
 )
 from .api import (
     api_events, api_event_detail, api_users,
