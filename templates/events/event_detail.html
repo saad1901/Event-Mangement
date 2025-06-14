@@ -15,6 +15,7 @@
             <span><i class="far fa-calendar-alt"></i> {{ event.start_date }}</span>
             <span><i class="far fa-clock"></i> {{ event.tournament_time }}</span>
             <span><i class="fas fa-map-marker-alt"></i> {{ event.venue }} {{ event.address }} {{ event.city }}, {{event.state}}</span>
+            <span><i class="fas fa-phone"></i>CONTACT :&nbsp;<a href="tel:+91{{event.contact_phone}}">{{event.contact_phone}}</a></span>
         </div>
     </div>
 </section>

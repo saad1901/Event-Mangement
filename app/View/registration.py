@@ -5,14 +5,14 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from app.models import *
 
-
+@login_required
 def admin_registration(request):
     events = Tournament.objects.all()
-    registrations = Participant.objects.all()
+    # registrations = Participant.objects.all()
     context = {
         'active_tab': 'registration',
         'events': events,
-        'registrations': registrations,
+        'registrations': Participant.objects.all(),
     }
 
     return render(request, 'admin/registrations.html', context)

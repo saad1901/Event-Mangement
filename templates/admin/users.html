@@ -20,11 +20,9 @@
         <div class="filter-options">
             <select data-filter-type="category">
                 <option value="">All Categories</option>
-                <option value="chess">Chess</option>
-                <option value="football">Football</option>
-                <option value="basketball">Basketball</option>
-                <option value="tennis">Tennis</option>
-                <option value="other">Other</option>
+                {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
             </select>
             <select data-filter-type="tournament">
                 <option value="">All Tournaments</option>
@@ -34,9 +32,8 @@
             </select>
             <select data-filter-type="status">
                 <option value="">All Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="suspended">Suspended</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="rejected">Rejected</option>
             </select>
         </div>
     </div>
