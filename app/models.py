@@ -190,6 +190,7 @@ class Participant(models.Model):
     full_name = models.CharField(max_length=200)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
+    wp = models.CharField(max_length=10, blank=True, help_text="WhatsApp number for updates")
     age = models.IntegerField()
     gender = models.CharField(max_length=10, choices=[('male', 'Male'), ('female', 'Female'), ('other', 'Other')])
     

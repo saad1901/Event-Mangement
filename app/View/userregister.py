@@ -21,6 +21,7 @@ def addparticipant(request):
                 full_name=request.POST.get('full_name'),
                 email=request.POST.get('email'),
                 phone=request.POST.get('phone'),
+                wp=request.POST.get('wp'),
                 age=request.POST.get('age'),
                 gender=request.POST.get('gender'),
                 notes=request.POST.get('notes', ''),
