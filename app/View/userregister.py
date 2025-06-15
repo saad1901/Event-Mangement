@@ -59,7 +59,8 @@ def addparticipant(request):
             request.session['tournament_name'] = tournament.title
             request.session['tournament_date'] = str(tournament.start_date)
 
-            send_whatsapp_message(request.POST.get('phone'), 'Thank you for registering for the tournament! Your registration is confirmed.')
+            send_whatsapp_message(participant, )
+
             return redirect('event_detail', event_id=event_id)
 
         except Exception as e:

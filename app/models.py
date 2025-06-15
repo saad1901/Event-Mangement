@@ -46,6 +46,16 @@ class TournamentImage(models.Model):
     def __str__(self):
         return f"Image for {self.tournament.title}"
 
+class UPIS(models.Model):
+    upi_id = models.CharField(max_length=100, unique=True, help_text="UPI ID for payment collection")
+    nickname = models.CharField(max_length=100,blank=True,null=True, unique=True, help_text="Nickname for the UPI ID")
+    name = models.CharField(max_length=100, help_text="Name associated with the UPI ID")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
 class Tournament(models.Model):
     STATUS_CHOICES = [
         ('draft', 'Draft'),
@@ -99,6 +109,17 @@ class Tournament(models.Model):
     # Social Media
     facebook_event = models.URLField(blank=True)
     instagram_post = models.URLField(blank=True)
+    
+    upi_id = models.ForeignKey(
+        UPIS,
+        max_length=100, 
+        blank=True, 
+        help_text="UPI ID for payment collection",
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='tournaments'
+    )
+    
     
     class Meta:
         ordering = ['-start_date']
@@ -188,7 +209,7 @@ class Participant(models.Model):
     
     # Personal Information
     full_name = models.CharField(max_length=200)
-    email = models.EmailField()
+    email = models.EmailField(blank=True, null=True, help_text="Email address for updates and notifications")
     phone = models.CharField(max_length=20)
     wp = models.CharField(max_length=10, blank=True, help_text="WhatsApp number for updates")
     age = models.IntegerField()

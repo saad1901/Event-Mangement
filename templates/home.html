@@ -2,144 +2,150 @@
 
 {% block content %}
     <!-- Hero Section -->
-    <section class="hero" style="background: linear-gradient(45deg, #08b39c, #3a6073); padding: 120px 0; position: relative; overflow: hidden; box-shadow: inset 0 -10px 20px -10px rgba(0,0,0,0.1);">
+    <section class="hero" style="background: linear-gradient(45deg, #08b39c, #3a6073); padding: 80px 0; position: relative; overflow: hidden; box-shadow: inset 0 -10px 20px -10px rgba(0,0,0,0.1);">
         <!-- Abstract Design Elements -->
         <div style="position: absolute; top: -50px; right: -50px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(85, 85, 85, 0.08), transparent 70%); z-index: 1;"></div>
         <div style="position: absolute; bottom: -100px; left: -100px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(85, 85, 85, 0.08), transparent 70%); z-index: 1;"></div>
         
         <div class="container" style="position: relative; z-index: 2;">
-            <div style="text-align: center; max-width: 800px; margin: 0 auto;">
-                <h2 style="color: var(--text-color); font-weight: 900; font-size: clamp(2.8rem, 5.5vw, 4.2rem); margin-bottom: 20px; position: relative; display: inline-block; letter-spacing: 1px;">
+            <div class="hero-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <h2 style="color: var(--text-color); font-weight: 900; font-size: clamp(2.2rem, 5vw, 4.2rem); margin-bottom: 20px; position: relative; display: inline-block; letter-spacing: 1px;">
                     <span style="background: linear-gradient(45deg,rgb(255, 255, 255),rgb(218, 214, 214)); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">TOURNAMENT CENTRAL</span>
                     <span style="display: block; width: 80px; height: 3px; background: #555555; margin: 15px auto; border-radius: 2px;"></span>
                 </h2>
-                <p style="color: var(--text-color); font-size: clamp(1.1rem, 2.1vw, 1.3rem); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; font-weight: 400; letter-spacing: 0.3px;">Discover premier tournaments and events across various categories. Join competitions, showcase your skills, and connect with participants worldwide.</p>
-                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
-                    <a href="#events" class="btn btn-primary" style="background: #555555; border: none; padding: 14px 32px; border-radius: 4px; font-weight: 700; box-shadow: 0 4px 8px rgba(0,0,0,0.15); color: white; transition: all 0.3s ease; letter-spacing: 0.8px; position: relative; overflow: hidden;">Explore Events</a>
-                    <a href="#contact" class="btn" style="background: transparent; color:rgb(255, 255, 255); border: 1px solid #555555; padding: 14px 32px; border-radius: 4px; font-weight: 700; transition: all 0.3s ease; letter-spacing: 0.8px;">Contact Us</a>
+                <p style="color: var(--text-color); font-size: clamp(1rem, 1.8vw, 1.3rem); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; font-weight: 400; letter-spacing: 0.3px;">Discover premier tournaments and events across various categories. Join competitions, showcase your skills, and connect with participants worldwide.</p>
+                <div class="hero-buttons" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <a href="#events" class="btn btn-primary" style="background: #555555; border: none; padding: 12px 24px; border-radius: 4px; font-weight: 700; box-shadow: 0 4px 8px rgba(0,0,0,0.15); color: white; transition: all 0.3s ease; letter-spacing: 0.8px; position: relative; overflow: hidden;">Explore Events</a>
+                    <a href="#contact" class="btn" style="background: transparent; color:rgb(255, 255, 255); border: 1px solid #555555; padding: 12px 24px; border-radius: 4px; font-weight: 700; transition: all 0.3s ease; letter-spacing: 0.8px;">Contact Us</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Tournament Categories Section -->
-    <section style="padding: 70px 0; background-color: #f5f5f5;">
+    <section class="categories-section" id="categories" style="padding: 40px 0; background-color: #f5f5f5;">
         <div class="container">
             <div class="section-header">
                 <h2>Tournament Categories</h2>
-                <p style="max-width: 600px; margin: 0 auto 40px; text-align: center; color: #666;">Explore our diverse range of tournament categories suitable for participants of all skill levels</p>
+                <p style="max-width: 600px; margin: 0 auto 30px; text-align: center; color: #666;">Explore our diverse range of tournament categories suitable for participants of all skill levels</p>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px;">
-                <div class="category-card" style="background-color: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s; text-align: center; padding-bottom: 20px;">
-                    <div style="height: 150px; background: linear-gradient(45deg, #08b39c, #3a6073); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-chess" style="font-size: 50px; color: #fff;"></i>
+            <div class="categories-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+                <a href="#" class="category-item" style="display: flex; align-items: center; background-color: #fff; border-radius: 50px; padding: 6px 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; min-width: 100px; width: calc(50% - 15px); max-width: 150px;">
+                    <div style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(45deg, #08b39c, #3a6073); display: flex; align-items: center; justify-content: center; margin-right: 8px;">
+                        <i class="fas fa-chess" style="font-size: 14px; color: #fff;"></i>
                     </div>
-                    <h3 style="margin: 20px 0 10px; color: #333; font-size: 1.5rem;">Chess</h3>
-                    <p style="padding: 0 20px; color: #666; margin-bottom: 15px;">Strategic board games for all skill levels</p>
-                    <a href="#" style="display: inline-block; padding: 8px 20px; background-color: #f5f5f5; color: #333; border-radius: 20px; font-weight: 500;">View Tournaments</a>
-                </div>
+                    <span style="font-weight: 500; color: #333; font-size: 14px;">Chess</span>
+                </a>
                 
-                <div class="category-card" style="background-color: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s; text-align: center; padding-bottom: 20px;">
-                    <div style="height: 150px; background: linear-gradient(45deg, #08b39c, #96c93d); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-futbol" style="font-size: 50px; color: #fff;"></i>
+                <a href="#" class="category-item" style="display: flex; align-items: center; background-color: #fff; border-radius: 50px; padding: 6px 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; min-width: 100px; width: calc(50% - 15px); max-width: 150px;">
+                    <div style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(45deg, #08b39c, #96c93d); display: flex; align-items: center; justify-content: center; margin-right: 8px;">
+                        <i class="fas fa-futbol" style="font-size: 14px; color: #fff;"></i>
                     </div>
-                    <h3 style="margin: 20px 0 10px; color: #333; font-size: 1.5rem;">Sports</h3>
-                    <p style="padding: 0 20px; color: #666; margin-bottom: 15px;">Competitive athletic events for teams and individuals</p>
-                    <a href="#" style="display: inline-block; padding: 8px 20px; background-color: #f5f5f5; color: #333; border-radius: 20px; font-weight: 500;">View Tournaments</a>
-                </div>
+                    <span style="font-weight: 500; color: #333; font-size: 14px;">Sports</span>
+                </a>
                 
-                <div class="category-card" style="background-color: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s; text-align: center; padding-bottom: 20px;">
-                    <div style="height: 150px; background: linear-gradient(45deg, #ff7e5f, #feb47b); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-gamepad" style="font-size: 50px; color: #fff;"></i>
+                <a href="#" class="category-item" style="display: flex; align-items: center; background-color: #fff; border-radius: 50px; padding: 6px 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; min-width: 100px; width: calc(50% - 15px); max-width: 150px;">
+                    <div style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(45deg, #ff7e5f, #feb47b); display: flex; align-items: center; justify-content: center; margin-right: 8px;">
+                        <i class="fas fa-gamepad" style="font-size: 14px; color: #fff;"></i>
                     </div>
-                    <h3 style="margin: 20px 0 10px; color: #333; font-size: 1.5rem;">E-Sports</h3>
-                    <p style="padding: 0 20px; color: #666; margin-bottom: 15px;">Competitive gaming for modern athletes</p>
-                    <a href="#" style="display: inline-block; padding: 8px 20px; background-color: #f5f5f5; color: #333; border-radius: 20px; font-weight: 500;">View Tournaments</a>
-                </div>
+                    <span style="font-weight: 500; color: #333; font-size: 14px;">E-Sports</span>
+                </a>
                 
-                <div class="category-card" style="background-color: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s, box-shadow 0.3s; text-align: center; padding-bottom: 20px;">
-                    <div style="height: 150px; background: linear-gradient(45deg, #654ea3, #eaafc8); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-brain" style="font-size: 50px; color: #fff;"></i>
+                <a href="#" class="category-item" style="display: flex; align-items: center; background-color: #fff; border-radius: 50px; padding: 6px 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; min-width: 100px; width: calc(50% - 15px); max-width: 150px;">
+                    <div style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(45deg, #654ea3, #eaafc8); display: flex; align-items: center; justify-content: center; margin-right: 8px;">
+                        <i class="fas fa-brain" style="font-size: 14px; color: #fff;"></i>
                     </div>
-                    <h3 style="margin: 20px 0 10px; color: #333; font-size: 1.5rem;">Academic</h3>
-                    <p style="padding: 0 20px; color: #666; margin-bottom: 15px;">Knowledge-based competitions for brilliant minds</p>
-                    <a href="#" style="display: inline-block; padding: 8px 20px; background-color: #f5f5f5; color: #333; border-radius: 20px; font-weight: 500;">View Tournaments</a>
-                </div>
+                    <span style="font-weight: 500; color: #333; font-size: 14px;">Academic</span>
+                </a>
             </div>
         </div>
     </section>
 
     <!-- Featured Events Section -->
-    <section id="events" class="events-section">
+    <section id="featured-events" class="events-section" style="background: white;">
         <div class="container">
             <div class="section-header">
                 <h2>Featured Events</h2>
             </div>
 
-            <div class="events-grid">
-                {% for event in all_events %}
-                <div class="event-card animate-on-scroll">
-                    <div class="event-image" style="background-image: url('{{ event.banner_image.url|default:'/static/images/event-placeholder.jpg' }}');"></div>
-                    <div class="event-details">
-                        <span class="badge {{ event.category.type|lower }}">{{ event.category.type }}</span>
-                        <h3>{{ event.title }}</h3>
-                        <div class="event-meta">
-                            <span><i class="far fa-calendar-alt"></i> {{ event.start_date }}</span>
-                            <span><i class="far fa-clock"></i> {{ event.tournament_time }}</span>
+            <div class="events-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                {% for event in featured_events %}
+                <div class="event-card animate-on-scroll stagger-item" style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: all 0.3s ease; border: 1px solid #eee; background: white;">
+                    <div class="event-image" style="height: 180px; background-image: url('{% if event.banner_image %}{{ event.banner_image.url }}{% else %}/static/images/event-placeholder.jpg{% endif %}'); background-size: cover; background-position: center;">
+                    </div>
+                    <div class="event-details" style="padding: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span class="badge {{ event.category|lower }}" style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; background: #08a18c; color: white;">{{ event.category }}</span>
+                            <span style="font-weight: 600; color: #08a18c;">₹{{ event.entry_fee }} / PP</span>
                         </div>
-                        <div class="event-meta">
-                            <span><i class="fas fa-phone"></i>CONTACT :&nbsp;<a href="tel:+91{{event.contact_phone}}">{{ event.contact_phone }}</a> </span>
+                        
+                        <h3 style="margin-bottom: 12px; font-size: 1.3rem; color: #333;">{{ event.title }}</h3>
+                        
+                        <div class="event-meta" style="margin-bottom: 12px;">
+                            <div style="display: flex; align-items: center; margin-bottom: 6px;">
+                                <i class="far fa-calendar-alt" style="margin-right: 8px; color: #08a18c; width: 16px;"></i>
+                                <span style="color: #666; font-size: 14px;">{{ event.start_date }}</span>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <i class="far fa-clock" style="margin-right: 8px; color: #08a18c; width: 16px;"></i>
+                                <span style="color: #666; font-size: 14px;">{{ event.tournament_time }}</span>
+                            </div>
                         </div>
-                        <p>{{ event.description|truncatechars:120 }}</p>
-                        <div class="event-footer">
-                            <span class="price">₹{{ event.entry_fee }}</span>
-                            <a href="{% url 'event_detail' event.id %}" class="btn">View Details</a>
+                        
+                        <p style="margin-bottom: 15px; color: #666; line-height: 1.5; font-size: 14px;">{{ event.description|truncatechars:100 }}</p>
+                        
+                        <div class="event-footer" style="text-align: right;">
+                            <a href="{% url 'event_detail' event.id %}" class="btn" style="background: #08a18c; color: white; padding: 8px 16px; border-radius: 4px; font-weight: 500; font-size: 14px; display: inline-block;">View Details</a>
                         </div>
                     </div>
                 </div>
-                {% empty %}
-                <div class="no-events">
-                    <p>No upcoming events at the moment. Check back soon!</p>
-                </div>
                 {% endfor %}
-
             </div>
-            
-            <div class="text-center mt-4">
-                <a href="{% url 'all_events' %}" class="btn btn-outline">View All Events</a>
+
+            <div class="view-all-link" style="text-align: center; margin-top: 30px;">
+                <a href="{% url 'all_events' %}" class="btn btn-outline" style="border: 2px solid #08a18c; color: #08a18c; background: transparent; padding: 10px 20px; border-radius: 4px; font-weight: 500; transition: all 0.3s ease;">View All Events</a>
             </div>
         </div>
     </section>
     
     <!-- All Events Section -->
-    <section id="all-events" class="events-section bg-light">
+    <section id="all-events" class="events-section bg-light" style="background: #f8f9fa;">
         <div class="container">
             <div class="section-header">
                 <h2>Upcoming Events</h2>
             </div>
 
-            <div class="events-grid">
-                {% for event in events %}
-                <div class="event-card animate-on-scroll stagger-item">
-                    <div class="event-image" style="background-image: url('{{ event.image|default:'/static/images/event-placeholder.jpg' }}');"></div>
-                    <div class="event-details">
-                        <span class="badge {{ event.category|lower }}">{{ event.category }}</span>
-                        <h3>{{ event.title }}</h3>
-                        <div class="event-meta">
-                            <span><i class="far fa-calendar-alt"></i> {{ event.date }}</span>
-                            <span><i class="far fa-clock"></i> {{ event.time }}</span>
+            <div class="events-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                {% for event in upcoming_events %}
+                <div class="event-card animate-on-scroll stagger-item" style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: all 0.3s ease; border: 1px solid #eee; background: white;">
+                    <div class="event-image" style="height: 180px; background-image: url('{% if event.banner_image %}{{ event.banner_image.url }}{% else %}/static/images/event-placeholder.jpg{% endif %}'); background-size: cover; background-position: center;">
+                    </div>
+                    <div class="event-details" style="padding: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span class="badge {{ event.category|lower }}" style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; background: #08a18c; color: white;">{{ event.category }}</span>
+                            <span style="font-weight: 600; color: #08a18c;">{{ event.price }}</span>
                         </div>
-                        <p>{{ event.description|truncatechars:100 }}</p>
-                        <div class="event-footer">
-                            <span class="price">{{ event.price }}</span>
-                            <a href="{% url 'event_detail' event.id %}" class="btn">Register Now</a>
+                        
+                        <h3 style="margin-bottom: 12px; font-size: 1.3rem; color: #333;">{{ event.title }}</h3>
+                        
+                        <div class="event-meta" style="margin-bottom: 12px;">
+                            <div style="display: flex; align-items: center; margin-bottom: 6px;">
+                                <i class="far fa-calendar-alt" style="margin-right: 8px; color: #08a18c; width: 16px;"></i>
+                                <span style="color: #666; font-size: 14px;">{{ event.date }}</span>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <i class="far fa-clock" style="margin-right: 8px; color: #08a18c; width: 16px;"></i>
+                                <span style="color: #666; font-size: 14px;">{{ event.time }}</span>
+                            </div>
+                        </div>
+                        
+                        <p style="margin-bottom: 15px; color: #666; line-height: 1.5; font-size: 14px;">{{ event.description|truncatechars:100 }}</p>
+                        
+                        <div class="event-footer" style="text-align: right;">
+                            <a href="{% url 'event_detail' event.id %}" class="btn" style="background: #08a18c; color: white; padding: 8px 16px; border-radius: 4px; font-weight: 500; font-size: 14px; display: inline-block;">Register Now</a>
                         </div>
                     </div>
-                </div>
-                {% empty %}
-                <div class="no-events">
-                    <p>No upcoming events at the moment. Check back soon!</p>
                 </div>
                 {% endfor %}
             </div>
@@ -147,15 +153,15 @@
     </section>
 
     <!-- Features Section -->
-    <section style="padding: 80px 0; background-color: #fff;">
+    <section class="features-section" style="padding: 60px 0; background-color: #fff;">
         <div class="container">
             <div class="section-header">
                 <h2>Why Choose Us</h2>
                 <p style="max-width: 600px; margin: 0 auto 40px; text-align: center; color: #666;">We offer comprehensive tournament management with these premium benefits</p>
             </div>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px;">
-                <div style="text-align: center; padding: 30px 20px; border-radius: 12px; transition: transform 0.3s; background-color: #f9f9f9;">
+            <div class="features-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;">
+                <div class="feature-card" style="text-align: center; padding: 30px 20px; border-radius: 12px; transition: transform 0.3s; background-color: #f9f9f9;">
                     <div style="width: 80px; height: 80px; background: linear-gradient(45deg, #d4af37, #946b2d); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
                         <i class="fas fa-trophy" style="font-size: 30px; color: #fff;"></i>
                     </div>
@@ -163,7 +169,7 @@
                     <p style="color: #666;">We ensure all tournaments are conducted with the highest standards of organization and fairness.</p>
                 </div>
                 
-                <div style="text-align: center; padding: 30px 20px; border-radius: 12px; transition: transform 0.3s; background-color: #f9f9f9;">
+                <div class="feature-card" style="text-align: center; padding: 30px 20px; border-radius: 12px; transition: transform 0.3s; background-color: #f9f9f9;">
                     <div style="width: 80px; height: 80px; background: linear-gradient(45deg, #d4af37, #946b2d); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
                         <i class="fas fa-users" style="font-size: 30px; color: #fff;"></i>
                     </div>
@@ -171,7 +177,7 @@
                     <p style="color: #666;">Connect with other participants and build lasting relationships within your competitive community.</p>
                 </div>
                 
-                <div style="text-align: center; padding: 30px 20px; border-radius: 12px; transition: transform 0.3s; background-color: #f9f9f9;">
+                <div class="feature-card" style="text-align: center; padding: 30px 20px; border-radius: 12px; transition: transform 0.3s; background-color: #f9f9f9;">
                     <div style="width: 80px; height: 80px; background: linear-gradient(45deg, #d4af37, #946b2d); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
                         <i class="fas fa-medal" style="font-size: 30px; color: #fff;"></i>
                     </div>
@@ -208,61 +214,93 @@
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section style="padding: 80px 0; background: linear-gradient(135deg, #181818, #333); color: #fff; text-align: center;">
+    <!-- Contact Section -->
+    <!-- Photo Gallery Section -->
+    <section class="gallery-section" style="padding: 60px 0; background: linear-gradient(135deg, #181818, #333); color: #fff; text-align: center;">
         <div class="container">
-            <div class="section-header" style="margin-bottom: 50px;">
-                <h2 style="color: #fff;">What Participants Say</h2>
+            <div class="section-header" style="margin-bottom: 40px;">
+                <h2 style="color: #fff;">Photo Gallery</h2>
+                <p style="max-width: 600px; margin: 0 auto 20px; text-align: center; color: #ccc;">Highlights from our previous tournaments and events</p>
             </div>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px;">
-                <div style="background-color: rgba(255,255,255,0.05); border-radius: 10px; padding: 30px; text-align: left; position: relative;">
-                    <div style="position: absolute; top: -15px; left: 20px; width: 40px; height: 40px; background-color: #d4af37; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
-                        <i class="fas fa-quote-left" style="color: #181818;"></i>
-                    </div>
-                    <p style="font-style: italic; margin-bottom: 20px; color: #f5f5f5;">The tournament organization was flawless. Clear communication, fair competition, and amazing atmosphere. Will definitely participate again!</p>
-                    <div style="display: flex; align-items: center;">
-                        <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #d4af37; margin-right: 15px; display: flex; align-items: center; justify-content: center;">
-                            <span style="color: #181818; font-weight: bold;">JD</span>
+            <div class="gallery-container" style="position: relative; margin: 0 -15px;">
+                <!-- Scrollable Gallery -->
+                <div class="gallery-scroll" style="display: flex; overflow-x: auto; scroll-behavior: smooth; padding: 20px 15px; gap: 15px; scrollbar-width: thin; scrollbar-color: #d4af37 rgba(255,255,255,0.1); -webkit-overflow-scrolling: touch;">
+                    <!-- Gallery Item 1 -->
+                    <div class="gallery-item" style="flex: 0 0 auto; width: 280px; height: 200px; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; transition: transform 0.3s ease;">
+                        <img src="/static/images/chess-tournament.jpg" alt="Tournament Photo" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="gallery-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 15px; text-align: left;">
+                            <h4 style="margin: 0; font-size: 16px; color: #fff;">Chess Championship</h4>
                         </div>
-                        <div>
-                            <h4 style="margin: 0; font-size: 16px; color: #d4af37;">John Doe</h4>
-                            <p style="margin: 0; font-size: 14px; color: #c0c0c0;">Chess Tournament Participant</p>
+                    </div>
+                    
+                    <!-- Gallery Item 2 -->
+                    <div class="gallery-item" style="flex: 0 0 auto; width: 280px; height: 200px; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; transition: transform 0.3s ease;">
+                        <img src="/static/images/about-image.jpg" alt="Tournament Photo" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="gallery-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 15px; text-align: left;">
+                            <h4 style="margin: 0; font-size: 16px; color: #fff;">Sports Tournament</h4>
+                        </div>
+                    </div>
+                    
+                    <!-- Gallery Item 3 -->
+                    <div class="gallery-item" style="flex: 0 0 auto; width: 280px; height: 200px; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; transition: transform 0.3s ease;">
+                        <img src="/static/images/event-placeholder.jpg" alt="Tournament Photo" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="gallery-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 15px; text-align: left;">
+                            <h4 style="margin: 0; font-size: 16px; color: #fff;">E-Sports Competition</h4>
+                        </div>
+                    </div>
+                    
+                    <!-- Gallery Item 4 -->
+                    <div class="gallery-item" style="flex: 0 0 auto; width: 280px; height: 200px; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; transition: transform 0.3s ease;">
+                        <img src="/static/images/chess-tournament.jpg" alt="Tournament Photo" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="gallery-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 15px; text-align: left;">
+                            <h4 style="margin: 0; font-size: 16px; color: #fff;">Award Ceremony</h4>
+                        </div>
+                    </div>
+                    
+                    <!-- Gallery Item 5 -->
+                    <div class="gallery-item" style="flex: 0 0 auto; width: 280px; height: 200px; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; transition: transform 0.3s ease;">
+                        <img src="/static/images/about-image.jpg" alt="Tournament Photo" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="gallery-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 15px; text-align: left;">
+                            <h4 style="margin: 0; font-size: 16px; color: #fff;">Team Competition</h4>
+                        </div>
+                    </div>
+                    
+                    <!-- Gallery Item 6 -->
+                    <div class="gallery-item" style="flex: 0 0 auto; width: 280px; height: 200px; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; transition: transform 0.3s ease;">
+                        <img src="/static/images/event-placeholder.jpg" alt="Tournament Photo" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="gallery-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 15px; text-align: left;">
+                            <h4 style="margin: 0; font-size: 16px; color: #fff;">Academic Challenge</h4>
+                        </div>
+                    </div>
+                    
+                    <!-- Gallery Item 7 -->
+                    <div class="gallery-item" style="flex: 0 0 auto; width: 280px; height: 200px; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; transition: transform 0.3s ease;">
+                        <img src="/static/images/chess-tournament.jpg" alt="Tournament Photo" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="gallery-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 15px; text-align: left;">
+                            <h4 style="margin: 0; font-size: 16px; color: #fff;">Tournament Finals</h4>
+                        </div>
+                    </div>
+                    
+                    <!-- Gallery Item 8 -->
+                    <div class="gallery-item" style="flex: 0 0 auto; width: 280px; height: 200px; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; transition: transform 0.3s ease;">
+                        <img src="/static/images/about-image.jpg" alt="Tournament Photo" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="gallery-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 15px; text-align: left;">
+                            <h4 style="margin: 0; font-size: 16px; color: #fff;">Victory Celebration</h4>
                         </div>
                     </div>
                 </div>
                 
-                <div style="background-color: rgba(255,255,255,0.05); border-radius: 10px; padding: 30px; text-align: left; position: relative;">
-                    <div style="position: absolute; top: -15px; left: 20px; width: 40px; height: 40px; background-color: #d4af37; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
-                        <i class="fas fa-quote-left" style="color: #181818;"></i>
-                    </div>
-                    <p style="font-style: italic; margin-bottom: 20px; color: #f5f5f5;">As a team captain, I was impressed with how well every detail was handled. The online registration process was smooth and the event itself was perfectly executed.</p>
-                    <div style="display: flex; align-items: center;">
-                        <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #d4af37; margin-right: 15px; display: flex; align-items: center; justify-content: center;">
-                            <span style="color: #181818; font-weight: bold;">JS</span>
-                        </div>
-                        <div>
-                            <h4 style="margin: 0; font-size: 16px; color: #d4af37;">Jane Smith</h4>
-                            <p style="margin: 0; font-size: 14px; color: #c0c0c0;">E-Sports Team Captain</p>
-                        </div>
-                    </div>
+                <!-- Navigation Indicators -->
+                <div class="gallery-nav" style="display: flex; justify-content: center; margin-top: 20px; gap: 8px;">
+                    <span class="nav-dot active" style="width: 10px; height: 10px; border-radius: 50%; background-color: #d4af37; cursor: pointer;"></span>
+                    <span class="nav-dot" style="width: 10px; height: 10px; border-radius: 50%; background-color: rgba(255,255,255,0.3); cursor: pointer;"></span>
+                    <span class="nav-dot" style="width: 10px; height: 10px; border-radius: 50%; background-color: rgba(255,255,255,0.3); cursor: pointer;"></span>
+                    <span class="nav-dot" style="width: 10px; height: 10px; border-radius: 50%; background-color: rgba(255,255,255,0.3); cursor: pointer;"></span>
                 </div>
                 
-                <div style="background-color: rgba(255,255,255,0.05); border-radius: 10px; padding: 30px; text-align: left; position: relative;">
-                    <div style="position: absolute; top: -15px; left: 20px; width: 40px; height: 40px; background-color: #d4af37; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
-                        <i class="fas fa-quote-left" style="color: #181818;"></i>
-                    </div>
-                    <p style="font-style: italic; margin-bottom: 20px; color: #f5f5f5;">The academic challenge was both rigorous and fair. I appreciated the attention to detail and how all participants were treated with respect regardless of their results.</p>
-                    <div style="display: flex; align-items: center;">
-                        <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #d4af37; margin-right: 15px; display: flex; align-items: center; justify-content: center;">
-                            <span style="color: #181818; font-weight: bold;">MJ</span>
-                        </div>
-                        <div>
-                            <h4 style="margin: 0; font-size: 16px; color: #d4af37;">Michael Johnson</h4>
-                            <p style="margin: 0; font-size: 14px; color: #c0c0c0;">Academic Bowl Competitor</p>
-                        </div>
-                    </div>
-                </div>
+                <!-- Scroll Instructions -->
+                <p style="color: #aaa; font-size: 14px; margin-top: 15px;">Swipe or scroll horizontally to see more photos</p>
             </div>
         </div>
     </section>
@@ -272,7 +310,7 @@
         <div class="container">
             <div class="section-header">
                 <h2>Contact Us</h2>
-                <p style="font-size: 1.2rem;">Get in touch with our team</p>
+                <p style="font-size: 1.1rem;">Get in touch with our team</p>
             </div>
             
             <div class="contact-content">
@@ -280,29 +318,29 @@
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt" style="font-size: 1.2rem;"></i>
                         <div>
-                            <h4 style="font-size: 1.3rem;">Address</h4>
-                            <p style="font-size: 1.1rem;">{{ contact_info.address }}</p>
+                            <h4 style="font-size: 1.2rem;">Address</h4>
+                            <p style="font-size: 1rem;">{{ contact_info.address }}</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-phone" style="font-size: 1.2rem;"></i>
                         <div>
-                            <h4 style="font-size: 1.3rem;">Phone</h4>
-                            <p style="font-size: 1.1rem;">{{ contact_info.phone }}</p>
+                            <h4 style="font-size: 1.2rem;">Phone</h4>
+                            <p style="font-size: 1rem;">{{ contact_info.phone }}</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-envelope" style="font-size: 1.2rem;"></i>
                         <div>
-                            <h4 style="font-size: 1.3rem;">Email</h4>
-                            <p style="font-size: 1.1rem;">{{ contact_info.email }}</p>
+                            <h4 style="font-size: 1.2rem;">Email</h4>
+                            <p style="font-size: 1rem;">{{ contact_info.email }}</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-clock" style="font-size: 1.2rem;"></i>
                         <div>
-                            <h4 style="font-size: 1.3rem;">Business Hours</h4>
-                            <p style="font-size: 1.1rem;">{{ contact_info.hours }}</p>
+                            <h4 style="font-size: 1.2rem;">Business Hours</h4>
+                            <p style="font-size: 1rem;">{{ contact_info.hours }}</p>
                         </div>
                     </div>
                 </div>
@@ -310,22 +348,22 @@
                 <div class="contact-form animate-on-scroll">
                     <form>
                         <div class="form-group">
-                            <label for="name" style="font-size: 1.1rem;">Your Name</label>
-                            <input type="text" id="name" class="form-control" style="font-size: 1.1rem; padding: 12px;" required>
+                            <label for="name" style="font-size: 1rem;">Your Name</label>
+                            <input type="text" id="name" class="form-control" style="font-size: 1rem; padding: 10px;" required>
                         </div>
                         <div class="form-group">
-                            <label for="email" style="font-size: 1.1rem;">Your Email</label>
-                            <input type="email" id="email" class="form-control" style="font-size: 1.1rem; padding: 12px;" required>
+                            <label for="email" style="font-size: 1rem;">Your Email</label>
+                            <input type="email" id="email" class="form-control" style="font-size: 1rem; padding: 10px;" required>
                         </div>
                         <div class="form-group">
-                            <label for="subject" style="font-size: 1.1rem;">Subject</label>
-                            <input type="text" id="subject" class="form-control" style="font-size: 1.1rem; padding: 12px;" required>
+                            <label for="subject" style="font-size: 1rem;">Subject</label>
+                            <input type="text" id="subject" class="form-control" style="font-size: 1rem; padding: 10px;" required>
                         </div>
                         <div class="form-group">
-                            <label for="message" style="font-size: 1.1rem;">Message</label>
-                            <textarea id="message" class="form-control" style="font-size: 1.1rem; padding: 12px;" rows="5" required></textarea>
+                            <label for="message" style="font-size: 1rem;">Message</label>
+                            <textarea id="message" class="form-control" style="font-size: 1rem; padding: 10px;" rows="5" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="font-size: 1.1rem; padding: 12px 24px;">Send Message</button>
+                        <button type="submit" class="btn btn-primary" style="font-size: 1rem; padding: 10px 20px;">Send Message</button>
                     </form>
                 </div>
             </div>
@@ -334,13 +372,13 @@
 
     <!-- Registration Confirmation Modal -->
     <div id="registrationModal" class="modal" style="display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7);">
-        <div class="modal-content" style="background-color: #fff; margin: 10% auto; padding: 30px; border-radius: 10px; max-width: 500px; box-shadow: 0 5px 30px rgba(0,0,0,0.3); position: relative; animation: fadeIn 0.3s ease;">
+        <div class="modal-content" style="background-color: #fff; margin: 10% auto; padding: 25px; border-radius: 10px; max-width: 90%; width: 450px; box-shadow: 0 5px 30px rgba(0,0,0,0.3); position: relative; animation: fadeIn 0.3s ease;">
             <span class="close-modal" onclick="closeModal()" style="position: absolute; top: 15px; right: 20px; font-size: 24px; font-weight: bold; cursor: pointer; color: #999;">&times;</span>
             <div style="text-align: center;">
-                <div style="width: 80px; height: 80px; background: linear-gradient(45deg, #d4af37, #946b2d); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                    <i class="fas fa-check" style="font-size: 40px; color: #fff;"></i>
+                <div style="width: 70px; height: 70px; background: linear-gradient(45deg, #d4af37, #946b2d); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                    <i class="fas fa-check" style="font-size: 35px; color: #fff;"></i>
                 </div>
-                <h3 style="margin-bottom: 15px; color: #333; font-size: 24px;">Registration Submitted</h3>
+                <h3 style="margin-bottom: 15px; color: #333; font-size: 22px;">Registration Submitted</h3>
                 <p style="margin-bottom: 20px; color: #666; font-size: 16px;">Thank you for registering for this tournament!</p>
                 <div style="background-color: #f7f7f7; border-radius: 8px; padding: 15px; margin-bottom: 20px; text-align: left;">
                     <p style="margin-bottom: 10px; color: #333; font-size: 16px;"><strong>What happens next?</strong></p>
@@ -348,7 +386,7 @@
                         <li style="margin-bottom: 8px; color: #666;">You'll receive a confirmation <strong>SMS</strong> and <strong>email</strong> once approved</li>
                     </ul>
                 </div>
-                <button onclick="closeModal()" style="background: linear-gradient(45deg, #d4af37, #946b2d); color: white; border: none; padding: 12px 24px; border-radius: 50px; font-size: 16px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">Got it!</button>
+                <button onclick="closeModal()" style="background: linear-gradient(45deg, #d4af37, #946b2d); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-size: 16px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">Got it!</button>
             </div>
         </div>
     </div>

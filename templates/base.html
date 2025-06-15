@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/animations.css' %}">
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -20,13 +21,13 @@
                     <h1><a href="{% url 'home' %}">Tournament Central</a></h1>
                 </div>
                 <nav class="nav">
-                    <ul class="nav-links">
+                    <ul class="nav-links" id="navLinks">
                         <li><a href="{% url 'home' %}">Home</a></li>
                         <li><a href="#">Events</a></li>
                         <li><a href="#">About</a></li>
                         <li><a href="#">Contact</a></li>
                     </ul>
-                    <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
                         <span></span>
                         <span></span>
                         <span></span>
@@ -41,7 +42,7 @@
     </main>
 
     <!-- Floating Help Button -->
-    <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+    <div class="floating-help-button" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
         <button type="button" onclick="toggleHelpMenu()" style="background-color: #28a745; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); transition: transform 0.2s;">
             <i class="fas fa-headset" style="font-size: 24px;"></i>
         </button>
@@ -133,6 +134,53 @@
             item.addEventListener('mouseout', function() {
                 this.style.backgroundColor = 'white';
             });
+        });
+        
+        // Mobile menu toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (mobileMenuToggle && navLinks) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                    
+                    // Toggle hamburger to X animation
+                    const spans = this.querySelectorAll('span');
+                    if (navLinks.classList.contains('active')) {
+                        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                        spans[1].style.opacity = '0';
+                        spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    } else {
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    }
+                });
+                
+                // Close mobile menu when clicking on a link
+                const navLinkItems = navLinks.querySelectorAll('a');
+                navLinkItems.forEach(link => {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('active');
+                        const spans = mobileMenuToggle.querySelectorAll('span');
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    });
+                });
+                
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!event.target.closest('.nav') && navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                        const spans = mobileMenuToggle.querySelectorAll('span');
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    }
+                });
+            }
         });
     </script>
     {% block extra_js %}{% endblock %}

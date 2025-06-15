@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     Category, Tournament, TournamentImage, Participant,
-    TournamentPrize, TournamentSponsor, TournamentAnnouncement
+    TournamentPrize, TournamentSponsor, TournamentAnnouncement, UPIS
 )
 
 @admin.register(Category)
@@ -71,7 +71,10 @@ class TournamentAdmin(admin.ModelAdmin):
         }),
         ('Social Media', {
             'fields': ('facebook_event', 'instagram_post')
-        })
+        }),
+        ('Payment Information', {
+            'fields': ('upi_id',)
+        }),
     )
 
 @admin.register(Participant)
@@ -116,3 +119,5 @@ class TournamentAnnouncementAdmin(admin.ModelAdmin):
     list_filter = ('tournament', 'is_important', 'created_at')
     search_fields = ('title', 'content', 'tournament__title')
     readonly_fields = ('created_at', 'updated_at') 
+
+admin.site.register(UPIS)

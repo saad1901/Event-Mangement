@@ -14,10 +14,7 @@
         <div class="event-meta" style="color: #ffffff;">
             <span><i class="far fa-calendar-alt"></i> {{ event.start_date }}</span>
             <span><i class="far fa-clock"></i> {{ event.tournament_time }}</span>
-            <span><i class="fas fa-map-marker-alt"></i> {{ event.venue }} {{ event.address }} {{ event.city }},
-                {{event.state}}</span>
-            <span><i class="fas fa-phone"></i>CONTACT :&nbsp;<a
-                    href="tel:+91{{event.contact_phone}}">{{event.contact_phone}}</a></span>
+            <span><i class="fas fa-map-marker-alt"></i> {{ event.venue }} {{ event.address }} {{ event.city }}, {{event.state}}</span>
         </div>
     </div>
 </section>
@@ -89,36 +86,8 @@
                                 style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
                                 Phone Number <span style="color: #dc3545; font-size: 14px;">*</span>
                             </label>
-                            <div style="display: flex; align-items: center;">
-                                <span
-                                    style="display: flex; align-items: center; padding: 10px 10px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 8px 0 0 8px; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    +91
-                                </span>
-                                <input type="tel" id="phone" name="phone" required maxlength="10" pattern="[0-9]{10}"
-                                    placeholder="Enter 10-digit number"
-                                    style="flex: 1; padding: 12px 15px; border: 1px solid #ddd; border-left: none; border-radius: 0 8px 8px 0; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                            </div>
-                        </div>
-
-                        <div class="form-group"
-                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 10px; background: #fafafa;">
-                            <label for="wp"
-                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                WhatsApp Number <span style="color: #dc3545; font-size: 14px;">*</span>
-                            </label>
-                            <div style="display: flex; align-items: center;">
-                                <span
-                                    style="display: flex; align-items: center; padding: 10px 10px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 8px 0 0 8px; font-size: clamp(0.9rem, 2vw, 1rem);">
-                                    +91
-                                </span>
-                                <input type="tel" id="wp" name="wp" required maxlength="10" pattern="[0-9]{10}"
-                                    placeholder="10-digit WhatsApp number"
-                                    style="flex: 1; padding: 12px 15px; border: 1px solid #ddd; border-left: none; border-radius: 0 8px 8px 0; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
-                            </div>
-                            <small style="display: block; margin-top: 8px; color: #c91313; font-size: 0.85rem; font-style: italic;">
-                                Please enter your correct WhatsApp phone number. All important messages will be sent
-                                to this WhatsApp.
-                            </small>
+                            <input type="tel" id="phone" name="phone" required
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
                         </div>
 
                         <!-- Age -->
@@ -346,17 +315,20 @@
                                     <i class="fas fa-money-bill-wave" style="color: #1a5f1a; margin-right: 5px;"></i>
                                     Pay via UPI ID
                                 </p>
+                                <p style="margin: 10px 0; color: #666; font-size: clamp(0.8rem, 1.8vw, 0.9rem);">
+                                    UPI: <span style="color: #333; font-weight: 600;">{{event.upi_id.upi_id}}</span>
+                                </p>
                                 <div
                                     style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
-                                    <input id="upi-id" value="tournament@ybl" readonly
-                                        style="background: white; border: 1px solid #ddd; border-radius: 4px 0 0 4px; padding: 10px; text-align: center; width: 180px; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    <input id="upi-id" value="{{event.upi_id.upi_id}}" readonly
+                                        style="background: white; border: 1px solid #ddd; border-radius: 4px 0 0 4px; padding: 10px; text-align: center; width: 180px; font-weight: 300; font-size: clamp(0.9rem, 2vw, 1rem);">
                                     <button onclick="copyUpiId(event)"
                                         style="background: #f1f1f1; border: 1px solid #ddd; border-left: none; border-radius: 0 4px 4px 0; padding: 10px 12px; cursor: pointer;">
                                         <i class="fas fa-copy"></i>
                                     </button>
                                 </div>
                                 <p style="margin: 10px 0; color: #666; font-size: clamp(0.8rem, 1.8vw, 0.9rem);">
-                                    NAME: <span style="color: #333; font-weight: 600;">SYED TEST</span>
+                                    NAME: <span style="color: #333; font-weight: 600;">{{event.upi_id}}</span>
                                 </p>
                             </div>
                         </div>
@@ -405,31 +377,30 @@
             flex-direction: column;
             gap: 20px;
         ">
-
-                <!-- Icon + Message -->
-                <div style="display: flex; align-items: flex-start; gap: 16px;">
-                    <div style="flex-shrink: 0;">
-                        <svg xmlns="http://www.w3.org/2000/svg" style="height: 36px; width: 36px;" fill="none"
-                            viewBox="0 0 24 24" stroke="#28a745">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 style="margin: 0 0 10px 0; font-size: 20px; font-weight: 600; color: #1e4620;">
-                            Registration Successful!
-                        </h2>
-                        <p style="margin: 0; font-size: 16px; color: #2c3e50;">
-                            Thank you, <strong>{{ full_name }}</strong>. You have successfully registered for the
-                            <strong>{{ tournament_name }}</strong> tournament.
-                        </p>
-                    </div>
+        
+            <!-- Icon + Message -->
+            <div style="display: flex; align-items: flex-start; gap: 16px;">
+                <div style="flex-shrink: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="height: 36px; width: 36px;" fill="none"
+                        viewBox="0 0 24 24" stroke="#28a745">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
                 </div>
-
-                <!-- Action Button -->
-                <form method="post" action="{% url 'clear_registration_session'%}">
-                    {% csrf_token %}
-                    <input type="hidden" id="event_id" name="event_id" value="{{ event.id }}">
-                    <button type="submit" style="
+                <div>
+                    <h2 style="margin: 0 0 10px 0; font-size: 20px; font-weight: 600; color: #1e4620;">
+                        Registration Successful!
+                    </h2>
+                    <p style="margin: 0; font-size: 16px; color: #2c3e50;">
+                        Thank you, <strong>{{ full_name }}</strong>. You have successfully registered for the <strong>{{ tournament_name }}</strong> tournament.
+                    </p>
+                </div>
+            </div>
+        
+            <!-- Action Button -->
+            <form method="post" action="{% url 'clear_registration_session'%}">
+                {% csrf_token %}
+                <input type="hidden" id="event_id" name="event_id" value="{{ event.id }}">
+                <button type="submit" style="
                     padding: 12px 24px;
                     background-color: #28a745;
                     border: none;
@@ -441,15 +412,39 @@
                     transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
                     align-self: flex-start;
                 " onmouseover="this.style.backgroundColor='#218838'; this.style.boxShadow='0 2px 6px rgba(0, 0, 0, 0.15)'"
-                        onmouseout="this.style.backgroundColor='#28a745'; this.style.boxShadow='none'">
-                        + Fill Another Form
-                    </button>
-                </form>
-            </div>
+                   onmouseout="this.style.backgroundColor='#28a745'; this.style.boxShadow='none'">
+                    + Fill Another Form
+                </button>
+            </form>
+        </div>
             {% endif %}
         </div>
     </div>
 </section>
+
+<!-- Success Modal -->
+<div class="modal" id="success-modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div class="success-message">
+            <i class="fas fa-check-circle"></i>
+            <h3>Registration Submitted Successfully!</h3>
+            <p>Thank you for registering for this tournament!</p>
+            <div
+                style="background-color: #f7f7f7; border-radius: 8px; padding: 15px; margin: 20px 0; text-align: left;">
+                <p style="margin-bottom: 10px; color: #333; font-weight: 600;">What happens next?</p>
+                <ul style="padding-left: 20px; margin-bottom: 0;">
+                    <li style="margin-bottom: 8px;">You'll receive a confirmation <strong>SMS</strong> and
+                        <strong>email</strong> once approved</li>
+                </ul>
+            </div>
+            <div class="modal-actions">
+                <button id="register-another" class="btn btn-outline">Register Another</button>
+                <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
     @media (max-width: 768px) {
@@ -649,6 +644,9 @@
 
         // Form submission and modal handling
         const form = document.getElementById('registration-form');
+        const modal = document.getElementById('success-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const registerAnother = document.getElementById('register-another');
 
         if (form) {
             form.addEventListener('submit', function (e) {
@@ -685,60 +683,60 @@
 
                 // Show the success modal after form submission
                 // This will only happen if the form fails validation and doesn't submit
-                // {% if submitted %}
-                // setTimeout(function () {
-                //     modal.style.display = 'flex';
-                // }, 500);
-                // {% endif %}
+                {% if submitted %}
+                setTimeout(function () {
+                    modal.style.display = 'flex';
+                }, 500);
+                {% endif %}
             });
         }
 
         // Close modal when clicking the X
-        // if (closeModal) {
-        //     closeModal.addEventListener('click', function () {
-        //         modal.style.display = 'none';
-        //     });
-        // }
+        if (closeModal) {
+            closeModal.addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+        }
 
         // Close modal when clicking outside of it
-        // window.addEventListener('click', function (event) {
-        //     if (event.target === modal) {
-        //         modal.style.display = 'none';
-        //     }
-        // });
+        window.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
 
         // Register another button - reset form and close modal
-        // if (registerAnother) {
-        //     registerAnother.addEventListener('click', function () {
-        //         form.reset();
-        //         modal.style.display = 'none';
+        if (registerAnother) {
+            registerAnother.addEventListener('click', function () {
+                form.reset();
+                modal.style.display = 'none';
 
-        //         // Reset file input (it's not cleared by form.reset())
-        //         const fileInput = document.getElementById('payment_screenshot');
-        //         if (fileInput) {
-        //             fileInput.value = '';
-        //         }
+                // Reset file input (it's not cleared by form.reset())
+                const fileInput = document.getElementById('payment_screenshot');
+                if (fileInput) {
+                    fileInput.value = '';
+                }
 
-        //         // Reset total amount display and QR code
-        //         if (totalAmount) {
-        //             totalAmount.textContent = '₹' + formatNumberWithCommas(price);
-        //             generateQR(price);
-        //         }
+                // Reset total amount display and QR code
+                if (totalAmount) {
+                    totalAmount.textContent = '₹' + formatNumberWithCommas(price);
+                    generateQR(price);
+                }
 
-        //         // Scroll to registration form
-        //         const registrationForm = document.querySelector('.registration-form');
-        //         if (registrationForm) {
-        //             registrationForm.scrollIntoView({ behavior: 'smooth' });
-        //         }
-        //     });
-        // }
+                // Scroll to registration form
+                const registrationForm = document.querySelector('.registration-form');
+                if (registrationForm) {
+                    registrationForm.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
 
         // Show modal on page load if submitted is true (for non-AJAX form submissions)
-        // {% if submitted %}
-        // if (modal) {
-        //     modal.style.display = 'flex';
-        // }
-        // {% endif %}
+        {% if submitted %}
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+        {% endif %}
     });
 </script>
 {% endblock %}
