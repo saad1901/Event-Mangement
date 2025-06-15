@@ -76,7 +76,7 @@
                     </div>
                     <div class="event-details" style="padding: 20px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <span class="badge {{ event.category|lower }}" style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; background: #08a18c; color: white;">{{ event.category }}</span>
+                            <span class="badge {{ event.category.type|lower }}" style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; background: #08a18c; color: white;">{{ event.category.type }}</span>
                             <span style="font-weight: 600; color: #08a18c;">₹{{ event.entry_fee }} / PP</span>
                         </div>
                         
@@ -123,7 +123,7 @@
                     </div>
                     <div class="event-details" style="padding: 20px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <span class="badge {{ event.category|lower }}" style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; background: #08a18c; color: white;">{{ event.category }}</span>
+                            <span class="badge {{ event.category.type|lower }}" style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; background: #08a18c; color: white;">{{ event.category.type }}</span>
                             <span style="font-weight: 600; color: #08a18c;">{{ event.price }}</span>
                         </div>
                         

@@ -10,8 +10,8 @@ def get_message_template(msg_type, name=None, reg_number=None):
             "You will receive all updates regarding the tournament here on WhatsApp.\n\n"
             "*Registration Details:*\n"
             f"*Name:* {name}\n"
-            f"*Registration Number:* {reg_number}\n\n"
-            "If you have any questions, reply to this message.\n\n"
+            f"*Registration Number:* {reg_number}\n\n"  
+
             "Best of luck!\n-Tournament Central Team"
         )
     elif msg_type == 2:
@@ -47,7 +47,10 @@ def send_whatsapp_message(user, type=0, media_url=None):
     # Optionally add media_url if provided
     if media_url:
         msg_kwargs['media_url'] = media_url
-    message_obj = client.messages.create(**msg_kwargs)
-    print(f"WhatsApp message sent to {phone_number}. SID: {message_obj.sid}")
+    try:
+        message_obj = client.messages.create(**msg_kwargs)
+    except Exception as e:
+        print(f"Failed to send WhatsApp message: {e}")
+    print(f"WhatsApp message sent to {phone_number}")
 
-# send_whatsapp_message(1,2)
+send_whatsapp_message(1,1)

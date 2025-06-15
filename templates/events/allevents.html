@@ -57,7 +57,7 @@
                 <div class="event-card animate-on-scroll stagger-item">
                     <div class="event-image" style="background-image: url('{% if event.banner_image %}{{ event.banner_image.url }}{% else %}{% static 'images/event-placeholder.jpg' %}{% endif %}');"></div>
                     <div class="event-details">
-                        <span class="badge {{ event.category|lower }}" style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; background: #08a18c; color: white;">{{ event.category }}</span>
+                        <span class="badge {{ event.category.type|lower }}" style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; background: #08a18c; color: white;">{{ event.category.type }}</span>
                         <h3>{{ event.title }}</h3>
                         <div class="event-meta">
                             <span><i class="far fa-calendar-alt"></i> {{ event.start_date }}</span>
