@@ -18,7 +18,7 @@ def get_message_template(msg_type, name=None, reg_number=None):
         return (
             "📢📢📢\n"
             f"Hi *{name}*,\n"
-            "This is a reminder for your upcoming tournament. Please check your email for details."
+            "Your registration for the tournament has been *confirmed*.\n"
         )
     # Add more types as needed
     else:
@@ -29,7 +29,7 @@ def send_whatsapp_message(user, type=0, media_url=None):
     auth_token = '57cd959d723d959f2fee1a0494f36aa3'
     client = Client(account_sid, auth_token)
 
-    user = Participant.objects.get(id=user)
+    # user = Participant.objects.get(id=user)
 
     phone_number = user.wp
     if not len(phone_number) == 10:
@@ -37,6 +37,7 @@ def send_whatsapp_message(user, type=0, media_url=None):
         return
     
     message = get_message_template(type, name=user.full_name, reg_number= str(user.registration_id)[:6])
+    print(message)
     phone_number = '91'+phone_number
     print(phone_number)
     msg_kwargs = {
@@ -52,5 +53,3 @@ def send_whatsapp_message(user, type=0, media_url=None):
     except Exception as e:
         print(f"Failed to send WhatsApp message: {e}")
     print(f"WhatsApp message sent to {phone_number}")
-
-send_whatsapp_message(1,1)

@@ -40,10 +40,10 @@ def admin_events(request):
 
             banner_image = request.FILES.get('banner_image')
             additional_images = request.FILES.getlist('additional_images')
-
+            upi_id = request.POST.get('upi_id')
             # Validate required fields
             if not all([
-                title, category_id, start_date, registration_deadline, venue, city, state, entry_fee
+                title, category_id, start_date, registration_deadline, venue, city, state, entry_fee, upi_id
             ]):
                 messages.error(request, 'Please fill in all required fields')
                 return redirect('admin_events')
@@ -79,7 +79,8 @@ def admin_events(request):
                 whatsapp_number=whatsapp_number,
                 facebook_event=facebook_event,
                 instagram_post=instagram_post,
-                description=description
+                description=description,
+                upi_id=UPIS.objects.get(id=upi_id)
             )
 
             # Handle additional images
@@ -99,5 +100,6 @@ def admin_events(request):
     context = {
         'events': events,
         'categories': categories,
+        'upi_ids': UPIS.objects.all(),
     }
     return render(request, 'admin/events.html', context)

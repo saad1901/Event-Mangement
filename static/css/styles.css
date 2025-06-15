@@ -322,6 +322,52 @@ nav ul li a.active {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 25px;
+
+}
+
+.event-card {
+    border: 3px solid #00836c;
+    border-radius: 18px;
+    box-shadow: 0 8px 28px rgba(8, 179, 156, 0.10), 0 2px 8px rgba(0,0,0,0.08);
+    background: #fff;
+    transition: box-shadow 0.3s, border-color 0.3s, transform 0.2s;
+    overflow: hidden;
+    position: relative;
+}
+
+.event-card:hover {
+    border-color: #3a6073;
+    box-shadow: 0 16px 40px rgba(58, 96, 115, 0.18), 0 4px 16px rgba(8, 179, 156, 0.15);
+    transform: translateY(-6px) scale(1.03);
+}
+
+.event-image {
+    border-bottom: 1.5px solid #08b39c;
+    border-radius: 16px 16px 0 0;
+    min-height: 180px;
+    background-size: cover;
+    background-position: center;
+}
+
+.event-details {
+    padding: 20px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 0 0 16px 16px;
+}
+
+.event-footer .btn {
+    background: linear-gradient(90deg, #08b39c 60%, #3a6073 100%);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(8,179,156,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.event-footer .btn:hover {
+    background: linear-gradient(90deg, #3a6073 60%, #08b39c 100%);
+    box-shadow: 0 4px 16px rgba(8,179,156,0.15);
 }
 
 .event-card {
@@ -355,7 +401,7 @@ nav ul li a.active {
     left: 0;
     width: 100%;
     height: 50%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    background: linear-gradient(to top, rgba(137, 241, 224, 0.5), transparent);
 }
 
 .event-details {

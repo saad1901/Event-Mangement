@@ -5,6 +5,7 @@ from app.models import Tournament, Category, TournamentImage, Participant
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+#V
 @login_required
 def admin_dashboard(request):
     events = Tournament.objects.all()

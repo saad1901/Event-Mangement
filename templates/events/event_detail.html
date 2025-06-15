@@ -14,7 +14,8 @@
         <div class="event-meta" style="color: #ffffff;">
             <span><i class="far fa-calendar-alt"></i> {{ event.start_date }}</span>
             <span><i class="far fa-clock"></i> {{ event.tournament_time }}</span>
-            <span><i class="fas fa-map-marker-alt"></i> {{ event.venue }} {{ event.address }} {{ event.city }}, {{event.state}}</span>
+            <span><i class="fas fa-map-marker-alt"></i> {{ event.venue }} {{ event.address }} {{ event.city }},
+                {{event.state}}</span>
         </div>
     </div>
 </section>
@@ -79,16 +80,46 @@
                                 style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
                         </div>
 
-                        <!-- Phone Number -->
+
+
                         <div class="form-group"
                             style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
                             <label for="phone"
                                 style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
                                 Phone Number <span style="color: #dc3545; font-size: 14px;">*</span>
                             </label>
-                            <input type="tel" id="phone" name="phone" required
-                                style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                            <div style="display: flex; align-items: center;">
+                                <span
+                                    style="display: flex; align-items: center; padding: 10px 10px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 8px 0 0 8px; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    +91
+                                </span>
+                                <input type="tel" id="phone" name="phone" required maxlength="10" pattern="[0-9]{10}"
+                                    placeholder="Enter 10-digit number"
+                                    style="flex: 1; padding: 12px 15px; border: 1px solid #ddd; border-left: none; border-radius: 0 8px 8px 0; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                            </div>
                         </div>
+
+                        <div class="form-group"
+                            style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; background: #fafafa;">
+                            <label for="wp"
+                                style="display: block; margin-bottom: 8px; color: #333; font-weight: 500; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                WhatsApp Number <span style="color: #dc3545; font-size: 14px;">*</span>
+                            </label>
+                            <div style="display: flex; align-items: center;">
+                                <span
+                                    style="display: flex; align-items: center; padding: 10px 10px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 8px 0 0 8px; font-size: clamp(0.9rem, 2vw, 1rem);">
+                                    +91
+                                </span>
+                                <input type="tel" id="wp" name="wp" required maxlength="10" pattern="[0-9]{10}"
+                                    placeholder="10-digit WhatsApp number"
+                                    style="flex: 1; padding: 12px 15px; border: 1px solid #ddd; border-left: none; border-radius: 0 8px 8px 0; font-size: clamp(0.9rem, 2vw, 1rem); background: white;">
+                            </div>
+                            <small
+                                style="display: block; margin-top: 8px; color: #cc0000; font-size: 0.85rem; font-style: italic;">
+                                Enter correct Number. All messages will be sent to this number via WhatsApp.
+                            </small>
+                        </div>
+
 
                         <!-- Age -->
                         <div class="form-group"
@@ -291,7 +322,7 @@
                                     style="display: inline-block; background: white; padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #e0e0e0;">
                                 </div>
                                 <p style="margin: 10px 0; color: #666; font-size: clamp(0.8rem, 1.8vw, 0.9rem);">
-                                    NAME: <span style="color: #333; font-weight: 600;">SYED TEST</span>
+                                    NAME: <span style="color: #333; font-weight: 600;">{{event.upi_id.upi_id}}</span>
                                 </p>
                                 <div style="display: flex; justify-content: center; gap: 15px; margin: 10px 0;">
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/512px-Google_Pay_Logo.svg.png"
@@ -377,30 +408,31 @@
             flex-direction: column;
             gap: 20px;
         ">
-        
-            <!-- Icon + Message -->
-            <div style="display: flex; align-items: flex-start; gap: 16px;">
-                <div style="flex-shrink: 0;">
-                    <svg xmlns="http://www.w3.org/2000/svg" style="height: 36px; width: 36px;" fill="none"
-                        viewBox="0 0 24 24" stroke="#28a745">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
+
+                <!-- Icon + Message -->
+                <div style="display: flex; align-items: flex-start; gap: 16px;">
+                    <div style="flex-shrink: 0;">
+                        <svg xmlns="http://www.w3.org/2000/svg" style="height: 36px; width: 36px;" fill="none"
+                            viewBox="0 0 24 24" stroke="#28a745">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 style="margin: 0 0 10px 0; font-size: 20px; font-weight: 600; color: #1e4620;">
+                            Registration Successful!
+                        </h2>
+                        <p style="margin: 0; font-size: 16px; color: #2c3e50;">
+                            Thank you, <strong>{{ full_name }}</strong>. You have successfully registered for the
+                            <strong>{{ tournament_name }}</strong> tournament.
+                        </p>
+                    </div>
                 </div>
-                <div>
-                    <h2 style="margin: 0 0 10px 0; font-size: 20px; font-weight: 600; color: #1e4620;">
-                        Registration Successful!
-                    </h2>
-                    <p style="margin: 0; font-size: 16px; color: #2c3e50;">
-                        Thank you, <strong>{{ full_name }}</strong>. You have successfully registered for the <strong>{{ tournament_name }}</strong> tournament.
-                    </p>
-                </div>
-            </div>
-        
-            <!-- Action Button -->
-            <form method="post" action="{% url 'clear_registration_session'%}">
-                {% csrf_token %}
-                <input type="hidden" id="event_id" name="event_id" value="{{ event.id }}">
-                <button type="submit" style="
+
+                <!-- Action Button -->
+                <form method="post" action="{% url 'clear_registration_session'%}">
+                    {% csrf_token %}
+                    <input type="hidden" id="event_id" name="event_id" value="{{ event.id }}">
+                    <button type="submit" style="
                     padding: 12px 24px;
                     background-color: #28a745;
                     border: none;
@@ -412,11 +444,11 @@
                     transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
                     align-self: flex-start;
                 " onmouseover="this.style.backgroundColor='#218838'; this.style.boxShadow='0 2px 6px rgba(0, 0, 0, 0.15)'"
-                   onmouseout="this.style.backgroundColor='#28a745'; this.style.boxShadow='none'">
-                    + Fill Another Form
-                </button>
-            </form>
-        </div>
+                        onmouseout="this.style.backgroundColor='#28a745'; this.style.boxShadow='none'">
+                        + Fill Another Form
+                    </button>
+                </form>
+            </div>
             {% endif %}
         </div>
     </div>
@@ -434,8 +466,8 @@
                 style="background-color: #f7f7f7; border-radius: 8px; padding: 15px; margin: 20px 0; text-align: left;">
                 <p style="margin-bottom: 10px; color: #333; font-weight: 600;">What happens next?</p>
                 <ul style="padding-left: 20px; margin-bottom: 0;">
-                    <li style="margin-bottom: 8px;">You'll receive a confirmation <strong>SMS</strong> and
-                        <strong>email</strong> once approved</li>
+                    <li style="margin-bottom: 8px;">You'll receive a confirmation <strong>WhatsApp Msg </strong>once approved
+                    </li>
                 </ul>
             </div>
             <div class="modal-actions">
@@ -558,7 +590,7 @@
             qrContainer.innerHTML = ''; // Clear previous QR code
 
             // Create QR code with UPI payment information
-            const upiData = `upi://pay?pa=tournament@ybl&pn=SYED TEST&am=${amount.toFixed(2)}&cu=INR`;
+            const upiData = `upi://pay?pa={{event.upi_id.upi_id}}&pn={{events.upi_id}}&am=${amount.toFixed(2)}&cu=INR`;
 
             // Generate the QR code using qrcodejs library
             try {
@@ -572,7 +604,7 @@
                 });
             } catch (error) {
                 console.error("QR code generation error:", error);
-                qrContainer.innerHTML = '<div style="height: 150px; display: flex; align-items: center; justify-content: center;"><p style="margin: 0; font-size: 14px;">UPI: tournament@ybl</p></div>';
+                qrContainer.innerHTML = '<div style="height: 150px; display: flex; align-items: center; justify-content: center;"><p style="margin: 0; font-size: 14px;">UPI: {{events.upi_id.upi_id}}</p></div>';
             }
         }
 

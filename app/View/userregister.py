@@ -25,7 +25,7 @@ def addparticipant(request):
                 age=request.POST.get('age'),
                 gender=request.POST.get('gender'),
                 notes=request.POST.get('notes', ''),
-                registration_date=datetime.now()
+                registration_date=datetime.now(),
             )
 
             # Save Transaction first
@@ -59,7 +59,7 @@ def addparticipant(request):
             request.session['tournament_name'] = tournament.title
             request.session['tournament_date'] = str(tournament.start_date)
 
-            send_whatsapp_message(participant, )
+            send_whatsapp_message(participant, 1)
 
             return redirect('event_detail', event_id=event_id)
 
