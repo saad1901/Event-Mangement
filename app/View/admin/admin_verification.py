@@ -43,6 +43,7 @@ def update_verification_status(request, request_id):
         elif action == 'reject':
             verification.status = 'rejected'
             transaction.payment_status = False
+            send_whatsapp_message(verification,3,reason=reason)
         elif action == 'review':
             verification.status = 'under_review'
             transaction.payment_status = False

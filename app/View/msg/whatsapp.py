@@ -2,7 +2,7 @@ from twilio.rest import Client
 from app.models import *
 
 # WhatsApp message sending functionality
-def get_message_template(msg_type, name=None, reg_number=None):
+def get_message_template(msg_type, reason, name=None, reg_number=None):
     if msg_type == 1:
         return (
             f"*Welcome to Tournament Central!*\n\n"
@@ -20,13 +20,21 @@ def get_message_template(msg_type, name=None, reg_number=None):
             f"Hi *{name}*,\n"
             "Your registration for the tournament has been *confirmed*.\n"
         )
+    elif msg_type == 3:
+        return (
+            "📢📢📢\n"
+            f"Hi *{name}*,\n"
+            "Your registration for the tournament has been *Rejected*.\n"
+            f"Reason: {reason}\n"
+            "Please contact us for further assistance.\n"
+        )
     # Add more types as needed
     else:
         return f"Hello {name}, this is a generic message."
 
-def send_whatsapp_message(user, type=0, media_url=None):
+def send_whatsapp_message(user, type=0, reason=None, media_url=None):
     account_sid = 'AC57048ded5ea9a323f477bffc1aa2af75'
-    auth_token = '57cd959d723d959f2fee1a0494f36aa3'
+    auth_token = 'c7860f6a603bdc4816f979620b64b603'
     client = Client(account_sid, auth_token)
 
     # user = Participant.objects.get(id=user)
@@ -36,7 +44,7 @@ def send_whatsapp_message(user, type=0, media_url=None):
         print("Invalid phone number length. Must be 10 digits.")
         return
     
-    message = get_message_template(type, name=user.full_name, reg_number= str(user.registration_id)[:6])
+    message = get_message_template(type, reason=reason, name=user.full_name, reg_number= str(user.registration_id)[:6])
     print(message)
     phone_number = '91'+phone_number
     print(phone_number)
