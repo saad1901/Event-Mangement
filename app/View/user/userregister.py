@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from app.models import *
-from ..whatsapp import *
+from ..msg import *
 
 def addparticipant(request):
     submitted = request.session.get('submitted', False)

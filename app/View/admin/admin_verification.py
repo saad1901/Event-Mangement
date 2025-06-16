@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
 from django.views.decorators.csrf import csrf_exempt
-from app.whatsapp import send_whatsapp_message
+from app.View.msg.whatsapp import send_whatsapp_message
 
 def admin_verification(request):
     alltournaments = Tournament.objects.all()

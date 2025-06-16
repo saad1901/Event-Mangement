@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin as django_admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
@@ -7,7 +7,7 @@ from app.View import *
 
 urlpatterns = [
     # Django admin
-    path('admin/', admin.site.urls),
+    path('admin/', django_admin.site.urls),
     
     # Main site URLs
     path('', home, name='home'),

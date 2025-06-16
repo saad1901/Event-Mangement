@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from datetime import datetime, timedelta
-from ..models import Tournament
+from app.models import Tournament
 
 def home(request):
     # Dummy events data

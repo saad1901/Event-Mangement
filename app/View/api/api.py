@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from ..models import Tournament
+from app.models import Tournament
 
 @login_required
 def api_events(request):
