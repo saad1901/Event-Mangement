@@ -80,6 +80,20 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'u519281049_backupdb',   # The database name you created in Hostinger
+#         'USER': 'u519281049_backupdb',   # The database user you created in Hostinger
+#         'PASSWORD': 'Database@2025',  # The database user's password
+#         'HOST': 'srv673.hstgr.io',  # Something like 'mysql.hostinger.in' or your custom host
+#         'PORT': '3306',  # Default MySQL port
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#         },
+#     }
+# }
+
 
 
 # Password validation
