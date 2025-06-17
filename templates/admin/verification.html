@@ -1,0 +1,307 @@
+{% extends 'admin/base_admin.html' %}
+{% load static %}
+
+{% block title %}Verification Requests - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="admin-tab active">
+    <div class="tab-header">
+        <h2>Verification Requests</h2>
+    </div>
+    
+    <div class="dashboard-actions">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search by name or event...">
+            <button type="button" id="searchBtn"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="filter-section">
+            <select id="tournamentFilter" class="tournament-select">
+                <option value="all">All Tournaments</option>
+                {% for request in alltournaments %}
+                    <option value="{{ request.id }}">{{ request.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    
+    <div class="data-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Event Title</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>View</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in verification_requests %}
+                <tr class="verification-row" data-tournament-id="{{ request.tournament.id }}" data-id="{{ request.id }}">
+                    <td>{{ request.id }}</td>
+                    <td>{{ request.full_name }}</td>
+                    <td>{{ request.tournament.title }}</td>
+                    <td>{{ request.tournament.start_date|date:"M d, Y" }}</td>
+                    <td>₹{{ request.tournament.entry_fee }}</td>
+                    <td>
+                        {{ request.transaction.payment_status}}
+                    </td>
+                    <td>
+                        <button class="view-btn" title="View Payment Screenshot" onclick="showPaymentScreenshot('{{ request.id }}', '{{ request.transaction.payment_screenshot.url }}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                    <td class="action-buttons">
+                        
+                        <button class="success-btn" onclick="handleAccept('{{ request.id }}')">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="danger-btn" onclick="handleReject('{{ request.id }}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <button class="review-btn" onclick="handleReview('{{ request.id }}')">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center">No verification requests found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="pagination">
+        <button class="page-btn" {% if not verification_requests.has_previous %}disabled{% endif %}><i class="fas fa-chevron-left"></i></button>
+        {% for i in verification_requests.paginator.page_range %}
+            {% if verification_requests.number == i %}
+                <button class="page-btn active">{{ i }}</button>
+            {% else %}
+                <button class="page-btn">{{ i }}</button>
+            {% endif %}
+        {% endfor %}
+        <button class="page-btn" {% if not verification_requests.has_next %}disabled{% endif %}><i class="fas fa-chevron-right"></i></button>
+    </div>
+</div>
+
+<!-- Payment Screenshot Modal -->
+<div id="paymentScreenshotModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Payment Screenshot</h2>
+            <button class="close-modal" onclick="closePaymentModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="payment-screenshot-container">
+                <img id="paymentScreenshotImg" class="payment-screenshot-img" src="" alt="Payment Screenshot">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.close-modal {
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.payment-screenshot-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.payment-screenshot-img {
+    max-width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+}
+
+.dashboard-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.search-box input {
+    border: none;
+    padding: 5px;
+    outline: none;
+    width: 250px;
+}
+
+.search-box button {
+    background: none;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.tournament-select {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-width: 200px;
+    font-size: 14px;
+    background: #fff;
+    cursor: pointer;
+}
+
+.tournament-select:focus {
+    outline: none;
+    border-color: #007bff;
+}
+</style>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Tournament filter
+        const tournamentFilter = document.getElementById('tournamentFilter');
+        tournamentFilter.addEventListener('change', function() {
+            const selectedTournament = this.value;
+            const rows = document.querySelectorAll('.verification-row');
+            
+            rows.forEach(row => {
+                if (selectedTournament === 'all') {
+                    row.style.display = '';
+                } else {
+                    const tournamentId = row.getAttribute('data-tournament-id');
+                    row.style.display = tournamentId === selectedTournament ? '' : 'none';
+                }
+            });
+        });
+        
+        // Search functionality
+        document.getElementById('searchBtn').addEventListener('click', performSearch);
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    });
+    
+    // Function to show payment screenshot in modal
+    function showPaymentScreenshot(requestId, screenshotUrl) {
+        const modal = document.getElementById('paymentScreenshotModal');
+        const img = document.getElementById('paymentScreenshotImg');
+        img.src = screenshotUrl;
+        modal.style.display = 'block';
+    }
+
+    function closePaymentModal() {
+        const modal = document.getElementById('paymentScreenshotModal');
+        modal.style.display = 'none';
+    }
+    
+    // Function to handle accept action
+    function handleAccept(requestId) {
+        if (confirm('Are you sure you want to accept this verification request?')) {
+            updateVerificationStatus(requestId, 'accept');
+        }
+    }
+    
+    // Function to handle reject action
+    function handleReject(requestId) {
+        const reason = prompt('Please enter the reason for rejection:');
+        if (reason !== null) {
+            updateVerificationStatus(requestId, 'reject', reason);
+        }
+    }
+    
+    // Function to handle review action
+    function handleReview(requestId) {
+        if (confirm('Are you sure you want to mark this request for review?')) {
+            updateVerificationStatus(requestId, 'review');
+        }
+    }
+    
+    // Function to perform search
+    function performSearch() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const rows = document.querySelectorAll('.verification-row');
+        
+        rows.forEach(row => {
+            const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const event = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            
+            if (name.includes(searchTerm) || event.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+    
+    function updateVerificationStatus(requestId, action, reason = '') {
+        fetch(`/api/verification/update-status/${requestId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: action,
+                reason: reason
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message);
+            location.reload();
+        })
+        .catch(err => {
+            alert('Error: ' + err.message);
+        });
+    }
+</script>
+{% endblock %}
