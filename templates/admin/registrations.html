@@ -4,6 +4,9 @@
 {% block title %}Manage Registrations - Admin Dashboard{% endblock %}
 
 {% block content %}
+<script>
+window.EVENT_OPTIONS = [{% for event in events %}{"id": "{{ event.id }}", "title": "{{ event.title|escapejs }}"}{% if not forloop.last %},{% endif %}{% endfor %}];
+</script>
 <div class="admin-tab active">
     <div class="tab-header">
         <h2>Manage Registrations</h2>
@@ -55,21 +58,38 @@
             </thead>
             <tbody>
                 {% for registration in registrations %}
-                <tr>
+                <tr class="registration-row"
+                    data-id="{{ registration.id }}"
+                    data-event="{{ registration.tournament.title }}"
+                    data-full_name="{{ registration.full_name }}"
+                    data-email="{{ registration.email }}"
+                    data-phone="{{ registration.phone }}"
+                    data-wp="{{ registration.wp }}"
+                    data-age="{{ registration.age }}"
+                    data-gender="{{ registration.gender }}"
+                    data-date="{{ registration.registration_date|date:'Y-m-d' }}"
+                    data-status="{{ registration.status }}"
+                    data-ticket_count="{{ registration.transaction.ticket_count }}"
+                    data-payment_status="{{ registration.transaction.payment_status }}"
+                    data-payment_reference="{{ registration.transaction.payment_reference }}"
+                    data-notes="{{ registration.notes|default:'' }}"
+                    data-special_requirements="{{ registration.special_requirements|default:'' }}"
+                    {% if registration.transaction.payment_screenshot %}
+                        data-payment_screenshot="{{ registration.transaction.payment_screenshot.url }}"
+                    {% else %}
+                        data-payment_screenshot=""
+                    {% endif %}
+                >
                     <td>{{ registration.id }}</td>
                     <td>{{ registration.tournament.title }}</td>
                     <td>{{ registration.full_name }}</td>
                     <td>{{ registration.registration_date|date:'d/m/y' }}</td>
                     <td>{{registration.transaction.ticket_count}}</td>
-                    <td>
-                        {{ registration.transaction.payment_status }}
-                    </td>
-                    <td>
-                        {{ registration.status }}
-                    </td>
+                    <td>{{ registration.transaction.payment_status }}</td>
+                    <td>{{ registration.status }}</td>
                     <td class="action-buttons">
-                        <button class="view-btn" title="View" data-id="{{ registration.id }}"><i class="fas fa-eye"></i></button>
-                        <button class="edit-btn" title="Edit" data-id="{{ registration.id }}" data-modal-target="add-registration-modal"><i class="fas fa-edit"></i></button>
+                        <button class="view-btn" title="View" data-id="{{ registration.id }}" data-modal-target="view-registration-modal"><i class="fas fa-eye"></i></button>
+                        <button class="edit-btn" title="Edit" data-id="{{ registration.id }}" data-modal-target="edit-registration-modal"><i class="fas fa-edit"></i></button>
                         <button class="delete-btn" title="Delete" data-id="{{ registration.id }}" data-type="registration"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>
@@ -95,7 +115,7 @@
     </div>
 </div>
 
-<!-- Add/Edit Registration Modal -->
+<!-- Add Registration Modal -->
 <div id="add-registration-modal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -166,5 +186,92 @@
             </form>
         </div>
     </div>
+</div>
+
+<!-- View Registration Modal -->
+<div id="view-registration-modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>View Registration</h2>
+      <button class="close-modal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form class="admin-form" id="view-registration-form">
+        <div class="form-grid">
+          <div class="form-group"><label>Event</label><input type="text" id="view_registration_event" readonly></div>
+          <div class="form-group"><label>Full Name</label><input type="text" id="view_registration_full_name" readonly></div>
+          <div class="form-group"><label>Email</label><input type="text" id="view_registration_email" readonly></div>
+          <div class="form-group"><label>Phone</label><input type="text" id="view_registration_phone" readonly></div>
+          <div class="form-group"><label>WhatsApp</label><input type="text" id="view_registration_wp" readonly></div>
+          <div class="form-group"><label>Age</label><input type="text" id="view_registration_age" readonly></div>
+          <div class="form-group"><label>Gender</label><input type="text" id="view_registration_gender" readonly></div>
+          <div class="form-group"><label>Registration Date</label><input type="text" id="view_registration_date" readonly></div>
+          <div class="form-group"><label>Status</label><input type="text" id="view_registration_status" readonly></div>
+          <div class="form-group"><label>Ticket Count</label><input type="text" id="view_registration_ticket_count" readonly></div>
+          <div class="form-group"><label>Payment Status</label><input type="text" id="view_registration_payment_status" readonly></div>
+          <div class="form-group"><label>Payment Reference</label><input type="text" id="view_registration_payment_reference" readonly></div>
+          <div class="form-group full-width"><label>Notes</label><textarea id="view_registration_notes" readonly></textarea></div>
+          <div class="form-group full-width"><label>Special Requirements</label><textarea id="view_registration_special_requirements" readonly></textarea></div>
+          <div class="form-group full-width">
+            <label>Payment Screenshot</label>
+            <img id="view_registration_payment_screenshot" src="" alt="Payment Screenshot" style="max-width:100%;max-height:200px;">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="secondary-btn close-modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Registration Modal -->
+<div id="edit-registration-modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Edit Registration</h2>
+      <button class="close-modal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form class="admin-form" id="edit-registration-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="edit_registration_event">Event</label>
+            <select id="edit_registration_event" name="tournament_id" required></select>
+          </div>
+          <div class="form-group"><label for="edit_registration_full_name">Full Name</label><input type="text" id="edit_registration_full_name" name="full_name" required></div>
+          <div class="form-group"><label for="edit_registration_email">Email</label><input type="email" id="edit_registration_email" name="email"></div>
+          <div class="form-group"><label for="edit_registration_phone">Phone</label><input type="text" id="edit_registration_phone" name="phone"></div>
+          <div class="form-group"><label for="edit_registration_wp">WhatsApp</label><input type="text" id="edit_registration_wp" name="wp"></div>
+          <div class="form-group"><label for="edit_registration_age">Age</label><input type="number" id="edit_registration_age" name="age"></div>
+          <div class="form-group">
+            <label for="edit_registration_gender">Gender</label>
+            <select id="edit_registration_gender" name="gender"></select>
+          </div>
+          <div class="form-group"><label for="edit_registration_date">Registration Date</label><input type="date" id="edit_registration_date" name="registration_date"></div>
+          <div class="form-group">
+            <label for="edit_registration_status">Status</label>
+            <select id="edit_registration_status" name="status"></select>
+          </div>
+          <div class="form-group"><label for="edit_registration_ticket_count">Ticket Count</label><input type="number" id="edit_registration_ticket_count" name="ticket_count"></div>
+          <div class="form-group">
+            <label for="edit_registration_payment_status">Payment Status</label>
+            <select id="edit_registration_payment_status" name="payment_status"></select>
+          </div>
+          <div class="form-group"><label for="edit_registration_payment_reference">Payment Reference</label><input type="text" id="edit_registration_payment_reference" name="payment_reference"></div>
+          <div class="form-group full-width"><label for="edit_registration_notes">Notes</label><textarea id="edit_registration_notes" name="notes"></textarea></div>
+          <div class="form-group full-width"><label for="edit_registration_special_requirements">Special Requirements</label><textarea id="edit_registration_special_requirements" name="special_requirements"></textarea></div>
+          <div class="form-group full-width">
+            <label for="edit_registration_payment_screenshot">Payment Screenshot</label>
+            <input type="file" id="edit_registration_payment_screenshot" name="payment_screenshot">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="secondary-btn close-modal">Cancel</button>
+          <button type="submit" class="primary-btn">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 {% endblock %}

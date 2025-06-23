@@ -204,7 +204,7 @@ class Participant(models.Model):
         ('rejected', 'Rejected')
     ]
 
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='participants')
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='tournament')
     registration_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     
     # Personal Information
@@ -224,7 +224,7 @@ class Participant(models.Model):
     # Additional Information
     special_requirements = models.TextField(blank=True)
     notes = models.TextField(blank=True)
-    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name='transaction_record')
+    transaction = models.OneToOneField(Transaction, on_delete=models.CASCADE, related_name='participant')
 
     class Meta:
         unique_together = ['tournament', 'email']
@@ -328,7 +328,7 @@ class ChessPlayer(models.Model):
 
     def __str__(self):
         return f"{self.participant.full_name} ({self.fide_id or 'No FIDE ID'}) - {self.get_section_display()}"
-    
+
 
 
 

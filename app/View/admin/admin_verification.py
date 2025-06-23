@@ -30,23 +30,21 @@ def update_verification_status(request, request_id):
         action = data.get('action')
         reason = data.get('reason', '')
         verification = Participant.objects.get(id=request_id)
-        print(action)
-        # transaction = Transaction.objects.get(id=verification.transaction.id)
         transaction = verification.transaction
         if not transaction:
             return JsonResponse({'message': 'Transaction not found.'}, status=404)
         print(transaction.payment_status)
         if action == 'accept':
             verification.status = 'confirmed'
-            transaction.payment_status = True
+            transaction.payment_status = 'completed'
             send_whatsapp_message(verification,2)
         elif action == 'reject':
             verification.status = 'rejected'
-            transaction.payment_status = False
+            transaction.payment_status = 'failed'
             send_whatsapp_message(verification,3,reason=reason)
         elif action == 'review':
             verification.status = 'under_review'
-            transaction.payment_status = False
+            transaction.payment_status = 'pending'
         else:
             return JsonResponse({'message': 'Invalid action'}, status=400)
 

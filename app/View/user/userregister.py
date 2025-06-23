@@ -29,11 +29,19 @@ def addparticipant(request):
             )
 
             # Save Transaction first
+            try:
+                amount = float(request.POST.get('amount', 0))
+                ticket_count = int(request.POST.get('tickets', 1))
+            except (TypeError, ValueError):
+                amount = 0
+                ticket_count = 1
+            total_amount = amount * ticket_count
             transactionData = Transaction(
-                amount=request.POST.get('amount'),
+                amount=total_amount,
+                ticket_count=ticket_count,
                 payment_screenshot=request.FILES.get('payment_screenshot'),
-                ticket_count=request.POST.get('tickets'),
             )
+            
             transactionData.save()
 
             # Assign transaction to participant

@@ -12,7 +12,7 @@ def admin_registration(request):
     context = {
         'active_tab': 'registration',
         'events': events,
-        'registrations': Participant.objects.all(),
+        'registrations': Participant.objects.all().select_related('tournament'),
     }
 
     return render(request, 'admin/registrations.html', context)
