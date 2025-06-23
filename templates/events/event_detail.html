@@ -6,6 +6,15 @@
 {% block content %}
 <!-- Floating Help Button -->
 
+<!-- Toast Notifications -->
+{% if messages %}
+<div id="toast-container">
+  {% for message in messages %}
+    <div class="toast toast-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
 <!-- Event Header -->
 <section class="event-header"
     style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ event.image }}');">
@@ -421,12 +430,16 @@
                         <h2 style="margin: 0 0 10px 0; font-size: 20px; font-weight: 600; color: #1e4620;">
                             Registration Successful!
                         </h2>
-                        <p style="margin: 0; font-size: 16px; color: #2c3e50;">
-                            Thank you, <strong>{{ full_name }}</strong>. You have successfully registered for the
-                            <strong>{{ tournament_name }}</strong> tournament.
-                        </p>
                     </div>
                 </div>
+
+                <!-- Details Section -->
+                <div style="margin: 0 auto 10px auto; text-align: left; max-width: 340px; background: #fff; border-radius: 8px; padding: 12px 16px; box-shadow: 0 2px 8px rgba(40,167,69,0.07); font-size: 1rem; color: #222;">
+                    <div style="margin-bottom: 6px;"><b>Name:</b> {{ full_name }}</div>
+                    <div style="margin-bottom: 6px;"><b>Tournament Name:</b> {{ tournament_name }}</div>
+                    <div><b>Registration No:</b> {{ registration_id|default:"-" }}</div>
+                </div>
+                <p style="margin: 0; font-size: 1rem; color: #2c3e50; font-weight: 500;">All further details will be sent to your WhatsApp number.<br><span style='color:#1a5f1a;font-size:0.98rem;font-weight:600;'>सभी जानकारी आपके व्हाट्सएप नंबर पर भेजी जाएगी।</span></p>
 
                 <!-- Action Button -->
                 <form method="post" action="{% url 'clear_registration_session'%}">
@@ -456,28 +469,19 @@
 
 <!-- Success Modal -->
 <div class="modal" id="success-modal">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <div class="success-message">
-            <i class="fas fa-check-circle"></i>
-            <h3>Registration Submitted Successfully!</h3>
-            <p>Thank you for registering for this tournament!</p>
-            <div
-                style="background-color: #f7f7f7; border-radius: 8px; padding: 15px; margin: 20px 0; text-align: left;">
-                <p style="margin-bottom: 10px; color: #333; font-weight: 600;">What happens next?</p>
-                <ul style="padding-left: 20px; margin-bottom: 0;">
-                    <li style="margin-bottom: 8px;">You'll receive a confirmation <strong>WhatsApp Msg </strong>once approved
-                    </li>
-                </ul>
-            </div>
-            <div class="modal-actions">
-                <button id="register-another" class="btn btn-outline">Register Another</button>
-                <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
-            </div>
+    <div class="modal-content" style="max-width: 95vw; width: 100%; border-radius: 16px; padding: 0; overflow: hidden;">
+        <div style="padding: 28px 18px 18px 18px; background: #e6f4ea; border-bottom: 1px solid #d0e6d6; text-align: center;">
+            <i class="fas fa-check-circle" style="font-size: 2.5rem; color: #28a745;"></i>
+            <h3 style="margin: 12px 0 8px 0; font-size: 1.3rem; font-weight: 700; color: #1a5f1a;">Registration Successful!</h3>
+            <p style="margin: 0 0 10px 0; font-size: 1.08rem; color: #1a5f1a; font-weight: 700;">Thank you for registering!</p>
+            <p style="margin: 0; font-size: 1rem; color: #2c3e50; font-weight: 500;">All further details will be sent to your WhatsApp number.<br><span style='color:#1a5f1a;font-size:0.98rem;font-weight:600;'>सभी जानकारी आपके व्हाट्सएप नंबर पर भेजी जाएगी।</span></p>
+        </div>
+        <div style="padding: 18px 12px 12px 12px; display: flex; flex-direction: column; gap: 12px; align-items: stretch; background: #fff;">
+            <button class="close-modal" style="background: #e0e0e0; color: #222; border: none; border-radius: 8px; padding: 13px 0; font-size: 1.08rem; font-weight: 600; margin-bottom: 4px;">Close</button>
+            <a href="/" class="btn btn-primary" style="background: #28a745; color: #fff; border: none; border-radius: 8px; padding: 13px 0; font-size: 1.08rem; font-weight: 600; text-align: center; text-decoration: none;">Back to Home</a>
         </div>
     </div>
 </div>
-
 <style>
     @media (max-width: 768px) {
         .registration-form {
@@ -520,11 +524,295 @@
             width: 150px !important;
         }
     }
-</style>
-{% endblock %}
 
+    #toast-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+.toast {
+  min-width: 220px;
+  max-width: 90vw;
+  margin-bottom: 12px;
+  background: #222;
+  color: #fff;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  opacity: 0.98;
+  animation: slideDownFade 0.5s, fadeOut 0.5s 3.5s forwards;
+  pointer-events: auto;
+}
+.toast-success { background: #28a745; color: #fff; }
+.toast-error { background: #dc3545; color: #fff; }
+.toast-info { background: #007bff; color: #fff; }
+.toast-warning { background: #ffc107; color: #222; }
+@keyframes slideDownFade {
+  from { transform: translateY(-40px) scale(0.95); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 0.98; }
+}
+@keyframes fadeOut {
+  to { opacity: 0; transform: translateY(-20px) scale(0.95); }
+}
+@media (max-width: 600px) {
+  #toast-container { top: 10px; }
+  .toast { font-size: 0.95rem; padding: 10px 14px; }
+}
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Help menu toggle function
+        window.toggleHelpMenu = function () {
+            const menu = document.getElementById('helpMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        };
+
+        // Close help menu when clicking outside
+        document.addEventListener('click', function (event) {
+            const menu = document.getElementById('helpMenu');
+            const helpButton = event.target.closest('button');
+            if (!helpButton && menu.style.display === 'block') {
+                menu.style.display = 'none';
+            }
+        });
+
+        // Add hover effect to help button
+        const helpButton = document.querySelector('button[onclick="toggleHelpMenu()"]');
+        if (helpButton) {
+            helpButton.addEventListener('mouseover', function () {
+                this.style.transform = 'scale(1.1)';
+            });
+            helpButton.addEventListener('mouseout', function () {
+                this.style.transform = 'scale(1)';
+            });
+        }
+
+        // Add hover effects to menu items
+        const menuItems = document.querySelectorAll('#helpMenu a');
+        menuItems.forEach(item => {
+            item.addEventListener('mouseover', function () {
+                this.style.backgroundColor = '#f8f9fa';
+            });
+            item.addEventListener('mouseout', function () {
+                this.style.backgroundColor = 'white';
+            });
+        });
+
+        // Calculate total based on number of tickets
+        const ticketsInput = document.getElementById('tickets');
+        const totalAmount = document.getElementById('total-amount');
+        const priceText = '{{ event.entry_fee }}';
+        // Extract just the number value, removing currency symbols or commas
+        const price = parseFloat(priceText);
+
+        // Format number with commas for thousands separator
+        function formatNumberWithCommas(number) {
+            return number.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Set initial price with INR symbol
+        if (totalAmount) {
+            totalAmount.textContent = '₹' + formatNumberWithCommas(price);
+            // Generate initial QR code
+            generateQR(price);
+        }
+
+        // Initialize QR code for payment
+        function generateQR(amount) {
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = ''; // Clear previous QR code
+
+            // Create QR code with UPI payment information
+            const upiData = `upi://pay?pa={{event.upi_id.upi_id}}&pn={{events.upi_id}}&am=${amount.toFixed(2)}&cu=INR`;
+
+            // Generate the QR code using qrcodejs library
+            try {
+                new QRCode(qrContainer, {
+                    text: upiData,
+                    width: 180,
+                    height: 180,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            } catch (error) {
+                console.error("QR code generation error:", error);
+                qrContainer.innerHTML = '<div style="height: 150px; display: flex; align-items: center; justify-content: center;"><p style="margin: 0; font-size: 14px;">UPI: {{events.upi_id.upi_id}}</p></div>';
+            }
+        }
+
+        // Add global functions for the onclick handlers
+        window.downloadQR = function () {
+            const qrContainer = document.getElementById('qrcode');
+            const canvas = qrContainer.querySelector('canvas');
+
+            if (canvas) {
+                try {
+                    // Create a temporary link for download
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = 'payment-qr.png';
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    setTimeout(() => {
+                        document.body.removeChild(link);
+                    }, 100);
+                } catch (error) {
+                    console.error("Error downloading QR code:", error);
+                    alert("Unable to download QR code. Please try again.");
+                }
+            } else {
+                alert("QR code not found. Please refresh the page and try again.");
+            }
+        };
+
+        window.copyUpiId = function (e) {
+            // Prevent form validation
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            const upiInput = document.getElementById('upi-id');
+            upiInput.select();
+            document.execCommand('copy');
+
+            // Show feedback
+            const copyButton = upiInput.nextElementSibling;
+            const originalText = copyButton.innerHTML;
+            copyButton.innerHTML = '<i class="fas fa-check"></i>';
+
+            // Reset after 2 seconds
+            setTimeout(function () {
+                copyButton.innerHTML = originalText;
+            }, 2000);
+        };
+
+        if (ticketsInput && totalAmount) {
+            // Update price on change
+            ticketsInput.addEventListener('change', updatePrice);
+            // Also update on input for immediate feedback
+            ticketsInput.addEventListener('input', updatePrice);
+
+            function updatePrice() {
+                // Get ticket count with fallback to 1 if invalid
+                const tickets = parseInt(ticketsInput.value) || 1;
+                // Calculate total price
+                const total = tickets * price;
+                // Update display with INR symbol and formatted number
+                totalAmount.textContent = '₹' + formatNumberWithCommas(total);
+                // Update QR code with new amount
+                generateQR(total);
+            }
+        }
+
+        // Form submission and modal handling
+        const form = document.getElementById('registration-form');
+        const modal = document.getElementById('success-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const registerAnother = document.getElementById('register-another');
+
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                // Only prevent default if we're handling the submission via AJAX
+                // e.preventDefault();
+
+                // Validate form
+                if (!form.checkValidity()) {
+                    e.preventDefault();
+                    form.reportValidity();
+                    return;
+                }
+
+                // Get form data
+                const formData = new FormData(form);
+
+                // Update modal with user's name
+                const nameInput = document.getElementById('full_name');
+                if (nameInput) {
+                    const welcomeMsg = document.querySelector('.success-message p');
+                    if (welcomeMsg) {
+                        welcomeMsg.innerHTML = `Thank you <strong>${nameInput.value}</strong> for registering for this tournament!`;
+                    }
+                }
+
+                // Show spinner or loading indicator
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                submitBtn.disabled = true;
+
+                // For demo purposes we're letting the form submit normally
+                // This will allow the server-side Django view to handle the form data
+
+                // Show the success modal after form submission
+                // This will only happen if the form fails validation and doesn't submit
+                {% if submitted %}
+                setTimeout(function () {
+                    modal.style.display = 'flex';
+                }, 500);
+                {% endif %}
+            });
+        }
+
+        // Close modal when clicking the X
+        if (closeModal) {
+            closeModal.addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+        }
+
+        // Close modal when clicking outside of it
+        window.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Register another button - reset form and close modal
+        if (registerAnother) {
+            registerAnother.addEventListener('click', function () {
+                form.reset();
+                modal.style.display = 'none';
+
+                // Reset file input (it's not cleared by form.reset())
+                const fileInput = document.getElementById('payment_screenshot');
+                if (fileInput) {
+                    fileInput.value = '';
+                }
+
+                // Reset total amount display and QR code
+                if (totalAmount) {
+                    totalAmount.textContent = '₹' + formatNumberWithCommas(price);
+                    generateQR(price);
+                }
+
+                // Scroll to registration form
+                const registrationForm = document.querySelector('.registration-form');
+                if (registrationForm) {
+                    registrationForm.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+
+        // Show modal on page load if submitted is true (for non-AJAX form submissions)
+        {% if submitted %}
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+        {% endif %}
+    });
+</script>
+{% endblock %}
 {% block extra_js %}
-<!-- Use CDN version of qrcodejs library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {

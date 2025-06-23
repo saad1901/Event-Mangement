@@ -14,13 +14,15 @@ def event_detail(request, event_id):
     full_name = request.session.get('full_name', '')
     tournament_name = request.session.get('tournament_name', '')
     tournament_date = request.session.get('tournament_date', '')
+    registration_id = request.session.get('registration_id', '')
     context = {
         'event': event,
         'submitted': submitted,
         'current_year': datetime.now().year,
         'full_name': full_name,
         'tournament_name': tournament_name,
-        'tournament_date': tournament_date
+        'tournament_date': tournament_date,
+        'registration_id': registration_id
     }
     
     return render(request, 'events/event_detail.html', context)

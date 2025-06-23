@@ -4,6 +4,15 @@
 {% block title %}Manage Registrations - Admin Dashboard{% endblock %}
 
 {% block content %}
+{% if messages %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      {% for message in messages %}
+        showNotification('Message', '{{ message|escapejs }}', '{{ message.tags|default:'info' }}');
+      {% endfor %}
+    });
+  </script>
+{% endif %}
 <script>
 window.EVENT_OPTIONS = [{% for event in events %}{"id": "{{ event.id }}", "title": "{{ event.title|escapejs }}"}{% if not forloop.last %},{% endif %}{% endfor %}];
 </script>
@@ -124,6 +133,7 @@ window.EVENT_OPTIONS = [{% for event in events %}{"id": "{{ event.id }}", "title
         </div>
         <div class="modal-body">
             <form class="admin-form" id="registration-form">
+                {% csrf_token %}
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="registration_event">Event</label>
@@ -233,11 +243,12 @@ window.EVENT_OPTIONS = [{% for event in events %}{"id": "{{ event.id }}", "title
       <button class="close-modal">&times;</button>
     </div>
     <div class="modal-body">
-      <form class="admin-form" id="edit-registration-form">
+      <form class="admin-form" id="edit-registration-form" method="post" enctype="multipart/form-data" action="">
+        {% csrf_token %}
         <div class="form-grid">
           <div class="form-group">
             <label for="edit_registration_event">Event</label>
-            <select id="edit_registration_event" name="tournament_id" required></select>
+            <select id="edit_registration_event" name="tournament_id" required disabled readonly></select>
           </div>
           <div class="form-group"><label for="edit_registration_full_name">Full Name</label><input type="text" id="edit_registration_full_name" name="full_name" required></div>
           <div class="form-group"><label for="edit_registration_email">Email</label><input type="email" id="edit_registration_email" name="email"></div>

@@ -257,6 +257,12 @@ function setupEventListeners() {
             if (btn.classList.contains('view-btn')) {
                 openRegistrationModal('view', data);
             } else if (btn.classList.contains('edit-btn')) {
+                // Set the form action URL dynamically
+                const form = document.getElementById('edit-registration-form');
+                if (form && row.dataset.id) {
+                    // Use path param, not query param, to match Django URL
+                    form.action = '/editregistration/' + row.dataset.id + '/';
+                }
                 openRegistrationModal('edit', data);
             }
         });

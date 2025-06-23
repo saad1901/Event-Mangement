@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from app.models import *
 from ..msg import *
+from django.db import transaction as db_transaction
 
 def addparticipant(request):
     submitted = request.session.get('submitted', False)
@@ -28,7 +29,7 @@ def addparticipant(request):
                 registration_date=datetime.now(),
             )
 
-            # Save Transaction first
+            # Save Transaction first, but only commit if participant saves successfully
             try:
                 amount = float(request.POST.get('amount', 0))
                 ticket_count = int(request.POST.get('tickets', 1))
@@ -36,17 +37,22 @@ def addparticipant(request):
                 amount = 0
                 ticket_count = 1
             total_amount = amount * ticket_count
-            transactionData = Transaction(
-                amount=total_amount,
-                ticket_count=ticket_count,
-                payment_screenshot=request.FILES.get('payment_screenshot'),
-            )
-            
-            transactionData.save()
 
-            # Assign transaction to participant
-            participant.transaction = transactionData
-            participant.save()
+            with db_transaction.atomic():
+                transactionData = Transaction(
+                    amount=total_amount,
+                    ticket_count=ticket_count,
+                    payment_screenshot=request.FILES.get('payment_screenshot'),
+                )
+                transactionData.save()
+                # Assign transaction to participant
+                participant.transaction = transactionData
+                try:
+                    participant.save()
+                except Exception as e:
+                    # If participant fails to save, add error message and redirect
+                    messages.error(request, 'Participant could not be saved. Try Again.')
+                    return redirect('event_detail', event_id=event_id)
 
             # Save ChessPlayer data if the category is chess
             if tournament.category == 1:
@@ -66,6 +72,7 @@ def addparticipant(request):
             request.session['full_name'] = request.POST.get('full_name')
             request.session['tournament_name'] = tournament.title
             request.session['tournament_date'] = str(tournament.start_date)
+            request.session['registration_id'] = str(participant.registration_id)[:5]
 
             send_whatsapp_message(participant, 1)
 
@@ -73,7 +80,7 @@ def addparticipant(request):
 
         except Exception as e:
             print(f"Error occurred: {e}")
-            # Redirect or handle error as needed
+            messages.error(request, str(e) or 'Try Again')
             return redirect('event_detail', event_id=event_id)
 
     if not tournament:
