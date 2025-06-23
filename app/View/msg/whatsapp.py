@@ -1,5 +1,12 @@
 from twilio.rest import Client
 from app.models import *
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+auth_token = os.getenv('TWILIO_AUTH_TOKEN')
 
 # WhatsApp message sending functionality
 def get_message_template(msg_type, reason, name=None, reg_number=None):
@@ -33,8 +40,6 @@ def get_message_template(msg_type, reason, name=None, reg_number=None):
         return f"Hello {name}, this is a generic message."
 
 def send_whatsapp_message(user, type=0, reason=None, media_url=None):
-    account_sid = 'AC57048ded5ea9a323f477bffc1aa2af75'
-    auth_token = 'c7860f6a603bdc4816f979620b64b603'
     client = Client(account_sid, auth_token)
 
     # user = Participant.objects.get(id=user)
