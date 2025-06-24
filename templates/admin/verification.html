@@ -44,7 +44,7 @@
                     <td>{{ request.id }}</td>
                     <td>{{ request.full_name }}</td>
                     <td>{{ request.tournament.title }}</td>
-                    <td>{{ request.tournament.start_date|date:"M d, Y" }}</td>
+                    <td>{{ request.tournament.start_date|date:'d/m/y' }}</td>
                     <td>₹{{ request.tournament.entry_fee }}</td>
                     <td>
                         {{ request.transaction.payment_status}}

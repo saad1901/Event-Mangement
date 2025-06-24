@@ -37,6 +37,7 @@ urlpatterns = [
     path('addparticipant/', addparticipant, name='addparticipant'),
     path('clear-registration/', clear_registration_session, name='clear_registration_session'),
     path('editregistration/<int:registration_id>/', edit_registration, name='edit_registration'),
+    path('deleteregistration/<int:registration_id>/', delete_registration, name='delete_registration'),
 
     # Admin API endpoints for AJAX requests
     path('api/events/', api_events, name='api_events'),
