@@ -186,16 +186,26 @@ function setupEventListeners() {
     // Delete buttons
     const deleteButtons = document.querySelectorAll('.delete-btn');
     deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
             const itemId = this.getAttribute('data-id');
             const itemType = this.getAttribute('data-type');
-            
             if (confirm(`Are you sure you want to delete this ${itemType}?`)) {
-                console.log(`Deleting ${itemType} with ID ${itemId}`);
-                
-                // In a real app, send delete request to server
-                // For demo, we'll just show a notification
-                showNotification('Deleted!', `${itemType} has been deleted.`, 'success');
+                // Create a form and submit POST to /delete_registration/<id>/
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/deleteregistration/${itemId}/`;
+                // Add CSRF token
+                const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
+                if (csrfToken) {
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = 'csrfmiddlewaretoken';
+                    csrfInput.value = csrfToken.value;
+                    form.appendChild(csrfInput);
+                }
+                document.body.appendChild(form);
+                form.submit();
             }
         });
     });
