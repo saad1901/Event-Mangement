@@ -28,16 +28,14 @@ def addparticipant(request):
                 notes=request.POST.get('notes', ''),
                 registration_date=datetime.now(),
             )
-
             # Save Transaction first, but only commit if participant saves successfully
             try:
-                amount = float(request.POST.get('amount', 0))
+                amount = int(request.POST.get('amount', 0))
                 ticket_count = int(request.POST.get('tickets', 1))
             except (TypeError, ValueError):
                 amount = 0
                 ticket_count = 1
             total_amount = amount * ticket_count
-
             with db_transaction.atomic():
                 transactionData = Transaction(
                     amount=total_amount,

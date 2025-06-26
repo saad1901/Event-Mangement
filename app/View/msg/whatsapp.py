@@ -69,7 +69,7 @@ def send_whatsapp_message(user, type=0, reason=None, media_url=None):
 
     # Get event name and date if available
     event_name = getattr(user.tournament, 'title', None) if hasattr(user, 'tournament') else None
-    event_date = getattr(user.tournament, 'date', None) if hasattr(user, 'tournament') else None
+    event_date = getattr(user.tournament, 'start_date', None) if hasattr(user, 'tournament') else None
 
     message = get_message_template(
         type,
@@ -79,9 +79,9 @@ def send_whatsapp_message(user, type=0, reason=None, media_url=None):
         event_name=event_name,
         event_date=event_date
     )
-    print(message)
+    # print(message)
     phone_number = '91'+phone_number
-    print(phone_number)
+    # print(phone_number)
     msg_kwargs = {
         'from_': 'whatsapp:+14155238886',
         'to': f'whatsapp:918799878583',

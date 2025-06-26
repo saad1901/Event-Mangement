@@ -194,7 +194,7 @@ function setupEventListeners() {
                 // Create a form and submit POST to /delete_registration/<id>/
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = `/deleteregistration/${itemId}/`;
+                form.action = `/superadmin/dashboard/deleteregistration/${itemId}/`;
                 // Add CSRF token
                 const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
                 if (csrfToken) {
@@ -271,7 +271,7 @@ function setupEventListeners() {
                 const form = document.getElementById('edit-registration-form');
                 if (form && row.dataset.id) {
                     // Use path param, not query param, to match Django URL
-                    form.action = '/editregistration/' + row.dataset.id + '/';
+                    form.action = '/superadmin/dashboard/editregistration/' + row.dataset.id + '/';
                 }
                 openRegistrationModal('edit', data);
             }

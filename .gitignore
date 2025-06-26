@@ -1,5 +1,5 @@
 __pycache__/
 *.pyc
 .env
-eventapp\settings.py
-app\migrations
+eventapp/settings.py
+app/migrations/

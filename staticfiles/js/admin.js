@@ -186,16 +186,26 @@ function setupEventListeners() {
     // Delete buttons
     const deleteButtons = document.querySelectorAll('.delete-btn');
     deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
             const itemId = this.getAttribute('data-id');
             const itemType = this.getAttribute('data-type');
-            
             if (confirm(`Are you sure you want to delete this ${itemType}?`)) {
-                console.log(`Deleting ${itemType} with ID ${itemId}`);
-                
-                // In a real app, send delete request to server
-                // For demo, we'll just show a notification
-                showNotification('Deleted!', `${itemType} has been deleted.`, 'success');
+                // Create a form and submit POST to /delete_registration/<id>/
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/superadmin/dashboard/deleteregistration/${itemId}/`;
+                // Add CSRF token
+                const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
+                if (csrfToken) {
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = 'csrfmiddlewaretoken';
+                    csrfInput.value = csrfToken.value;
+                    form.appendChild(csrfInput);
+                }
+                document.body.appendChild(form);
+                form.submit();
             }
         });
     });
@@ -226,6 +236,161 @@ function setupEventListeners() {
             applyFilter(this.value, this.getAttribute('data-filter-type'));
         });
     });
+    
+    // Registration view/edit button listeners
+    // Use event delegation for dynamic rows
+    const tableBody = document.querySelector('.admin-table tbody');
+    if (tableBody) {
+        tableBody.addEventListener('click', function(e) {
+            const btn = e.target.closest('.view-btn, .edit-btn');
+            if (!btn) return;
+            const row = btn.closest('.registration-row');
+            if (!row) return;
+            // Gather data from row attributes
+            const data = {
+                event: row.dataset.event,
+                full_name: row.dataset.full_name,
+                email: row.dataset.email,
+                phone: row.dataset.phone,
+                wp: row.dataset.wp,
+                age: row.dataset.age,
+                gender: row.dataset.gender,
+                date: row.dataset.date,
+                status: row.dataset.status,
+                ticket_count: row.dataset.ticket_count,
+                payment_status: row.dataset.payment_status,
+                payment_reference: row.dataset.payment_reference,
+                notes: row.dataset.notes,
+                special_requirements: row.dataset.special_requirements,
+                payment_screenshot: row.dataset.payment_screenshot
+            };
+            if (btn.classList.contains('view-btn')) {
+                openRegistrationModal('view', data);
+            } else if (btn.classList.contains('edit-btn')) {
+                // Set the form action URL dynamically
+                const form = document.getElementById('edit-registration-form');
+                if (form && row.dataset.id) {
+                    // Use path param, not query param, to match Django URL
+                    form.action = '/superadmin/dashboard/editregistration/' + row.dataset.id + '/';
+                }
+                openRegistrationModal('edit', data);
+            }
+        });
+    }
+}
+
+// Registration View/Edit Modal Logic
+function openRegistrationModal(mode, data) {
+    if (mode === 'view') {
+        const modal = document.getElementById('view-registration-modal');
+        document.getElementById('view_registration_event').value = data.event || '';
+        document.getElementById('view_registration_full_name').value = data.full_name || '';
+        document.getElementById('view_registration_email').value = data.email || '';
+        document.getElementById('view_registration_phone').value = data.phone || '';
+        document.getElementById('view_registration_wp').value = data.wp || '';
+        document.getElementById('view_registration_age').value = data.age || '';
+        document.getElementById('view_registration_gender').value = data.gender || '';
+        document.getElementById('view_registration_date').value = data.date || '';
+        document.getElementById('view_registration_status').value = data.status || '';
+        document.getElementById('view_registration_ticket_count').value = data.ticket_count || '';
+        document.getElementById('view_registration_payment_status').value = data.payment_status || '';
+        document.getElementById('view_registration_payment_reference').value = data.payment_reference || '';
+        document.getElementById('view_registration_notes').value = data.notes || '';
+        document.getElementById('view_registration_special_requirements').value = data.special_requirements || '';
+        document.getElementById('view_registration_payment_screenshot').src = data.payment_screenshot || '';
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    } else if (mode === 'edit') {
+        const modal = document.getElementById('edit-registration-modal');
+        // Event select (populate with real events from Django context)
+        const eventSelect = document.getElementById('edit_registration_event');
+        if (eventSelect) {
+            // Always clear and repopulate options
+            eventSelect.innerHTML = '<option value="">Select event</option>';
+            if (window.EVENT_OPTIONS && Array.isArray(window.EVENT_OPTIONS)) {
+                window.EVENT_OPTIONS.forEach(ev => {
+                    const opt = document.createElement('option');
+                    opt.value = String(ev.id);
+                    opt.textContent = ev.title;
+                    eventSelect.appendChild(opt);
+                });
+            }
+            // Set value to the event id (not title!)
+            let eventId = data.event_id || '';
+            if (!eventId && data.event && window.EVENT_OPTIONS) {
+                // Try to find event id by title (case-insensitive)
+                const found = window.EVENT_OPTIONS.find(ev => ev.title.trim().toLowerCase() === (data.event || '').trim().toLowerCase());
+                if (found) eventId = String(found.id);
+            }
+            eventSelect.value = eventId;
+        }
+        // Gender select
+        const genderSelect = document.getElementById('edit_registration_gender');
+        if (genderSelect) {
+            genderSelect.innerHTML = `
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            `;
+            genderSelect.value = (data.gender || '').toLowerCase();
+        }
+        // Status select
+        const statusSelect = document.getElementById('edit_registration_status');
+        if (statusSelect) {
+            statusSelect.innerHTML = `
+                <option value="registered">Registered</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="checked_in">Checked In</option>
+                <option value="eliminated">Eliminated</option>
+                <option value="winner">Winner</option>
+                <option value="disqualified">Disqualified</option>
+                <option value="rejected">Rejected</option>
+            `;
+            statusSelect.value = (data.status || '').toLowerCase();
+        }
+        // Payment status select
+        const paymentStatusSelect = document.getElementById('edit_registration_payment_status');
+        if (paymentStatusSelect) {
+            paymentStatusSelect.innerHTML = `
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+                <option value="failed">Failed</option>
+                <option value="refunded">Refunded</option>
+            `;
+            let paymentStatus = (data.payment_status || '').trim().toLowerCase();
+            let foundPaymentStatus = '';
+            Array.from(paymentStatusSelect.options).forEach(opt => {
+                const optValue = opt.value.trim().toLowerCase();
+                const optText = opt.textContent.trim().toLowerCase();
+                if (optValue === paymentStatus || optText === paymentStatus) {
+                    foundPaymentStatus = opt.value;
+                }
+            });
+            if (!foundPaymentStatus && paymentStatus) {
+                Array.from(paymentStatusSelect.options).forEach(opt => {
+                    const optValue = opt.value.trim().toLowerCase();
+                    const optText = opt.textContent.trim().toLowerCase();
+                    if (optValue.includes(paymentStatus) || optText.includes(paymentStatus) || paymentStatus.includes(optValue)) {
+                        foundPaymentStatus = opt.value;
+                    }
+                });
+            }
+            paymentStatusSelect.value = foundPaymentStatus || '';
+        }
+        document.getElementById('edit_registration_full_name').value = data.full_name || '';
+        document.getElementById('edit_registration_email').value = data.email || '';
+        document.getElementById('edit_registration_phone').value = data.phone || '';
+        document.getElementById('edit_registration_wp').value = data.wp || '';
+        document.getElementById('edit_registration_age').value = data.age || '';
+        document.getElementById('edit_registration_date').value = data.date || '';
+        document.getElementById('edit_registration_ticket_count').value = data.ticket_count || '';
+        document.getElementById('edit_registration_payment_reference').value = data.payment_reference || '';
+        document.getElementById('edit_registration_notes').value = data.notes || '';
+        document.getElementById('edit_registration_special_requirements').value = data.special_requirements || '';
+        // Payment screenshot is file input, can't set value for security reasons
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 // Search function

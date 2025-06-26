@@ -45,7 +45,7 @@
                     <td>{{ request.full_name }}</td>
                     <td>{{ request.tournament.title }}</td>
                     <td>{{ request.tournament.start_date|date:'d/m/y' }}</td>
-                    <td>₹{{ request.tournament.entry_fee }}</td>
+                    <td>₹{{ request.transaction.amount }}</td>
                     <td>
                         {{ request.transaction.payment_status}}
                     </td>
@@ -284,7 +284,7 @@
     }
     
     function updateVerificationStatus(requestId, action, reason = '') {
-        fetch(`/api/verification/update-status/${requestId}/`, {
+        fetch(`/superadmin/api/verification/update-status/${requestId}/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
