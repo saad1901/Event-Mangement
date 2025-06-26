@@ -10,9 +10,10 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from app.View.msg.whatsapp import send_whatsapp_message
 
+@login_required
 def admin_verification(request):
     alltournaments = Tournament.objects.all()
-    verification_requests = Participant.objects.filter(status='registered')
+    verification_requests = Participant.objects.filter(status='registered').select_related('transaction')
     context = {
         'verification_requests': verification_requests,
         # 'events': events,
@@ -24,6 +25,7 @@ def admin_verification(request):
 
 @csrf_exempt  # Optional: only use this if not handling CSRF token in frontend
 @require_POST
+@login_required
 def update_verification_status(request, request_id):
     try:
         data = json.loads(request.body)

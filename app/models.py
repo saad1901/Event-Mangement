@@ -209,7 +209,7 @@ class Participant(models.Model):
     
     # Personal Information
     full_name = models.CharField(max_length=200)
-    email = models.EmailField(blank=True, null=True, help_text="Email address for updates and notifications")
+    email = models.EmailField(blank=True, null=True, unique=False, help_text="Email address for updates and notifications")
     phone = models.CharField(max_length=20)
     wp = models.CharField(max_length=10, blank=True, help_text="WhatsApp number for updates")
     age = models.IntegerField()
@@ -224,7 +224,7 @@ class Participant(models.Model):
     # Additional Information
     special_requirements = models.TextField(blank=True)
     notes = models.TextField(blank=True)
-    transaction = models.OneToOneField(Transaction, on_delete=models.CASCADE, related_name='participant')
+    transaction = models.OneToOneField(Transaction, on_delete=models.CASCADE, related_name='transaction')
 
     optinWhatsapp = models.BooleanField(default=True)
 
