@@ -226,6 +226,8 @@ class Participant(models.Model):
     notes = models.TextField(blank=True)
     transaction = models.OneToOneField(Transaction, on_delete=models.CASCADE, related_name='participant')
 
+    optinWhatsapp = models.BooleanField(default=True)
+
     class Meta:
         unique_together = ['tournament', 'email']
 
@@ -329,6 +331,10 @@ class ChessPlayer(models.Model):
     def __str__(self):
         return f"{self.participant.full_name} ({self.fide_id or 'No FIDE ID'}) - {self.get_section_display()}"
 
-
+class logModal(models.Model):
+    sec = models.CharField(max_length=100, blank=True, null=True)
+    key = models.CharField(max_length=100, blank=True, null=True)
+    value = models.CharField(max_length=500, blank=True, null=True)
+    sec_id = models.IntegerField(blank=True)
 
 

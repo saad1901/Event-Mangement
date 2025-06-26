@@ -2,6 +2,7 @@ from twilio.rest import Client
 from app.models import *
 from dotenv import load_dotenv
 import os
+from app.views import logwrite
 
 load_dotenv()
 
@@ -63,6 +64,7 @@ def send_whatsapp_message(user, type=0, reason=None, media_url=None):
     phone_number = user.wp
     if not len(phone_number) == 10:
         print("Invalid phone number length. Must be 10 digits.")
+        logwrite('User-register',int(user.id), f'{user.full_name}', 'Invalid phone number length, Msg Not sent')
         return
 
     # Get event name and date if available
