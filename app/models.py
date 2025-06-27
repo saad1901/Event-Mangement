@@ -224,7 +224,7 @@ class Participant(models.Model):
     # Additional Information
     special_requirements = models.TextField(blank=True)
     notes = models.TextField(blank=True)
-    transaction = models.OneToOneField(Transaction, on_delete=models.CASCADE, related_name='transaction')
+    transaction = models.OneToOneField(Transaction, on_delete=models.CASCADE, related_name='participant')
 
     optinWhatsapp = models.BooleanField(default=True)
 
