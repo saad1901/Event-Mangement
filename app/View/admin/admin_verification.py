@@ -35,7 +35,7 @@ def update_verification_status(request, request_id):
         transaction = verification.transaction
         if not transaction:
             return JsonResponse({'message': 'Transaction not found.'}, status=404)
-        print(transaction.payment_status)
+        # print(transaction.payment_status)
         if action == 'accept':
             verification.status = 'confirmed'
             transaction.payment_status = 'completed'

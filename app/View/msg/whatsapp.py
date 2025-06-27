@@ -3,6 +3,10 @@ from app.models import *
 from dotenv import load_dotenv
 import os
 from app.views import logwrite
+import requests
+from django.contrib import messages
+
+url = 'http://127.0.0.1:8002/service/sendwp'
 
 load_dotenv()
 
@@ -90,7 +94,17 @@ def send_whatsapp_message(user, type=0, reason=None, media_url=None):
     if media_url:
         msg_kwargs['media_url'] = media_url
     try:
-        message_obj = client.messages.create(**msg_kwargs)
+        body = {
+        "to": str(phone_number),
+        "message": str(message),
+        "api_key": str(auth_token)
+        }
+        print(auth_token)
+        # response = requests.post(url, json=body)
+        # print(response.text)
+        # if response.status_code != 200:
+            # messages.error(response.text.get('detail'))
+        client.messages.create(**msg_kwargs)
+        print(f"WhatsApp message sent to {phone_number}")
     except Exception as e:
         print(f"Failed to send WhatsApp message: {e}")
-    print(f"WhatsApp message sent to {phone_number}")
