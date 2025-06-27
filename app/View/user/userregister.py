@@ -31,6 +31,7 @@ def addparticipant(request):
             # Save Transaction first, but only commit if participant saves successfully
             try:
                 amount = int(request.POST.get('amount', 0))
+                print(amount)
                 ticket_count = int(request.POST.get('tickets', 1))
             except (TypeError, ValueError):
                 amount = 0
