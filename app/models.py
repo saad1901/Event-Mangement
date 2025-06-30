@@ -46,7 +46,7 @@ class TournamentImage(models.Model):
     def __str__(self):
         return f"Image for {self.tournament.title}"
 
-class UPIS(models.Model):
+class Upis(models.Model):
     upi_id = models.CharField(max_length=100, unique=True, help_text="UPI ID for payment collection")
     nickname = models.CharField(max_length=100,blank=True,null=True, unique=True, help_text="Nickname for the UPI ID")
     name = models.CharField(max_length=100, help_text="Name associated with the UPI ID")
@@ -111,7 +111,7 @@ class Tournament(models.Model):
     instagram_post = models.URLField(blank=True)
     
     upi_id = models.ForeignKey(
-        UPIS,
+        Upis,
         max_length=100, 
         blank=True, 
         help_text="UPI ID for payment collection",
@@ -209,6 +209,7 @@ class Participant(models.Model):
     
     # Personal Information
     full_name = models.CharField(max_length=200)
+    address = models.CharField(max_length=300, null=True, blank=True)
     email = models.EmailField(blank=True, null=True, unique=False, help_text="Email address for updates and notifications")
     phone = models.CharField(max_length=20)
     wp = models.CharField(max_length=10, blank=True, help_text="WhatsApp number for updates")
@@ -336,5 +337,19 @@ class logModal(models.Model):
     key = models.CharField(max_length=100, blank=True, null=True)
     value = models.CharField(max_length=500, blank=True, null=True)
     sec_id = models.IntegerField(blank=True)
+
+class EventData(models.Model):
+    name = models.CharField(max_length=80, blank=True, null=True)
+    email = models.EmailField(max_length=50, blank=True, null=True)
+    phone = models.CharField(max_length=15, blank=True, null=True)
+    wp = models.CharField(max_length=15, blank=True, null=True)
+    add = models.CharField(max_length=150, blank=True, null=True)
+
+
+class ApiData(models.Model):
+    sid = models.CharField(max_length=150, blank=True, null=True)
+    token = models.EmailField(max_length=150, blank=True, null=True)
+    wp = models.CharField(max_length=15, blank=True, null=True)
+    active = models.BooleanField(default=True)
 
 

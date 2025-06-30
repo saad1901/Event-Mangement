@@ -2,6 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from datetime import datetime
+from app.models import Tournament, Category, TournamentImage, Participant
+
+@login_required
+def admin_users(request):
+    context = {
+        'users': Participant.objects.all(),
+        'events': Tournament.objects.all(),
+        'categories': Category.objects.all(),
+        'active_tab': 'users',
+    }
+    return render(request, 'admin/users.html', context)
 
 @login_required
 def user_profile(request):

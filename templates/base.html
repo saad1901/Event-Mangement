@@ -1,31 +1,35 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Tournament Central - Premier Tournament Hosting{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/animations.css' %}">
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
+
 <body>
     <header class="header">
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <h1><a href="{% url 'home' %}">Tournament Central</a></h1>
+                    <h1><a href="{% url 'home' %}">{{data.name}}</a></h1>
                 </div>
                 <nav class="nav">
                     <ul class="nav-links" id="navLinks">
                         <li><a href="{% url 'home' %}">Home</a></li>
-                        <li><a href="#">Events</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li><a href="{% url 'home' %}#events">Events</a></li>
+                        <li><a href="{% url 'home' %}#about">About Us</a></li>
+                        <li><a href="{% url 'home' %}#contact">Contact</a></li>
                     </ul>
                     <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
                         <span></span>
@@ -43,15 +47,19 @@
 
     <!-- Floating Help Button -->
     <div class="floating-help-button" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-        <button type="button" onclick="toggleHelpMenu()" style="background-color: #28a745; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); transition: transform 0.2s;">
+        <button type="button" onclick="toggleHelpMenu()"
+            style="background-color: #28a745; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); transition: transform 0.2s;">
             <i class="fas fa-headset" style="font-size: 24px;"></i>
         </button>
-        <div id="helpMenu" style="display: none; position: absolute; bottom: 70px; right: 0; background-color: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 15px rgba(0,0,0,0.1); z-index: 1000; min-width: 200px; margin-top: 5px;">
-            <a href="https://wa.me/919876543210" target="_blank" style="display: flex; align-items: center; gap: 10px; padding: 15px; color: #333; text-decoration: none; border-bottom: 1px solid #eee; transition: background-color 0.2s;">
+        <div id="helpMenu"
+            style="display: none; position: absolute; bottom: 70px; right: 0; background-color: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 15px rgba(0,0,0,0.1); z-index: 1000; min-width: 200px; margin-top: 5px;">
+            <a href="https://wa.me/91{{data.wp}}" target="_blank"
+                style="display: flex; align-items: center; gap: 10px; padding: 15px; color: #333; text-decoration: none; border-bottom: 1px solid #eee; transition: background-color 0.2s;">
                 <i class="fab fa-whatsapp" style="color: #25D366; font-size: 24px;"></i>
                 <span>Chat on WhatsApp</span>
             </a>
-            <a href="tel:+919876543210" style="display: flex; align-items: center; gap: 10px; padding: 15px; color: #333; text-decoration: none; transition: background-color 0.2s;">
+            <a href="tel:+91{{data.phone}}"
+                style="display: flex; align-items: center; gap: 10px; padding: 15px; color: #333; text-decoration: none; transition: background-color 0.2s;">
                 <i class="fas fa-phone" style="color: #28a745; font-size: 22px;"></i>
                 <span>Call Support</span>
             </a>
@@ -63,13 +71,15 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h3>Tournament Central</h3>
+                    <h3>{{data.name}}</h3>
                     <p>Your premier destination for competitive tournaments and events.</p>
                     <div class="social-links">
+
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
                         <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="{% url 'admin_dashboard' %}"><i class="fa-solid fa-lock"></i></a>
                     </div>
                 </div>
                 <div class="footer-column">
@@ -84,14 +94,14 @@
                 <div class="footer-column">
                     <h3>Contact Info</h3>
                     <ul class="compact-contact">
-                        <li><i class="fas fa-map-marker-alt"></i> 123 Tournament Avenue, Sportsville, SP 54321</li>
-                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
-                        <li><i class="fas fa-envelope"></i> info@tournamentcentral.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i>{{data.add}}</li>
+                        <li><i class="fas fa-phone"></i>+91 {{data.phone}}</li>
+                        <li><i class="fas fa-envelope"></i>{{data.email}}</li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; {{ current_year }} Tournament Central. All rights reserved.</p>
+                <p>&copy; {{ current_year }} {{data.name}}. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -106,7 +116,7 @@
         }
 
         // Close help menu when clicking outside
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             const menu = document.getElementById('helpMenu');
             const helpButton = event.target.closest('button');
             if (!helpButton && menu.style.display === 'block') {
@@ -117,10 +127,10 @@
         // Add hover effect to help button
         const helpButton = document.querySelector('button[onclick="toggleHelpMenu()"]');
         if (helpButton) {
-            helpButton.addEventListener('mouseover', function() {
+            helpButton.addEventListener('mouseover', function () {
                 this.style.transform = 'scale(1.1)';
             });
-            helpButton.addEventListener('mouseout', function() {
+            helpButton.addEventListener('mouseout', function () {
                 this.style.transform = 'scale(1)';
             });
         }
@@ -128,23 +138,23 @@
         // Add hover effects to menu items
         const menuItems = document.querySelectorAll('#helpMenu a');
         menuItems.forEach(item => {
-            item.addEventListener('mouseover', function() {
+            item.addEventListener('mouseover', function () {
                 this.style.backgroundColor = '#f8f9fa';
             });
-            item.addEventListener('mouseout', function() {
+            item.addEventListener('mouseout', function () {
                 this.style.backgroundColor = 'white';
             });
         });
-        
+
         // Mobile menu toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const mobileMenuToggle = document.getElementById('mobileMenuToggle');
             const navLinks = document.getElementById('navLinks');
-            
+
             if (mobileMenuToggle && navLinks) {
-                mobileMenuToggle.addEventListener('click', function() {
+                mobileMenuToggle.addEventListener('click', function () {
                     navLinks.classList.toggle('active');
-                    
+
                     // Toggle hamburger to X animation
                     const spans = this.querySelectorAll('span');
                     if (navLinks.classList.contains('active')) {
@@ -157,11 +167,11 @@
                         spans[2].style.transform = 'none';
                     }
                 });
-                
+
                 // Close mobile menu when clicking on a link
                 const navLinkItems = navLinks.querySelectorAll('a');
                 navLinkItems.forEach(link => {
-                    link.addEventListener('click', function() {
+                    link.addEventListener('click', function () {
                         navLinks.classList.remove('active');
                         const spans = mobileMenuToggle.querySelectorAll('span');
                         spans[0].style.transform = 'none';
@@ -169,9 +179,9 @@
                         spans[2].style.transform = 'none';
                     });
                 });
-                
+
                 // Close mobile menu when clicking outside
-                document.addEventListener('click', function(event) {
+                document.addEventListener('click', function (event) {
                     if (!event.target.closest('.nav') && navLinks.classList.contains('active')) {
                         navLinks.classList.remove('active');
                         const spans = mobileMenuToggle.querySelectorAll('span');
@@ -185,4 +195,5 @@
     </script>
     {% block extra_js %}{% endblock %}
 </body>
+
 </html>

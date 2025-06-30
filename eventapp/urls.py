@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from app.View import *
-
+from app import views
 urlpatterns = [
     # Django admin
     path('admin/', django_admin.site.urls),
@@ -16,6 +16,7 @@ urlpatterns = [
     path('home/about/', about, name='about'),
     path('home/contact/', contact, name='contact'),
     path('home/events/', event_list, name='event_list'),
+    path('test', views.test, name='event_list'),
     
     # Authentication URLs
     path('auth/login/', login_view, name='login'),

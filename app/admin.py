@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     Category, Tournament, TournamentImage, Participant,
-    TournamentPrize, TournamentSponsor, TournamentAnnouncement, UPIS
+    TournamentPrize, TournamentSponsor, TournamentAnnouncement, Upis
 )
 
 @admin.register(Category)
@@ -120,4 +120,4 @@ class TournamentAnnouncementAdmin(admin.ModelAdmin):
     search_fields = ('title', 'content', 'tournament__title')
     readonly_fields = ('created_at', 'updated_at') 
 
-admin.site.register(UPIS)
+admin.site.register(Upis)

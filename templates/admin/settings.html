@@ -7,149 +7,145 @@
 <div class="admin-tab active">
     <div class="tab-header">
         <h2>System Settings</h2>
-        <button class="primary-btn" id="save-all-settings">
+        <!-- <button class="primary-btn" id="save-all-settings">
             <i class="fas fa-save"></i> Save All Changes
-        </button>
+        </button> -->
     </div>
-    
+
+    {% if messages %}
+    <div style="margin: 1rem 0;">
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}" style="padding: 0.75rem 1rem; border-radius: 6px; margin-bottom: 0.5rem; {% if 'success' in message.tags %}background: #28a745; color: #fff;{% elif 'error' in message.tags %}background: #dc3545; color: #fff;{% else %}background: #f8f9fa; color: #333;{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <div class="settings-container">
         <!-- General Settings -->
-        <div class="settings-card">
-            <h3><i class="fas fa-cog"></i> General Settings</h3>
-            <form class="admin-form" id="general-settings-form">
-                <div class="form-group">
-                    <label for="site_name">Site Name</label>
-                    <input type="text" id="site_name" name="site_name" value="Event Management System" required>
+        <form class="admin-form" id="general-settings-form" method="post">
+            {% csrf_token %}
+            <div class="settings-card">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <h3 style="margin-bottom: 0;"><i class="fas fa-cog"></i> General Settings</h3>
+                    <button type="submit" class="primary-btn"
+                        style="background: #28a745; color: #fff; padding: 0.3em 1em; font-size: 0.95em; border-radius: 4px; margin-left: 1em;">
+                        Save
+                    </button>
                 </div>
                 <div class="form-group">
-                    <label for="site_description">Site Description</label>
-                    <textarea id="site_description" name="site_description" rows="2">Your premier platform for event management and ticketing</textarea>
+                    <label for="site_name">Site Name</label>
+                    <input type="text" id="site_name" name="site_name" value="{{org.name}}" required>
                 </div>
                 <div class="form-group">
                     <label for="contact_email">Contact Email</label>
-                    <input type="email" id="contact_email" name="contact_email" value="contact@example.com" required>
+                    <input type="email" id="contact_email" name="contact_email" value="{{org.email}}" required>
                 </div>
                 <div class="form-group">
                     <label for="support_phone">Support Phone</label>
-                    <input type="text" id="support_phone" name="support_phone" value="+1 (555) 123-4567">
+                    <input type="text" id="support_phone" name="support_phone" value="{{org.phone}}">
                 </div>
                 <div class="form-group">
-                    <label for="timezone">Default Timezone</label>
-                    <select id="timezone" name="timezone">
-                        <option value="UTC">UTC</option>
-                        <option value="America/New_York">Eastern Time (ET)</option>
-                        <option value="America/Chicago">Central Time (CT)</option>
-                        <option value="America/Denver">Mountain Time (MT)</option>
-                        <option value="America/Los_Angeles">Pacific Time (PT)</option>
-                        <option value="Europe/London">London (GMT)</option>
-                    </select>
+                    <label for="support_wp">Support Whatsapp</label>
+                    <input type="text" id="support_wp" name="support_wp" value="{{org.wp}}">
+                </div>
+            </div>
+        </form>
+
+        <!-- WhatsApp Settings -->
+        <form class="admin-form" id="whatsapp-settings-form" method="post">
+            {% csrf_token %}
+            <div class="settings-card">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <h3 style="margin-bottom: 0;"><i class="fab fa-whatsapp"></i> Wp Settings</h3>
+                    <button type="submit" class="primary-btn"
+                        style="background: #28a745; color: #fff; padding: 0.3em 1em; font-size: 0.95em; border-radius: 4px; margin-left: 1em;">
+                        Save
+                    </button>
                 </div>
                 <div class="form-group">
-                    <label for="date_format">Date Format</label>
-                    <select id="date_format" name="date_format">
-                        <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-                        <option value="DD/MM/YYYY">DD/MM/YYYY</option>
-                        <option value="YYYY-MM-DD">YYYY-MM-DD</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-        
-        <!-- Email Settings -->
-        <div class="settings-card">
-            <h3><i class="fas fa-envelope"></i> Email Settings</h3>
-            <form class="admin-form" id="email-settings-form">
-                <div class="form-group">
-                    <label for="smtp_host">SMTP Host</label>
-                    <input type="text" id="smtp_host" name="smtp_host" value="smtp.example.com">
+                    <label for="twilio_sid">Twilio Account SID</label>
+                    <input type="text" id="twilio_sid" name="twilio_sid"
+                        value="{{ whatsapp_settings.twilio_sid|default:'' }}"
+                        placeholder="Enter Twilio Account SID">
                 </div>
                 <div class="form-group">
-                    <label for="smtp_port">SMTP Port</label>
-                    <input type="number" id="smtp_port" name="smtp_port" value="587">
+                    <label for="twilio_token">Twilio Auth Token</label>
+                    <input type="password" id="twilio_token" name="twilio_token"
+                        value="{{ whatsapp_settings.twilio_token|default:'' }}"
+                        placeholder="Enter Twilio Auth Token">
                 </div>
                 <div class="form-group">
-                    <label for="smtp_username">SMTP Username</label>
-                    <input type="text" id="smtp_username" name="smtp_username" value="notifications@example.com">
+                    <label for="twilio_number">Twilio WhatsApp Number</label>
+                    <input type="text" id="twilio_number" name="twilio_number"
+                        value="{{ whatsapp_settings.twilio_number|default:'' }}"
+                        placeholder="Enter Twilio WhatsApp Number">
                 </div>
-                <div class="form-group">
-                    <label for="smtp_password">SMTP Password</label>
-                    <input type="password" id="smtp_password" name="smtp_password" value="********">
+                {% if whatsapp_settings.twilio_sid or whatsapp_settings.twilio_token or whatsapp_settings.twilio_number %}
+                <div class="whatsapp-current-settings" style="margin-top: 1.5rem;">
+                    <h4 style="margin-bottom: 0.5rem;">Current WhatsApp Settings</h4>
+                    <ul>
+                        <li><strong>Twilio SID:</strong> {{ whatsapp_settings.twilio_sid }}</li>
+                        <li><strong>Twilio Number:</strong> {{ whatsapp_settings.twilio_number }}</li>
+                    </ul>
                 </div>
-                <div class="form-group">
-                    <label for="email_from_name">From Name</label>
-                    <input type="text" id="email_from_name" name="email_from_name" value="Event Management System">
-                </div>
-                <div class="form-group">
-                    <label>Email Encryption</label>
-                    <div class="checkbox-group">
-                        <label>
-                            <input type="radio" name="email_encryption" value="tls" checked> TLS
-                        </label>
-                        <label>
-                            <input type="radio" name="email_encryption" value="ssl"> SSL
-                        </label>
-                        <label>
-                            <input type="radio" name="email_encryption" value="none"> None
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button type="button" class="secondary-btn" id="test-email-btn">Send Test Email</button>
-                </div>
-            </form>
-        </div>
-        
+                {% endif %}
+            </div>
+        </form>
+
         <!-- Payment Settings -->
-        <div class="settings-card">
-            <h3><i class="fas fa-credit-card"></i> Payment Settings</h3>
-            <form class="admin-form" id="payment-settings-form">
-                <div class="form-group">
-                    <label>Payment Gateways</label>
-                    <div class="checkbox-group">
-                        <label>
-                            <input type="checkbox" name="payment_gateways[]" value="stripe" checked> Stripe
-                        </label>
-                        <label>
-                            <input type="checkbox" name="payment_gateways[]" value="paypal" checked> PayPal
-                        </label>
-                        <label>
-                            <input type="checkbox" name="payment_gateways[]" value="bank_transfer"> Bank Transfer
-                        </label>
-                    </div>
+        <form class="admin-form" id="payment-settings-form" method="post">
+            {% csrf_token %}
+            <div class="settings-card">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <h3 style="margin-bottom: 0;"><i class="fas fa-credit-card"></i> Payment Settings</h3>
+                    <button type="submit" class="primary-btn"
+                        style="background: #28a745; color: #fff; padding: 0.3em 1em; font-size: 0.95em; border-radius: 4px; margin-left: 1em;">
+                        Save
+                    </button>
                 </div>
                 <div class="form-group">
-                    <label for="currency">Default Currency</label>
-                    <select id="currency" name="currency">
-                        <option value="USD">USD ($)</option>
-                        <option value="EUR">EUR (€)</option>
-                        <option value="GBP">GBP (£)</option>
-                        <option value="CAD">CAD ($)</option>
-                        <option value="AUD">AUD ($)</option>
-                    </select>
+                    <label for="upi_id">Payment UPI ID</label>
+                    <input type="text" id="upi_id" name="upi_id" placeholder="Enter UPI ID" required>
                 </div>
                 <div class="form-group">
-                    <label for="stripe_public_key">Stripe Public Key</label>
-                    <input type="text" id="stripe_public_key" name="stripe_public_key" value="pk_test_example">
+                    <label for="nickname">Nickname</label>
+                    <input type="text" id="nickname" name="nickname" placeholder="Enter Name to Show">
                 </div>
                 <div class="form-group">
-                    <label for="stripe_secret_key">Stripe Secret Key</label>
-                    <input type="password" id="stripe_secret_key" name="stripe_secret_key" value="sk_test_example">
+                    <label for="upi_name">Show Name</label>
+                    <input type="text" id="upi_name" name="upi_name" placeholder="Enter Name to Show" required>
                 </div>
-                <div class="form-group">
-                    <label for="paypal_client_id">PayPal Client ID</label>
-                    <input type="text" id="paypal_client_id" name="paypal_client_id" value="client_id_example">
+                <div class="upi-list" style="margin-top: 1.5rem;">
+                    <h4 style="margin-bottom: 0.5rem;">Existing UPI IDs</h4>
+                    <table class="admin-table">
+                        <tbody>
+                            {% for upi in upis %}
+                            <tr>
+                                <td style="font-weight: bold; vertical-align: top;">
+                                    {{ upi.upi_id }}<br>
+                                    <span style="font-weight: normal; color: #555; font-size: 0.97em;">{{ upi.name }}</span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="1" class="text-center">No UPI IDs found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-                <div class="form-group">
-                    <label for="paypal_secret">PayPal Secret</label>
-                    <input type="password" id="paypal_secret" name="paypal_secret" value="client_secret_example">
-                </div>
-            </form>
-        </div>
-        
+            </div>
+        </form>
+
         <!-- Notification Settings -->
-        <div class="settings-card">
-            <h3><i class="fas fa-bell"></i> Notification Settings</h3>
-            <form class="admin-form" id="notification-settings-form">
+        <form class="admin-form" id="notification-settings-form" method="post">
+            {% csrf_token %}
+            <div class="settings-card">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <h3 style="margin-bottom: 0;"><i class="fas fa-bell"></i> Notification Settings</h3>
+                </div>
                 <div class="form-group">
                     <label>Email Notifications</label>
                     <div class="checkbox-group">
@@ -184,78 +180,41 @@
                         </label>
                     </div>
                 </div>
-            </form>
-        </div>
-        
-        <!-- Security Settings -->
-        <div class="settings-card">
-            <h3><i class="fas fa-shield-alt"></i> Security Settings</h3>
-            <form class="admin-form" id="security-settings-form">
-                <div class="form-group">
-                    <label for="session_timeout">Session Timeout (minutes)</label>
-                    <input type="number" id="session_timeout" name="session_timeout" value="30" min="5" max="120">
-                </div>
-                <div class="form-group">
-                    <label for="password_policy">Password Policy</label>
-                    <select id="password_policy" name="password_policy">
-                        <option value="basic">Basic (min 8 characters)</option>
-                        <option value="medium" selected>Medium (min 8 chars, letters & numbers)</option>
-                        <option value="strong">Strong (min 10 chars, upper, lower, number, symbol)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Security Features</label>
-                    <div class="checkbox-group">
-                        <label>
-                            <input type="checkbox" name="security_features[]" value="2fa" checked> Two-Factor Authentication
-                        </label>
-                        <label>
-                            <input type="checkbox" name="security_features[]" value="captcha" checked> CAPTCHA on Forms
-                        </label>
-                        <label>
-                            <input type="checkbox" name="security_features[]" value="ip_blocking"> IP Blocking
-                        </label>
-                        <label>
-                            <input type="checkbox" name="security_features[]" value="login_attempts" checked> Limit Login Attempts
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="max_login_attempts">Max Login Attempts</label>
-                    <input type="number" id="max_login_attempts" name="max_login_attempts" value="5" min="3" max="10">
-                </div>
-            </form>
-        </div>
+                <!-- <div class="form-group">
+                    <button type="submit" class="primary-btn">Save Notification Settings</button>
+                </div> -->
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Save All Settings Button
-        document.getElementById('save-all-settings').addEventListener('click', function() {
+        document.getElementById('save-all-settings').addEventListener('click', function () {
             saveAllSettings();
         });
-        
+
         // Test Email Button
-        document.getElementById('test-email-btn').addEventListener('click', function() {
+        document.getElementById('test-email-btn').addEventListener('click', function () {
             sendTestEmail();
         });
     });
-    
+
     function saveAllSettings() {
         // In a real application, this would collect and save all form data
         // For now, we'll just show a notification
         showNotification('All settings saved successfully', 'success');
     }
-    
+
     function sendTestEmail() {
         // In a real application, this would send a test email
         // For now, we'll just show a notification
         showNotification('Test email sent successfully', 'success');
     }
-    
+
     function showNotification(message, type = 'info') {
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
@@ -264,12 +223,12 @@
             <button class="close-notification">&times;</button>
         `;
         document.body.appendChild(notification);
-        
+
         // Add close button functionality
-        notification.querySelector('.close-notification').addEventListener('click', function() {
+        notification.querySelector('.close-notification').addEventListener('click', function () {
             notification.remove();
         });
-        
+
         // Auto-remove after 5 seconds
         setTimeout(() => {
             if (notification.parentNode) {

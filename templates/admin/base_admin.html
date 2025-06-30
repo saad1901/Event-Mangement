@@ -17,8 +17,8 @@
             <h1>Admin Dashboard</h1>
             <div class="user-info">
                 <span>{{ request.user.username }}</span>
-                <a href="{% url 'home' %}" class="view-site-btn"><i class="fas fa-external-link-alt"></i> View Site</a>
-                <button class="logout-btn">Logout</button>
+                <a href="{% url 'home' %}" target="_blank" class="view-site-btn"><i class="fas fa-external-link-alt"></i> View Site</a>
+                <a class="logout-btn" href="{% url 'logout' %}">Logout</a>
             </div>
         </div>
 

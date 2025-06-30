@@ -91,15 +91,16 @@ def send_whatsapp_message(user, type=0, reason=None, media_url=None):
         'to': f'whatsapp:918799878583',
         'body': message
     }
+    print(message)
     if media_url:
         msg_kwargs['media_url'] = media_url
     try:
-        body = {
-        "to": str(phone_number),
-        "message": str(message),
-        "api_key": str(auth_token)
-        }
-        print(auth_token)
+        # body = {
+        # "to": str(phone_number),
+        # "message": str(message),
+        # "api_key": str(auth_token)
+        # }
+        # print(auth_token)
         # response = requests.post(url, json=body)
         # print(response.text)
         # if response.status_code != 200:

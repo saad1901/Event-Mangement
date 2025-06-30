@@ -13,7 +13,7 @@ from app.View.msg.whatsapp import send_whatsapp_message
 @login_required
 def admin_verification(request):
     alltournaments = Tournament.objects.all()
-    verification_requests = Participant.objects.filter(status='registered').select_related('transaction')
+    verification_requests = Participant.objects.exclude(status='confirmed').select_related('transaction')
     context = {
         'verification_requests': verification_requests,
         # 'events': events,

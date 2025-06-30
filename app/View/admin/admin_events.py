@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from app.models import *
 
-# @login_required
+@login_required
 def admin_events(request):
     if request.method == 'POST':
         try:
@@ -80,7 +80,7 @@ def admin_events(request):
                 facebook_event=facebook_event,
                 instagram_post=instagram_post,
                 description=description,
-                upi_id=UPIS.objects.get(id=upi_id)
+                upi_id=Upis.objects.get(id=upi_id)
             )
 
             # Handle additional images
@@ -100,6 +100,7 @@ def admin_events(request):
     context = {
         'events': events,
         'categories': categories,
-        'upi_ids': UPIS.objects.all(),
+        'upi_ids': Upis.objects.all(),
+        'active_tab': 'events',
     }
     return render(request, 'admin/events.html', context)

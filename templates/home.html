@@ -10,7 +10,7 @@
         <div class="container" style="position: relative; z-index: 2;">
             <div class="hero-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
                 <h2 style="color: var(--text-color); font-weight: 900; font-size: clamp(2.2rem, 5vw, 4.2rem); margin-bottom: 20px; position: relative; display: inline-block; letter-spacing: 1px;">
-                    <span style="background: linear-gradient(45deg,rgb(255, 255, 255),rgb(218, 214, 214)); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">TOURNAMENT CENTRAL</span>
+                    <span style="background: linear-gradient(45deg,rgb(255, 255, 255),rgb(218, 214, 214)); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">{{data.name}}</span>
                     <span style="display: block; width: 80px; height: 3px; background: #555555; margin: 15px auto; border-radius: 2px;"></span>
                 </h2>
                 <p style="color: var(--text-color); font-size: clamp(1rem, 1.8vw, 1.3rem); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; font-weight: 400; letter-spacing: 0.3px;">Discover premier tournaments and events across various categories. Join competitions, showcase your skills, and connect with participants worldwide.</p>
@@ -319,28 +319,28 @@
                         <i class="fas fa-map-marker-alt" style="font-size: 1.2rem;"></i>
                         <div>
                             <h4 style="font-size: 1.2rem;">Address</h4>
-                            <p style="font-size: 1rem;">{{ contact_info.address }}</p>
+                            <p style="font-size: 1rem;">{{ data.add }}</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-phone" style="font-size: 1.2rem;"></i>
                         <div>
                             <h4 style="font-size: 1.2rem;">Phone</h4>
-                            <p style="font-size: 1rem;">{{ contact_info.phone }}</p>
+                            <p style="font-size: 1rem;">{{ data.phone }}</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-envelope" style="font-size: 1.2rem;"></i>
                         <div>
                             <h4 style="font-size: 1.2rem;">Email</h4>
-                            <p style="font-size: 1rem;">{{ contact_info.email }}</p>
+                            <p style="font-size: 1rem;">{{ data.email }}</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-clock" style="font-size: 1.2rem;"></i>
                         <div>
                             <h4 style="font-size: 1.2rem;">Business Hours</h4>
-                            <p style="font-size: 1rem;">{{ contact_info.hours }}</p>
+                            <p style="font-size: 1rem;">10:00 am - 7:00 pm</p>
                         </div>
                     </div>
                 </div>

@@ -32,7 +32,6 @@ def addparticipant(request):
             try:
                 amount = float(tournament.entry_fee)
                 ticket_count = int(request.POST.get('tickets', 1))
-                print(ticket_count)
             except (TypeError, ValueError):
                 amount = 0
                 ticket_count = 1

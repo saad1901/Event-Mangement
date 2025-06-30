@@ -6,13 +6,43 @@ from django.contrib.auth.decorators import login_required
 from app.models import *
 from django.views.decorators.http import require_POST
 
+# @login_required
+# def admin_registration(request):
+
+#     if request.method == 'POST' and 'searchreg' in request.POST:
+#         redirect('admin_registrations')
+
+#     events = Tournament.objects.all()
+#     context = {
+#         'active_tab': 'registration',
+#         'events': events,
+#         'registrations': Participant.objects.all().select_related('tournament'),
+#         'active_tab': 'registrations',
+#     }
+#     return render(request, 'admin/registrations.html', context)
+
 @login_required
 def admin_registration(request):
+    registrations = Participant.objects.all().select_related('tournament')
+    search_query = request.GET.get('searchreg', '').strip()
+
+    if search_query:
+        registrations = registrations.filter(
+            full_name__icontains=search_query
+        ) | registrations.filter(
+            email__icontains=search_query
+        ) | registrations.filter(
+            phone__icontains=search_query
+        ) | registrations.filter(
+            tournament__title__icontains=search_query
+        )
+
     events = Tournament.objects.all()
     context = {
         'active_tab': 'registration',
         'events': events,
-        'registrations': Participant.objects.all().select_related('tournament'),
+        'registrations': registrations.distinct(),
+        'search_query': search_query,
     }
     return render(request, 'admin/registrations.html', context)
 
@@ -56,6 +86,15 @@ def edit_registration(request, registration_id):
 @require_POST
 def delete_registration(request, registration_id):
     participant = get_object_or_404(Participant, id=registration_id)
-    participant.delete()
+    transaction = participant.transaction
+    try:
+        # Delete payment_screenshot file from storage if exists
+        if transaction and transaction.payment_screenshot:
+            transaction.payment_screenshot.delete(save=False)
+        transaction.delete()
+        participant.delete()
+    except Exception:
+        messages.error(request, 'Registration deletion Failed.')
+        return redirect('admin_registrations')
     messages.success(request, 'Registration deleted successfully.')
     return redirect('admin_registrations')

@@ -6,15 +6,18 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db.models import Sum
 
-#V16
+#V26
 @login_required
 def admin_dashboard(request):
     events = Tournament.objects.all()
-    total_users = Participant.objects.all().count()
+    registered_users = Participant.objects.filter(status = 'confirmed').count()
+    pending_users = Participant.objects.filter(status = 'registered').count()
     total_in = Transaction.objects.filter(payment_status = 'completed').aggregate(total=Sum('amount'))['total'] or 0
     context = {
         'events': events,
-        'total_users': total_users,
-        'total_in': total_in
+        'pending_users': pending_users,
+        'registered_users': registered_users,
+        'total_in': total_in,
+        'active_tab': 'dashboard',
     }
     return render(request, 'admin/dashboard.html', context)

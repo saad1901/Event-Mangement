@@ -17,7 +17,7 @@
                     <h3>Enter Ticket Number</h3>
                     <p>Enter the ticket number or scan the QR code to validate:</p>
                     
-                    <form id="validate-form" method="post" action="{% url 'validate_ticket' %}">
+                    <form id="validate-form" method="post" action="#">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="ticket_number">Ticket Number</label>
@@ -221,7 +221,7 @@
         
         function validateTicket(ticketNumber) {
             // Send validation request to server
-            fetch('{% url "validate_ticket" %}', {
+            fetch('#', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

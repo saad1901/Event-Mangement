@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from app.models import logModal
 
 def logwrite(sec, id, key, value):
@@ -9,5 +10,6 @@ def logwrite(sec, id, key, value):
         value = value
     )
     
-    
-    
+def test(request):
+    return render(request, 'events/validate_ticket.html')
+    # return render(request, 'events/registration_confirmation.html')
