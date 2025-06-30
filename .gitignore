@@ -4,6 +4,7 @@ __pycache__/
 eventapp/settings.py
 app/migrations/
 media/payment_proofs/
-media/payment_screeshots/
-media/payment_screeshots/
+media/payment_screenshots/
+media/tournament_banners/
+media/tournament_images/
 db.sqlite3
