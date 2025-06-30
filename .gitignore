@@ -6,3 +6,4 @@ app/migrations/
 media/payment_proofs/
 media/payment_screeshots/
 media/payment_screeshots/
+db.sqlite3
