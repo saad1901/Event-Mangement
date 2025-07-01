@@ -13,11 +13,19 @@ def admin_settings(request):
     if request.method == 'POST' and 'support_phone' in request.POST:
         
         try:
-            org.name = request.POST.get('site_name')
-            org.email = request.POST.get('contact_email')
-            org.phone = request.POST.get('support_phone')
-            org.wp = request.POST.get('support_wp')
-            org.save()
+            if not org:
+                EventData.objects.create(
+                    name = request.POST.get('site_name'),
+                    email = request.POST.get('contact_email'),
+                    phone = request.POST.get('support_phone'),
+                    wp = request.POST.get('support_wp')
+                )
+            else:
+                org.name = request.POST.get('site_name')
+                org.email = request.POST.get('contact_email')
+                org.phone = request.POST.get('support_phone')
+                org.wp = request.POST.get('support_wp')
+                org.save()
             messages.success(request, 'Setting updated successfully.')
             return redirect('admin_settings')
         except:
