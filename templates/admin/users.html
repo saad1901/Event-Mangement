@@ -53,17 +53,42 @@
             </thead>
             <tbody>
                 {% for user in users %}
-                <tr>
+                <tr 
+                    data-id="{{ user.id }}"
+                    data-full_name="{{ user.full_name }}"
+                    data-email="{{ user.email }}"
+                    data-phone="{{ user.phone }}"
+                    data-wp="{{ user.wp }}"
+                    data-age="{{ user.age }}"
+                    data-gender="{{ user.gender }}"
+                    data-address="{{ user.address }}"
+                    data-status="{{ user.status }}"
+                    data-tournament="{{ user.tournament.title }}"
+                    data-tournament_category="{{ user.tournament.category.name|default:'' }}"
+                    data-has_chess_profile="{% if user.chess_profile %}1{% else %}0{% endif %}"
+                    data-fide_id="{{ user.chess_profile.fide_id|default:'' }}"
+                    data-national_id="{{ user.chess_profile.national_id|default:'' }}"
+                    data-title="{{ user.chess_profile.title|default:'' }}"
+                    data-fide_rating="{{ user.chess_profile.fide_rating|default:'' }}"
+                    data-national_rating="{{ user.chess_profile.national_rating|default:'' }}"
+                    data-rapid_rating="{{ user.chess_profile.rapid_rating|default:'' }}"
+                    data-blitz_rating="{{ user.chess_profile.blitz_rating|default:'' }}"
+                    data-section="{{ user.chess_profile.section|default:'' }}"
+                    data-federation="{{ user.chess_profile.federation|default:'' }}"
+                    data-club_academy="{{ user.chess_profile.club_academy|default:'' }}"
+                    data-is_arbiter="{{ user.chess_profile.is_arbiter|default:'' }}"
+                    data-previous_tournaments="{{ user.chess_profile.previous_tournaments|default:'' }}"
+                    data-achievements="{{ user.chess_profile.achievements|default:'' }}"
+                    data-registration_date="{{ user.registration_date|date:'Y-m-d H:i:s' }}"
+                >
                     <td>{{ user.id }}</td>
                     <td>{{ user.full_name }}</td>
                     <td>{{ user.phone }}</td>
                     <td>{{ user.tournament.title }}</td>
                     <td>{{ user.registration_date | date:'d/m/y'}}</td>
-                    <td>
-                        {{ user.status}}
-                    </td>
+                    <td>{{ user.status}}</td>
                     <td class="action-buttons">
-                        <button class="view-btn" title="View" data-id="{{ user.id }}"><i class="fas fa-eye"></i></button>
+                        <button class="view-btn" title="View"><i class="fas fa-eye"></i></button>
                         <button class="edit-btn" title="Edit" data-id="{{ user.id }}" data-modal-target="add-user-modal"><i class="fas fa-edit"></i></button>
                         <button class="delete-btn" title="Delete" data-id="{{ user.id }}" data-type="user"><i class="fas fa-trash"></i></button>
                     </td>
@@ -140,4 +165,101 @@
         </div>
     </div>
 </div>
+<!-- User Details Modal -->
+<div id="view-user-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>User Details</h2>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="user-details-content">
+                <table class="admin-table" style="width:100%; margin-bottom: 1.5em;">
+                    <tbody id="user-details-table">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+                <div id="chess-details-section" style="display:none;">
+                    <h3 style="margin-top:1em;">Chess Details</h3>
+                    <table class="admin-table" style="width:100%;">
+                        <tbody id="chess-details-table">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Modal open/close logic
+    const modal = document.getElementById('view-user-modal');
+    document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tr = this.closest('tr');
+            // Fill user details
+            const table = document.getElementById('user-details-table');
+            table.innerHTML = '';
+            const fields = [
+                ['Full Name', tr.dataset.full_name],
+                ['Email', tr.dataset.email],
+                ['Phone', tr.dataset.phone],
+                ['WhatsApp', tr.dataset.wp],
+                ['Age', tr.dataset.age],
+                ['Gender', tr.dataset.gender],
+                ['Address', tr.dataset.address],
+                ['Status', tr.dataset.status],
+                ['Tournament', tr.dataset.tournament],
+                ['Registration Date', tr.dataset.registration_date],
+            ];
+            fields.forEach(([label, value]) => {
+                if (value !== undefined && value !== null && value !== 'undefined') {
+                    table.innerHTML += `<tr><th style='text-align:left;'>${label}</th><td>${value}</td></tr>`;
+                }
+            });
+            // Chess details
+            if (tr.dataset.tournament_category && tr.dataset.tournament_category.toLowerCase() === 'chess') {
+                document.getElementById('chess-details-section').style.display = '';
+                const chessFields = [
+                    ['FIDE ID', tr.dataset.fide_id],
+                    ['National ID', tr.dataset.national_id],
+                    ['Title', tr.dataset.title],
+                    ['FIDE Rating', tr.dataset.fide_rating],
+                    ['National Rating', tr.dataset.national_rating],
+                    ['Rapid Rating', tr.dataset.rapid_rating],
+                    ['Blitz Rating', tr.dataset.blitz_rating],
+                    ['Section', tr.dataset.section],
+                    ['Federation', tr.dataset.federation],
+                    ['Club/Academy', tr.dataset.club_academy],
+                    ['Is Arbiter', tr.dataset.is_arbiter === 'true' ? 'Yes' : (tr.dataset.is_arbiter === '1' ? 'Yes' : 'No')],
+                    ['Previous Tournaments', tr.dataset.previous_tournaments],
+                    ['Achievements', tr.dataset.achievements],
+                ];
+                const chessTable = document.getElementById('chess-details-table');
+                chessTable.innerHTML = '';
+                chessFields.forEach(([label, value]) => {
+                    chessTable.innerHTML += `<tr><th style='text-align:left;'>${label}</th><td>${value || '-'}</td></tr>`;
+                });
+            } else {
+                document.getElementById('chess-details-section').style.display = 'none';
+            }
+            // Show modal
+            modal.style.display = 'block';
+        });
+    });
+    document.querySelectorAll('.close-modal').forEach(btn => {
+        btn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+    });
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+</script>
 {% endblock %}

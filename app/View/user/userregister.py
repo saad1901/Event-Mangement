@@ -53,7 +53,7 @@ def addparticipant(request):
                     return redirect('event_detail', event_id=event_id)
 
             # Save ChessPlayer data if the category is chess
-            if tournament.category == 1:
+            if tournament.category and tournament.category.name and tournament.category.name.lower() == 'chess':
                 chessData = ChessPlayer(
                     participant=participant,
                     fide_id=request.POST.get('fide_id', ''),
@@ -62,7 +62,7 @@ def addparticipant(request):
                     title=request.POST.get('title', ''),
                     federation=request.POST.get('federation'),
                     section=request.POST.get('section'),
-                    club=request.POST.get('club', ''),
+                    club_academy=request.POST.get('club', ''),
                 )
                 chessData.save()
 
