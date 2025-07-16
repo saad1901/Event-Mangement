@@ -69,12 +69,15 @@ if envtype == 'production':
     ALLOWED_HOSTS = ['eventbysaad.pythonanywhere.com']
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'eventdb_eyqn',
-            'USER': 'mohammadsaad',
-            'PASSWORD': 'Sq8MtokroA67xclx4wGRsttQnt49NlE7',
-            'HOST': 'dpg-d1n1rd0dl3ps73fq872g-a.oregon-postgres.render.com',
-            'PORT': '5432',
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'eventbysaad$eventdb',   # The database name you created in Hostinger
+            'USER': 'eventbysaad',   # The database user you created in Hostinger
+            'PASSWORD': 'Database@2025',  # The database user's password
+            'HOST': 'eventbysaad.mysql.pythonanywhere-services.com',  # Something like 'mysql.hostinger.in' or your custom host
+            'PORT': '3306',  # Default MySQL port
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
         }
     }
 
