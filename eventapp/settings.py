@@ -4,7 +4,7 @@ from pathlib import Path
 
 load_dotenv()
 
-envtype = os.getenv('ENVTYPE')
+envtype = os.getenv('ENVTYPE', 'production')  # default to development
 db_pass = os.getenv('db_pass')
 db_username = os.getenv('db_username')
 
