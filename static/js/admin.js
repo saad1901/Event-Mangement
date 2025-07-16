@@ -183,9 +183,9 @@ function setupEventListeners() {
         });
     });
     
-    // Delete buttons
-    const deleteButtons = document.querySelectorAll('.delete-btn');
-    deleteButtons.forEach(button => {
+    // Delete buttons (registration only)
+    const registrationDeleteButtons = document.querySelectorAll('.registration-delete-btn');
+    registrationDeleteButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
             const itemId = this.getAttribute('data-id');

@@ -59,36 +59,32 @@
         <table class="admin-table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Tournament Name</th>
                     <th>Category</th>
                     <th>Date</th>
-                    <th>Location</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    <th>Pending Registrations</th>
+                    <th>Confirmed Registrations</th>
+                    <th>Revenue (Confirmed)</th>
                 </tr>
             </thead>
             <tbody>
                 {% for event in events %}
                 <tr>
-                    <td>{{ event.id }}</td>
                     <td>{{ event.title }}</td>
                     <td data-category="{{ event.category }}">{{ event.category }}</td>
                     <td>{{ event.start_date }}</td>
-                    <td>{{ event.venue }}</td>
                     <td data-status="{{ event.status }}">
                         <span class="badge badge-{{ event.status }}">{{ event.status }}</span>
                     </td>
-                    <td class="action-buttons">
-                        <button class="view-btn" data-id="{{ event.id }}" data-type="event">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="edit-btn" data-id="{{ event.id }}" data-type="event" data-modal-target="add-event-modal">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="delete-btn" data-id="{{ event.id }}" data-type="event">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                    <td>
+                        {{ event.pending_registrations }}
+                    </td>
+                    <td>
+                        {{ event.confirmed_registrations }}
+                    </td>
+                    <td>
+                        ₹{{ event.revenue_confirmed }}
                     </td>
                 </tr>
                 {% empty %}

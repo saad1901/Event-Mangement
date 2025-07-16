@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from app.models import *
+from django.views.decorators.http import require_POST
 
 @login_required
 def admin_events(request):
@@ -96,6 +97,11 @@ def admin_events(request):
             return redirect('admin_events')
 
     events = Tournament.objects.all()
+    for event in events:
+        event.revenue_confirmed = sum([
+            p.transaction.amount for p in event.tournament.filter(status='confirmed')
+            if hasattr(p, 'transaction') and p.transaction.payment_status == 'completed'
+        ])
     categories = Category.objects.all()
     context = {
         'events': events,
@@ -104,3 +110,19 @@ def admin_events(request):
         'active_tab': 'events',
     }
     return render(request, 'admin/events.html', context)
+
+@login_required
+@require_POST
+def admin_event_delete(request, event_id):
+    password = request.POST.get('password')
+    user = request.user
+    if not user.check_password(password):
+        messages.error(request, 'Incorrect password. Event not deleted.')
+        return redirect('admin_events')
+    try:
+        event = Tournament.objects.get(id=event_id)
+        event.delete()
+        messages.success(request, 'Event deleted successfully.')
+    except Tournament.DoesNotExist:
+        messages.error(request, 'Event not found.')
+    return redirect('admin_events')

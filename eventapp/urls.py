@@ -30,6 +30,7 @@ urlpatterns = [
     # Admin Dashboard URLs
     path('superadmin/dashboard/', admin_dashboard, name='admin_dashboard'),
     path('superadmin/dashboard/events/', admin_events, name='admin_events'),
+    path('superadmin/dashboard/events/delete/<int:event_id>/', admin_event_delete, name='admin_event_delete'),
     path('superadmin/dashboard/users/', admin_users, name='admin_users'),
     path('superadmin/dashboard/registrations/', admin_registration, name='admin_registrations'),
     path('superadmin/dashboard/verification/', admin_verification, name='admin_verification'),
