@@ -1,7 +1,7 @@
 __pycache__/
 *.pyc
 .env
-eventapp/settings.py
+# eventapp/settings.py
 app/migrations/
 media/paymentproofs/
 media/tournament_banners/
