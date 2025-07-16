@@ -5,7 +5,8 @@ from pathlib import Path
 load_dotenv()
 
 envtype = os.getenv('ENVTYPE')
-
+db_pass = os.getenv('db_pass')
+db_username = os.getenv('db_username')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -70,9 +71,9 @@ if envtype == 'production':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'eventbysaad$eventdb',   # The database name you created in Hostinger
+            'NAME': db_username,   # The database name you created in Hostinger
             'USER': 'eventbysaad',   # The database user you created in Hostinger
-            'PASSWORD': 'Database@2025',  # The database user's password
+            'PASSWORD': db_pass,  # The database user's password
             'HOST': 'eventbysaad.mysql.pythonanywhere-services.com',  # Something like 'mysql.hostinger.in' or your custom host
             'PORT': '3306',  # Default MySQL port
             'OPTIONS': {
