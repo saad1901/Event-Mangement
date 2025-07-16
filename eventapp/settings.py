@@ -19,12 +19,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-zohfy10pr8-$7orp@3zqzc$(vn0@$*a_vb)s_e5*a)d=)pd^q2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['192.168.1.10','127.0.0.1']
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -71,7 +65,8 @@ WSGI_APPLICATION = 'eventapp.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 if envtype == 'production':
-
+    DEBUG = False
+    ALLOWED_HOSTS = ['eventbysaad.pythonanywhere.com']
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -84,6 +79,8 @@ if envtype == 'production':
     }
 
 else:
+    DEBUG = True
+    ALLOWED_HOSTS = ['192.168.1.10','127.0.0.1']
     PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',  # Stronger + recommended
     'django.contrib.auth.hashers.BCryptPasswordHasher',
