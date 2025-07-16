@@ -58,6 +58,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{% url 'admin_downloads' %}" class="nav-item {% if active_tab == 'admin_downloads' %}active{% endif %}">
+                            <i class="fas fa-download"></i> Downloads
+                        </a>
+                    </li>
+                    <li>
                         <a href="{% url 'admin_settings' %}" class="nav-item {% if active_tab == 'settings' %}active{% endif %}">
                             <i class="fas fa-cog"></i> Settings
                         </a>

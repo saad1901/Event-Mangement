@@ -5,3 +5,4 @@ from .admin_user import *
 from .admin_verification import *
 from .admin_report import *
 from .admin_setting import *
+from .admin_downloads import *
