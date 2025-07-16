@@ -5,3 +5,4 @@ __pycache__/
 app/migrations/
 media/paymentproofs/
 media/tournament_banners/
+*.sqlite3
